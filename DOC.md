@@ -35,3 +35,29 @@ beginning. But since each NFA knows its start and end states, you can easily com
 outlines. For example, let S1, E1, S2, E2 be start and end nodes of two NFAs we want to combine using alternation.
 To make the resulting NFA we create a new start state that has epsilon transitions to S1 and S2 and create a new end 
 state that E1 and E2 are connected to with epsilon transitions.
+
+### Representing an NFA
+
+An NFA has a set of states, a start state, and an end state. States have a hash map of characters to states that denote
+the transitions on each input symbol, and a list of transitions on epsilon (because there can be multiple transition
+on epsilon).
+
+NFAs support the following operations:
+- `concatenate(NFA n)`: concatenates `this` NFA with `n` by creating an NFA that accepts the concatenation set of 
+strings accepted by `this` and the set of strings accepted by `n`.
+- `alternate(NFA n)`: alternates `this` NFA with `n` by creating an NFA that accepts the set of strings accepted 
+by `this` or the set of strings accepted by `n`.
+- `iterate`: creates an NFA that accepts the strings accepted by `this` concatenated with itself 0 or more times.
+- `closure(State s)`: returns the set of states that are the epsilon closure of s.
+- `move(State s, Char c)`: returns the state that is reachable from s on one transition on c. or null if such
+transition doesn't exist.
+- `finalize`: sets the current end state as an accepting state.
+
+Some undetermined design decisions:
+- `closure()` and `move()` could return a state ID instead of the state itself to avoid exposing how the states are 
+represented and allow for the representation to change.
+- `conacenate()`, `alternate()`, `iterate()` could either modify `this` NFA or return a new one.
+
+### A global ID generator
+To simplify state generation and modification of NFAs, we can use a global ID generator for state IDs that generate a 
+unique number each time it is called.
