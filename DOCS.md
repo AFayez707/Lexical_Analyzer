@@ -61,3 +61,17 @@ represented and allow for the representation to change.
 ### A global ID generator
 To simplify state generation and modification of NFAs, we can use a global ID generator for state IDs that generate a 
 unique number each time it is called.
+
+### Representing a DFA
+a DFA is generated from a corresponding NFA using the subset construction algorithm. Each DFA state needs to keep track
+of the set of NFA states it correspond to. Unlike an NFA, a DFA is backed-up (represented) by its transition table,
+which can roughly be thought of as an adjacency matrix.
+
+### NFA to DFA using Subset Construction
+The subset construction algorithm needs to perform the operations `closure(Set<State>)` and `move(Set<State>, char)` 
+which are already implemented by the NFA. It will also need to know the start symbol and whether a particular state is
+an accepting state or not.
+
+Design Decisions:
+- we can memoize the epsilon closure of each NFA state to avoid recomputing it each time. We will still need to combine
+the epsilon closure of several states. This is an example or space vs time complexity trade-off.
