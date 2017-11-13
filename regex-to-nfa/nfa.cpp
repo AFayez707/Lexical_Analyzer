@@ -1,17 +1,14 @@
 #include "nfa.h"
 
-nfa::nfa() {
+nfa::nfa(char c) {}
 
-}
+void nfa::kleene_closure() {}
 
+void nfa::positive_closure() {}
 
-nfa::kleene_closure() {}
+void nfa::concatenate(nfa* n) {}
 
-nfa::positive_closure() {}
-
-nfa::concatenate(nfa n) {}
-
-nfa::alternate(nfa n) {}
+void nfa::alternate(nfa* n) {}
 
 set<int> epsilon_closure(set<int> state_ids) {}
 
