@@ -3,3 +3,9 @@
 //
 
 #include "IDGenerator.h"
+
+
+int IDGenerator::getNextID() {
+    return 0;
+}
+
