@@ -40,5 +40,8 @@ public:
 private:
     NFAState* start;
     NFAState* end;
+    unordered_map<int, NFAState*> states;
+    void add_state_to_map(NFAState* state);
+    NFAState* get_state_by_id(int id);
 
 };
