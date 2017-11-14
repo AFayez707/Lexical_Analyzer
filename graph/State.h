@@ -5,11 +5,8 @@
 #ifndef LEXICAL_ANALYZER_STATE_H
 #define LEXICAL_ANALYZER_STATE_H
 
-#include <iostream>
 #include <vector>
 #include "Edge.h"
-
-using namespace std;
 
 class State {
 public:

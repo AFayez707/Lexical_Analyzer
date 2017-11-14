@@ -2,8 +2,9 @@
 // Created by ahmed on 11/13/17.
 //
 
-#include <set>
 #include "Graph.h"
+
+#include <utility>
 
 Graph::Graph() {
     this->start_state = new State();
@@ -47,4 +48,16 @@ int Graph::count_states(State *state, set<State *> vis) {
         state_count += count_states(to, vis);
     }
     return state_count;
+}
+
+set<State *> Graph::get_states() {
+    return this->states;
+}
+
+void Graph::set_states(set<State *> states) {
+    this->states = std::move(states);
+}
+
+void Graph::insert_state(State *state) {
+    this->states.insert(state);
 }
