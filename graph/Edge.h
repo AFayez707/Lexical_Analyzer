@@ -7,10 +7,10 @@
 
 #include <iostream>
 
+using namespace std;
+
 // Need this to avoid recursive include
 class State;
-
-using namespace std;
 
 class Edge {
 public:
@@ -23,6 +23,8 @@ public:
     State *get_from_state();
 
     State *get_to_state();
+
+    State *set_to_state(State *to);
 
 private:
     string weight;

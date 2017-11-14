@@ -21,3 +21,7 @@ State *Edge::get_to_state() {
 string Edge::get_weight() {
     return this->weight;
 }
+
+State *Edge::set_to_state(State *to) {
+    this->to = to;
+}

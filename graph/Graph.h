@@ -5,6 +5,7 @@
 #ifndef LEXICAL_ANALYZER_GRAPH_H
 #define LEXICAL_ANALYZER_GRAPH_H
 
+#include <set>
 #include "State.h"
 
 class Graph {
@@ -23,9 +24,16 @@ public:
 
     int get_state_count();
 
+    set<State *> get_states();
+
+    void set_states(set<State *> states);
+
+    void insert_state(State *state);
+
 private:
     State *start_state;
     State *end_state;
+    set<State *> states;
 
     int count_states(State *state, set<State *> vis);
 };
