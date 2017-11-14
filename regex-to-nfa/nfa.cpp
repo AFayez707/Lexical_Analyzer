@@ -1,17 +1,18 @@
 #include "nfa.h"
 
-nfa::nfa() {
-
+nfa::nfa(char c) {
+    start = new NFAState();
+    end = new NFAState();
+    start->set_transition_On(c, end);
 }
 
+void nfa::kleene_closure() {}
 
-nfa::kleene_closure() {}
+void nfa::positive_closure() {}
 
-nfa::positive_closure() {}
+void nfa::concatenate(nfa* n) {}
 
-nfa::concatenate(nfa n) {}
-
-nfa::alternate(nfa n) {}
+void nfa::alternate(nfa* n) {}
 
 set<int> epsilon_closure(set<int> state_ids) {}
 
