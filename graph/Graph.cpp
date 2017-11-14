@@ -4,8 +4,6 @@
 
 #include "Graph.h"
 
-#include <utility>
-
 Graph::Graph() {
     this->start_state = new State();
     this->end_state = new State();
