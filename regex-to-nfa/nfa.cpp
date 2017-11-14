@@ -1,6 +1,10 @@
 #include "nfa.h"
 
-nfa::nfa(char c) {}
+nfa::nfa(char c) {
+    start = new NFAState();
+    end = new NFAState();
+    start->set_transition_On(c, end);
+}
 
 void nfa::kleene_closure() {}
 

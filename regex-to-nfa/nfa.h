@@ -1,5 +1,6 @@
 #include <iostream>
 #include <set>
+#include "NFAState.h"
 
 using namespace std;
 
@@ -35,5 +36,9 @@ public:
     bool is_accepting(int state_id);
 
     int get_start_state();
+
+private:
+    NFAState* start;
+    NFAState* end;
 
 };
