@@ -7,7 +7,7 @@
 int State::state_count = 1;
 
 State::State() {
-    this->state_name = state_count++;
+    this->state_id = state_count++;
 }
 
 vector<Edge> *State::get_out_edges() {
@@ -35,6 +35,6 @@ string State::get_token_type() {
     return token_type;
 }
 
-int State::get_state_name() {
-    return this->state_name;
+int State::get_state_id() {
+    return this->state_id;
 }
