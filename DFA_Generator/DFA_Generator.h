@@ -8,4 +8,5 @@
 
 
 
+
 #endif //LEXICAL_ANALYZER_DFA_GENERATOR_H
