@@ -1,26 +1,23 @@
 //
-// Created by abdelrahman on 13/11/17.
+// Created by MacPro on 11/14/17.
 //
 
 #ifndef LEXICAL_ANALYZER_REGEX_H
 #define LEXICAL_ANALYZER_REGEX_H
 
 #include "LinkedStack.h"
-#include <fstream>
-#include <unordered_map>
 #include <string>
-#include <vector>
+using namespace std;
 
-class Regex {
+// Define the class of regex
+class regex
+{
 public:
-    Regex(std::string path);
-    std::unordered_map<std::string, std::string> parse();
-    std::vector<char> get_language();
+    void GetRegExp();
     void InsertCatNode();
     void RegExpToPost();
 
 private:
-    std::string path;
     char *exp;
     char *post;
     int Precedence(char symbol);
