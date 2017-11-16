@@ -2,100 +2,119 @@
 // Created by ahmed on 11/14/17.
 //
 
-#include <map>
 #include "DFA_Reducer.h"
 
-DFA_Reducer::DFA_Reducer(Graph *dfa) {
+DFA_Reducer::DFA_Reducer(Graph *dfa, set<string> language_chars) {
     this->dfa = dfa;
+    this->language_chars = std::move(language_chars);
 }
 
-Graph *DFA_Reducer::get_dfa() {
+Graph *DFA_Reducer::get_dfa() const {
     return this->dfa;
 }
 
-Graph *DFA_Reducer::remove_redundancies() {
-    cout << "\n\nEliminating redundancies:\n=========================\n";
-    set<State *> states = dfa->get_states();
-    map<pair<int, State *>, pair<int, State *> > redundancies;
-    vector<State *> states_vector;
+void DFA_Reducer::minimize() {
+    // removes redundancies
+    this->remove_redundancies();
 
-    for (auto &state: states) {
-        states_vector.push_back(state);
+//    this->print();
+
+    // merging states using disjoint sets
+    int partition_count = this->merge_nondistinguishable();
+    this->min_dfa_builder(partition_count);
+}
+
+void DFA_Reducer::print() {
+    set<State *> states = this->dfa->get_states();
+
+    string line = "---------------";
+    for (int i = 0; i < language_chars.size(); ++i)
+        line += "--------";
+
+    printf("%s\n               ", line.c_str());
+    for (auto &input: this->language_chars) {
+        printf("| %-5s", input.c_str());
     }
 
-    // Check for redundancies
-    for (int i = 0; i < states_vector.size(); ++i) {
-        State *A = states_vector[i];
-        for (int j = i + 1; j < states_vector.size(); ++j) {
-            State *B = states_vector[j];
-            bool valid = false;
-            if (A->get_out_edges()->size() == B->get_out_edges()->size() &&
-                A->is_accept_state() == B->is_accept_state()) {
-                for (auto &k : *A->get_out_edges()) {
-                    valid = false;
-                    State *nextA = k.get_to_state();
-                    string inputA = k.get_weight();
+    printf("\n%s\n", line.c_str());
+    for (auto &state: states) {
+        if (state->is_input_state())
+            printf(" ➜ ");
+        else
+            printf("   ");
 
-                    for (auto &l : *B->get_out_edges()) {
-                        State *nextB = l.get_to_state();
-                        string inputB = l.get_weight();
-                        if (inputA == inputB && nextA == nextB) {
+        if (state->is_accept_state())
+            printf("*");
+        else
+            printf(" ");
+
+        printf("%5d  =>  ", state->get_state_id());
+        for (auto &next_state: state->get_transitions()) {
+            printf("| %-5d", next_state.second->get_state_id());
+        }
+        printf("\n");
+    }
+    printf("%s\n", line.c_str());
+}
+
+void DFA_Reducer::remove_redundancies() {
+    printf("\nEliminating redundancies\n=========================\n");
+    set<State *> states = dfa->get_states();
+    map<State *, State *> redundant;
+
+    for (auto &A: states) {
+        states.erase(A);
+        for (auto &B: states) {
+            bool valid = false;
+            // for dfa, must be always true.
+            bool condition = A->get_transitions().size() == B->get_transitions().size();
+            condition = condition && (A->is_accept_state() == B->is_accept_state());
+            if (condition) {
+                for (auto &nextA: A->get_transitions()) {
+                    valid = false;
+                    for (auto &nextB: B->get_transitions()) {
+                        if (nextA.first == nextB.first && nextA.second == nextB.second) {
                             valid = true;
                             break;
                         }
                     }
-                    if (valid)
-                        continue;
-                    else
+                    if (!valid)
                         break;
                 }
                 if (valid) {
-                    redundancies[{A->get_state_id(), A}] = {B->get_state_id(), B};
+                    redundant[A] = B;
                 }
             }
         }
     }
 
     // Replace redundancies in the graph
-    for (auto &redundant: redundancies) {
-        cout << "Redundant: " << redundant.first.first << " ==> " << redundant.second.first << "\n";
-        states.erase(redundant.second.second);
-        for (auto &state : states) {
-            for (auto &edge : *state->get_out_edges()) {
-                // Update pointer
-                if (edge.get_to_state() == redundant.second.second) {
-                    edge.set_to_state(redundant.first.second);
+    for (auto &eq: redundant) {
+        printf("Redundant: %-3d ==> %3d\n", eq.first->get_state_id(), eq.second->get_state_id());
+        dfa->erase_state(eq.second);
+        for (auto &state: dfa->get_states()) {
+            for (auto &next_state: state->get_transitions()) {
+                if (next_state.second == eq.second) {
+                    state->set_transition(eq.first, next_state.first);
                 }
             }
-            for (auto &next: state->transitions) {
-                if (next.second == redundant.second.second)
-                    next.second = redundant.first.second;
-            }
         }
-    }
-
-    this->dfa->set_states(states);
-    for (auto &state: states) {
-        cout << "State: " << state->get_state_id() << " =>";
-        for (auto &edge: *state->get_out_edges()) {
-            cout << "  -  " << edge.get_to_state()->get_state_id();
-        }
-        cout << "\n";
+        delete (eq.second);
     }
 }
 
-Graph *DFA_Reducer::minimize() {
-    int parent = 3;
-    map<int, set<State *>> disjoint_set;
-    map<State *, int> state_set;
+int DFA_Reducer::merge_nondistinguishable() {
+    printf("\nMerging non-distinguishable states\n==================================\n");
+    int partition_count = 2;
+    map<int, set<State *> > disjoint_set;
 
     for (auto &state: this->get_dfa()->get_states()) {
         if (state->is_accept_state()) {
             disjoint_set[1].insert(state);
-            state_set[state] = 1;
+            this->old_state_mapper[state] = 1;
         } else {
             disjoint_set[2].insert(state);
-            state_set[state] = 2;
+            this->old_state_mapper[state] = 2;
         }
     }
 
@@ -103,19 +122,20 @@ Graph *DFA_Reducer::minimize() {
     while (flag) {
         flag = false;
         for (auto &cur_set: disjoint_set) {
-            for (auto &state1: cur_set.second) {
-                for (auto &state2: cur_set.second) {
-                    if (state1 == state2) continue;
-                    for (auto &transition: state1->transitions) {
-                        if (state_set[transition.second] != state_set[state2->transitions[transition.first]]) {
-                            if (state_set[state1] != state_set[transition.second]) {
-                                state_set[state1] = parent;
-                                cur_set.second.erase(state1);
-                                disjoint_set[parent++].insert(state1);
+            for (auto &stateA: cur_set.second) {
+                for (auto &stateB: cur_set.second) {
+                    if (stateA == stateB) continue;
+                    for (auto &transition: stateA->get_transitions()) {
+                        if (this->old_state_mapper[transition.second] !=
+                            this->old_state_mapper[stateB->get_transitions()[transition.first]]) {
+                            if (this->old_state_mapper[stateA] != this->old_state_mapper[transition.second]) {
+                                this->old_state_mapper[stateA] = ++partition_count;
+                                cur_set.second.erase(stateA);
+                                disjoint_set[partition_count].insert(stateA);
                             } else {
-                                state_set[state2] = parent;
-                                cur_set.second.erase(state2);
-                                disjoint_set[parent++].insert(state2);
+                                this->old_state_mapper[stateB] = ++partition_count;
+                                cur_set.second.erase(stateB);
+                                disjoint_set[partition_count].insert(stateB);
                             }
                             flag = true;
                             break;
@@ -129,38 +149,56 @@ Graph *DFA_Reducer::minimize() {
                 break;
         }
     }
+    return partition_count;
+}
 
-    map<pair<int, string>, int> transition;
-    set<string> lang;
+void DFA_Reducer::min_dfa_builder(int partition_count) {
     set<int> min_state;
-
-    // form transition table
-    for (auto &state: state_set) {
+    // form transition_table table
+    for (auto &state: this->old_state_mapper) {
         min_state.insert(state.second);
-        for (auto &move: state.first->transitions) {
-            lang.insert(move.first);
-            transition[make_pair(state_set[state.first], move.first)] = state_set[move.second];
+        for (auto &move: state.first->get_transitions()) {
+            pair<int, string> cur_pair = make_pair(this->old_state_mapper[state.first], move.first);
+            this->transition_table[cur_pair] = this->old_state_mapper[move.second];
         }
     }
-    cout << left;
-    cout << "\n\nMinimized DFA:\n";
-    cout << "==============\n     |input";
-    for (auto &input:lang) {
-        cout << "   |\"" << input << "\"";
-    }
 
-    cout << "\n";
+    /*
+     * building new min_dfa
+     */
+    delete (this->dfa);
+    this->dfa = new Graph();
 
-    cout << "-------------------------\n";
-    for (auto &state: min_state) {
-        printf("%-5d|        ", state);
-        for (auto &input:lang) {
-            printf("|%-6d", transition[make_pair(state, input)]);
+    // add states to the new min_dfa
+    for (unsigned int i = 1; i <= partition_count; ++i) {
+        auto *dummy = new State();
+        dummy->set_state_id(i);
+        dfa->insert_state(dummy);
+        for (auto &state: this->old_state_mapper) {
+            if (state.second == i) {
+                if (state.first->is_input_state()) {
+                    dummy->set_input_state(true);
+                    this->dfa->set_start_state(dummy);
+                }
+                if (state.first->is_accept_state()) {
+                    dummy->set_accept_state(true);
+                }
+            }
         }
-        cout << "\n";
+        this->new_state_mapper[i] = dummy;
     }
 
-//    for (auto &move: transition) {
-//        cout << move.first.first << " + \"" << move.first.second << "\" ==> " << move.second << "\n";
-//    }
+    // add transitions to each state
+    for (auto &state_id: min_state) {
+        State *cur = this->new_state_mapper.at(state_id);
+        for (auto &input: this->language_chars) {
+            State *next_state = this->new_state_mapper[this->transition_table[make_pair(state_id, input)]];
+            cur->set_transition(next_state, input);
+        }
+    }
+
+    // release old dfa pointers
+    for (auto &old_state: this->old_state_mapper) {
+        delete (old_state.first);
+    }
 }
