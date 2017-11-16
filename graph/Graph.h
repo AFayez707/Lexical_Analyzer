@@ -22,11 +22,11 @@ public:
 
     State *get_end_state();
 
-    int get_state_count();
+    unsigned long get_state_count();
 
     set<State *> get_states();
 
-    void set_states(set<State *> states);
+    void erase_state(State *state);
 
     void insert_state(State *state);
 
@@ -34,8 +34,6 @@ private:
     State *start_state;
     State *end_state;
     set<State *> states;
-
-    int count_states(State *state, set<State *> vis);
 };
 
 #endif //LEXICAL_ANALYZER_GRAPH_H
