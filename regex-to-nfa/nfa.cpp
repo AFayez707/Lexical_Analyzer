@@ -48,7 +48,7 @@ void nfa::positive_closure() {
 
 void nfa::concatenate(nfa *n) {
     // Thompson Construction inductive steps
-    this->end->add_epsilon_transition(n->end);
+    this->end->add_epsilon_transition(n->start);
 
     // merge the state maps of the two NFAs
     states.insert(n->states.begin(), n->states.end());
@@ -146,4 +146,35 @@ bool nfa::is_accepting(int state_id) {
 
 int nfa::get_start_state() {
     return this->start->get_id();
+}
+
+void nfa::print_dfs() {
+    bool *visited = new bool[states.size() + 5];
+    for(int i = 0; i < states.size() + 5; i++)
+        visited[i] = false;
+
+    cout << "starting at state with id " << start->get_id() << endl;
+    dfs_util(start->get_id(), visited);
+}
+
+void nfa::dfs_util(int v, bool visited[]) {
+    visited[v] = true;
+    cout << v << " ";
+
+    // Recur for all the vertices adjacent
+    // to this vertex
+    NFAState *s;
+    if(states.find(v) == states.end())
+        cout << "null pointer: state with id " << v << " is not in this NFA";
+    s = states[v];
+
+    for(int c = 'a'; c <= 'd'; c++) {
+        NFAState *next = s->get_transition_On(c);
+        if(next != nullptr && !visited[next->get_id()])
+            dfs_util(next->get_id(), visited);
+
+    }
+    for (auto element : s->get_epsilon_transitions())
+        if (!visited[element->get_id()])
+            dfs_util(element->get_id(), visited);
 }

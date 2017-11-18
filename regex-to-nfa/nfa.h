@@ -6,8 +6,6 @@ using namespace std;
 
 class nfa {
 private:
-    int start_state, end_state;
-
 
 public:
     /**
@@ -37,6 +35,8 @@ public:
 
     int get_start_state();
 
+    void print_dfs();
+
 private:
     NFAState* start;
     NFAState* end;
@@ -44,4 +44,7 @@ private:
     void add_state_to_map(NFAState* state);
     NFAState* get_state_by_id(int id);
 
+
+
+    void dfs_util(int v, bool *visited);
 };
