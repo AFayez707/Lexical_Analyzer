@@ -5,8 +5,10 @@
 #include "NFAState.h"
 #include "IDGenerator.h"
 
+int NFAState::current_id = 0;
+
 NFAState::NFAState() {
-    id = IDGenerator::getNextID();
+    id = current_id++;
     isAccepting = false;
 }
 

@@ -22,6 +22,7 @@ public:
 private:
     int id;
     bool isAccepting;
+    static int current_id;
     std::unordered_map<char, NFAState*> transitions;
     std::vector<NFAState*> epsilon_transitions;
 };
