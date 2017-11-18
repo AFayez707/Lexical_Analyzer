@@ -11,7 +11,6 @@ struct transition {
 };
 
 class dfa {
-public:
 
     vector<transitions>     transitions;
     vector<vector<int>>     entries;
@@ -27,7 +26,7 @@ public:
 
     /* Return the next unMarked entry */
     int GetNextUnMarkedIndex() {
-        for (int index=0; i < isMarked.size(); index++) {
+        for (int index=0; index < isMarked.size(); index++) {
             if (!isMarked.at(index)) {
                 return index;
             }
@@ -97,4 +96,60 @@ public:
         cout<<"\nThe final state is q : "<< join(finalStates, ",") << endl;
     }
 
+    set<int> dfa::vector_to_set(vector<int> vec) {
+        set<int> result;
+
+        for(int element : vec)
+            result.insert(element);
+
+        return result;
+    }
+
+    /**
+     * Implements the subset construction algorithm as described in the reference
+     */
+    dfa::dfa(nfa *n, set<char> language) {
+        // initially e-closure(S0) is the only state in Dstates, and it is unmarked
+        set<int> start;
+        start.insert(n->get_start_state());
+        set<int> s = n->epsilon_closure(start);
+        AddEntry(set_to_vector(s));
+
+        // while ( there is an unmarked state T in Dstates )
+        int T_index;
+        while((T_index = GetNextUnMarkedIndex() ) != -1) {
+            // Mark T
+            MarkEntry(T_index);
+            vector<int> T_vec = GetEntry(T_index);
+            set<int> T_set = vector_to_set(T_vec);
+
+            // for each input symbol a
+            for(char a : language) {
+                // U = e-closure(move(T,a))
+                set<int> U_set = n->epsilon_closure(n->move(T_set, a));
+                vector<int> U_vec = set_to_vector(U_set);
+
+                // if ( U is not in Dstates )
+                int U_index;
+                if( ( U_index = FindEntry(U_vec) ) != -1)
+                    // add U as an unmarked state to Dstates
+                    U_index = AddEntry(U_vec);
+                SetTransition(T_index, U_index, a);
+            }
+
+        }
+
+    }
+
+    vector<int> dfa::set_to_vector(set<int> set) {
+        vector<int> result;
+
+        for(int element : set)
+            result.push_back(element);
+
+        return result;
+    }
+
 };
+
+
