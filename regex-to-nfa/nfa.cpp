@@ -198,4 +198,6 @@ void nfa::combine(vector<nfa *> list_of_nfa) {
         nfa->end->setPriority(priority);
         priority++;
     }
+
+    this->start = newStart;
 }
