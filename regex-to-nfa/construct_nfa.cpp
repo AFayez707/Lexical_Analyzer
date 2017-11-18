@@ -61,16 +61,17 @@ nfa* regex_to_nfa(std:: string regex) {
                 break;
         }
 
-        nfa *result = operands.top();
-        operands.pop();
-
-        // sanity check (if stack is not empty now then the input regex was invalid)
-        if(operands.size() != 0) {
-            // error
-            return 0;
-        }
-
-        return result;
     }
+
+    nfa *result = operands.top();
+    operands.pop();
+
+    // sanity check (if stack is not empty now then the input regex was invalid)
+    if(operands.size() != 0) {
+        // error
+        return 0;
+    }
+
+    return result;
 
 }
