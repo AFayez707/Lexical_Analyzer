@@ -7,21 +7,23 @@
 
 #include <unordered_map>
 #include <vector>
+#include <string>
 
 class NFAState {
 public:
     NFAState();
     bool is_accepting();
-    void setAccepting(bool isAccepting);
+    void setAccepting(std::string isAccepting);
     int get_id();
     NFAState* get_transition_On(char c);
     void set_transition_On(char c, NFAState* next);
     std::vector<NFAState*> get_epsilon_transitions();
     void add_epsilon_transition(NFAState* next);
+    std::string get_accept_token_name();
 
 private:
     int id;
-    bool isAccepting;
+    std::string accept_token_name;
     static int current_id;
     std::unordered_map<char, NFAState*> transitions;
     std::vector<NFAState*> epsilon_transitions;

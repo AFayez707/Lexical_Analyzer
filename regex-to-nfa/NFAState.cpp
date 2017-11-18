@@ -9,7 +9,7 @@ int NFAState::current_id = 0;
 
 NFAState::NFAState() {
     id = current_id++;
-    isAccepting = false;
+    accept_token_name = "";
 }
 
 int NFAState::get_id() {
@@ -35,9 +35,13 @@ std::vector<NFAState*> NFAState::get_epsilon_transitions() {
 }
 
 bool NFAState::is_accepting() {
-    return isAccepting;
+    return accept_token_name == "";
 }
 
-void NFAState::setAccepting(bool isAccepting) {
-    this->isAccepting = isAccepting;
+void NFAState::setAccepting(std::string accept_token_name) {
+    this->accept_token_name = accept_token_name;
+}
+
+std::string NFAState::get_accept_token_name() {
+    return accept_token_name;
 }
