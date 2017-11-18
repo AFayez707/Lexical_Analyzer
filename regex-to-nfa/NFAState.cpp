@@ -10,6 +10,7 @@ int NFAState::current_id = 0;
 NFAState::NFAState() {
     id = current_id++;
     accept_token_name = "";
+    priority = -1;
 }
 
 int NFAState::get_id() {
@@ -40,8 +41,17 @@ bool NFAState::is_accepting() {
 
 void NFAState::setAccepting(std::string accept_token_name) {
     this->accept_token_name = accept_token_name;
+    priority = 0; // default value (highest priority)
 }
 
 std::string NFAState::get_accept_token_name() {
     return accept_token_name;
+}
+
+void NFAState::setPriority(int priority) {
+    this->priority = priority;
+}
+
+int NFAState::getPriority(int priority) {
+    return priority;
 }
