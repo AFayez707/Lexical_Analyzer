@@ -119,6 +119,8 @@ set<int> nfa::epsilon_closure(set<int> state_ids) {
             }
         }
     }
+
+    return eps_closure;
 }
 
 set<int> nfa::move(set<int> state_ids, char c) {
