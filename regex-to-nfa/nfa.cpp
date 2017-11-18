@@ -180,3 +180,22 @@ void nfa::dfs_util(int v, bool visited[]) {
         if (!visited[element->get_id()])
             dfs_util(element->get_id(), visited);
 }
+
+void nfa::set_accept_token_name(string token_name) {
+    end->setAccepting(token_name);
+}
+
+void nfa::combine(vector<nfa *> list_of_nfa) {
+    NFAState *newStart = new NFAState();
+
+    // make this nfa have the highest priority
+    this->end->setPriority(0);
+    newStart->add_epsilon_transition(this->start);
+
+    int priority = 1;
+    for(auto nfa : list_of_nfa) {
+        newStart->add_epsilon_transition(nfa->start);
+        nfa->end->setPriority(priority);
+        priority++;
+    }
+}
