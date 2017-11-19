@@ -74,6 +74,9 @@ void nfa::alternate(nfa *n) {
 
     this->start = newStart;
     this->end = newEnd;
+
+    // merge the state maps of the two NFAs
+    states.insert(n->states.begin(), n->states.end());
 }
 
 void nfa::add_state_to_map(NFAState *state) {
@@ -197,7 +200,11 @@ void nfa::combine(vector<nfa *> list_of_nfa) {
         newStart->add_epsilon_transition(nfa->start);
         nfa->end->setPriority(priority);
         priority++;
+
+        // merge the state maps of the two NFAs
+        states.insert(nfa->states.begin(), nfa->states.end());
     }
 
     this->start = newStart;
+    add_state_to_map(newStart);
 }
