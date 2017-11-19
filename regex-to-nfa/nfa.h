@@ -1,3 +1,6 @@
+#ifndef LEXICAL_ANALYZER_NFA_H
+#define LEXICAL_ANALYZER_NFA_H
+
 #include <iostream>
 #include <set>
 #include "NFAState.h"
@@ -65,3 +68,5 @@ private:
 
     void dfs_util(int v, bool *visited);
 };
+
+#endif //LEXICAL_ANALYZER_NFA_H
