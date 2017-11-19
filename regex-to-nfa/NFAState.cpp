@@ -3,7 +3,6 @@
 //
 
 #include "NFAState.h"
-#include "IDGenerator.h"
 
 int NFAState::current_id = 0;
 

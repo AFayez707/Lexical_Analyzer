@@ -26,11 +26,11 @@ void State::set_state_id(unsigned int id) {
     this->state_id = id;
 }
 
-void State::set_transition(State *next, string input) {
+void State::set_transition(State *next, char input) {
     this->transitions[input] = next;
 }
 
-State *State::get_transition_on(string input) {
+State *State::get_transition_on(char input) {
     return this->transitions[input];
 }
 
@@ -42,7 +42,7 @@ vector<State *> State::get_epsilon_transitions() const {
     return this->epsilon_transitions;
 }
 
-map<string, State *> State::get_transitions() const {
+map<char, State *> State::get_transitions() const {
     return this->transitions;
 }
 

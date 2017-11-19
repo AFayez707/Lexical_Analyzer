@@ -9,7 +9,7 @@
 
 class DFA_Reducer {
 public:
-    explicit DFA_Reducer(Graph *dfa, set<string> language_chars);
+    explicit DFA_Reducer(Graph *dfa, set<char> language_chars);
 
     Graph *get_dfa() const;
 
@@ -22,10 +22,10 @@ public:
 
 private:
     Graph *dfa;
-    set<string> language_chars;
+    set<char> language_chars;
     map<int, State *> new_state_mapper;
     map<State *, int> old_state_mapper;
-    map<pair<int, string>, int> transition_table;
+    map<pair<int, char>, int> transition_table;
 
     /**
      * @brief deletes all redundant states
