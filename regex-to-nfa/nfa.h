@@ -45,6 +45,7 @@ public:
     set<int> move(set<int> state_ids, char c);
 
     bool is_accepting(int state_id);
+    string get_accepting_token_name(int state_id);
 
     int get_start_state();
 
