@@ -3,7 +3,8 @@
 //
 
 #include "dfa.h"
-
+#include "../graph/Graph.h"
+#include "../graph/State.h"
 
 /* Add new DFA Entry */
 int dfa::AddEntry(vector<int> entry) {
@@ -147,6 +148,30 @@ string dfa::join(vector<int> vector, string delimiter) {
     return result.substr(0, result.length() - 1);
 }
 
+Graph *dfa::as_graph() {
+    // create a state for each dfa entry
+    vector<State*> states;
+    for (int i = 0; i < entries.size(); i++) {
+        State *s = new State();
+        states.push_back(s);
+
+        // TODO: mark accepting states as accepting
+    }
+
+    for(transition trans : transitions) {
+        State *from = states[trans.from];
+        State *to = states[trans.to];
+
+        from->set_transition(to, string(1, trans.value));
+    }
+
+    Graph *g = new Graph();
+    for(State *s : states) {
+        g->insert_state(s);
+    }
+
+    return g;
+}
 
 
 

@@ -7,6 +7,7 @@
 
 #include <set>
 #include "../regex-to-nfa/nfa.h"
+#include "../graph/Graph.h"
 
 struct transition {
     int from;
@@ -19,6 +20,7 @@ class dfa {
 public:
     dfa(nfa *n, set<char> language);
     void display();
+    Graph *as_graph();
 
 //    bool is_accepting(int state_id);
 //    int transitions_to(int state, char c);
