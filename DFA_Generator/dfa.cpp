@@ -119,7 +119,7 @@ dfa::dfa(nfa *n, set<char> language) {
 
             // if ( U is not in Dstates )
             int U_index;
-            if ((U_index = FindEntry(U_vec)) != -1)
+            if ((U_index = FindEntry(U_vec)) == -1)
                 // add U as an unmarked state to Dstates
                 U_index = AddEntry(U_vec);
             SetTransition(T_index, U_index, a);
@@ -143,6 +143,8 @@ string dfa::join(vector<int> vector, string delimiter) {
 
     for(int i : vector)
         result += (to_string(i) + delimiter);
+
+    return result.substr(0, result.length() - 1);
 }
 
 
