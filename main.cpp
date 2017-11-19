@@ -1,24 +1,30 @@
 // TODO : To be implemented
 #include <iostream>
 #include "regex-to-nfa/construct_nfa.h"
-
+#include "DFA_Generator/dfa.h"
 
 using namespace std;
 
 int main() {
-    string regex = "ab|c.";
+    string regex1 = "ab|c."; // (a|b)c
+    nfa *n1 = regex_to_nfa(regex1);
 
-    nfa *n = regex_to_nfa(regex);
+    string regex2 = "a*b+|"; // a*|b+
+    nfa *n2 = regex_to_nfa(regex2);
 
-    n->print_dfs();
+    vector<nfa*> list;
+    list.push_back(n2);
+    n1->combine(list);
 
-    set<int> start;
-    start.insert(n->get_start_state());
-    set<int> eps = n->epsilon_closure(start);
-    if(eps.find(2) != eps.end())
-        cout << "(2 exits)" << endl;
+    set<char> language;
+    language.insert('a');
+    language.insert('b');
+    language.insert('c');
 
-
+    dfa dfa(n1, language);
     cout << "Hello World!" << endl;
+
+    dfa.display();
+
     return 0;
 }
