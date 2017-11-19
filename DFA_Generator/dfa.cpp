@@ -192,7 +192,7 @@ Graph *dfa::as_graph() {
         State *from = states[trans.from];
         State *to = states[trans.to];
 
-        from->set_transition(to, string(1, trans.value));
+        from->set_transition(to, trans.value);
     }
 
     for(int i = 0; i < finalStates.size(); i++) {
