@@ -138,6 +138,13 @@ vector<int> dfa::set_to_vector(set<int> set) {
     return result;
 }
 
+string dfa::join(vector<int> vector, string delimiter) {
+    string result;
+
+    for(int i : vector)
+        result += (to_string(i) + delimiter);
+}
+
 
 
 
