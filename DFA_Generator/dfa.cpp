@@ -3,7 +3,8 @@
 //
 
 #include "dfa.h"
-
+#include "../graph/Graph.h"
+#include "../graph/State.h"
 
 /* Add new DFA Entry */
 int dfa::AddEntry(vector<int> entry) {
@@ -45,7 +46,7 @@ int dfa::FindEntry(vector<int> entry) {
     return -1;
 }
 
-void dfa::SetFinalState(int nfa_fs) {
+void dfa::SetNFAFinalState(int nfa_fs) {
     for (int i = 0; i < entries.size(); i++) {
         vector<int> entry = entries.at(i);
 
@@ -56,7 +57,11 @@ void dfa::SetFinalState(int nfa_fs) {
             }
         }
     }
+}
 
+void dfa::SetDFAFinalState(int dfa_fs, string token_name) {
+    finalStates.push_back(dfa_fs);
+    finalStateTokenNames.push_back(token_name);
 }
 
 string dfa::GetFinalState() {
@@ -127,6 +132,33 @@ dfa::dfa(nfa *n, set<char> language) {
 
     }
 
+    // mark accepting states
+    for (int i = 0; i < entries.size(); i++) {
+
+        vector<int> entry = entries[i];
+
+        bool accepting = false;
+        string token_name;
+
+        for (int j : entry) {
+            if (n->is_accepting(j)) {
+                if (accepting) {
+                    // error (not really an error)
+                    // found to NFA accepting states mapping to the same DFA state
+                    cout << "found to NFA accepting states mapping to the same DFA state. This means that one of "
+                            "the tokens will never be detected" << endl;
+                } else {
+                    accepting = true;
+                    token_name = n->get_accepting_token_name(j);
+                    cout << "nfa state with ID: " << j << " is accepting, it's token name is: " << token_name << endl;
+                }
+            }
+        }
+
+        if (accepting)
+            SetDFAFinalState(i, token_name);
+    }
+
 }
 
 vector<int> dfa::set_to_vector(set<int> set) {
@@ -141,12 +173,45 @@ vector<int> dfa::set_to_vector(set<int> set) {
 string dfa::join(vector<int> vector, string delimiter) {
     string result;
 
-    for(int i : vector)
+    for (int i : vector)
         result += (to_string(i) + delimiter);
 
     return result.substr(0, result.length() - 1);
 }
 
+Graph *dfa::as_graph() {
+    // create a state for each dfa entry
+    vector<State *> states;
+    for (int i = 0; i < entries.size(); i++) {
+        // side note: a State and it's corresponding DFA have the same index in both vectors
+        State *s = new State();
+        states.push_back(s);
+    }
+
+    for (transition trans : transitions) {
+        State *from = states[trans.from];
+        State *to = states[trans.to];
+
+        from->set_transition(to, string(1, trans.value));
+    }
+
+    for(int i = 0; i < finalStates.size(); i++) {
+        int dfa_fs_index = finalStates[i];
+        string token_name = finalStateTokenNames[i];
+
+        State *s = states[dfa_fs_index];
+
+        s->set_accept_state(true);
+        s->set_token_type(token_name);
+    }
+
+    Graph *g = new Graph();
+    for (State *s : states) {
+        g->insert_state(s);
+    }
+
+    return g;
+}
 
 
 

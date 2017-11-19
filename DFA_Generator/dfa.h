@@ -7,6 +7,7 @@
 
 #include <set>
 #include "../regex-to-nfa/nfa.h"
+#include "../graph/Graph.h"
 
 struct transition {
     int from;
@@ -19,6 +20,7 @@ class dfa {
 public:
     dfa(nfa *n, set<char> language);
     void display();
+    Graph *as_graph();
 
 //    bool is_accepting(int state_id);
 //    int transitions_to(int state, char c);
@@ -31,7 +33,9 @@ private:
     vector<vector<int>>     entries;
     vector<bool>            isMarked;
 
+    vector<string> finalStateTokenNames;
     vector<int>             finalStates;
+
     vector<int> set_to_vector(set<int> set);
     set<int> vector_to_set(vector<int> vector);
     int FindEntry(vector<int> entry);
@@ -40,13 +44,16 @@ private:
     void MarkEntry(int index);
     vector<int> GetEntry(int index);
 
-    void SetFinalState(int nfa_fs);
+    void SetDFAFinalState(int dfa_fs, string token_name);
+
+    void SetNFAFinalState(int nfa_fs);
 
     void SetTransition(int from, int to, char value);
 
     string GetFinalState();
 
     string join(vector<int> vector, string delimiter);
+
 };
 
 

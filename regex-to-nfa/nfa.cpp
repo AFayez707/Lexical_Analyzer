@@ -208,3 +208,11 @@ void nfa::combine(vector<nfa *> list_of_nfa) {
     this->start = newStart;
     add_state_to_map(newStart);
 }
+
+string nfa::get_accepting_token_name(int state_id) {
+    NFAState *s = this->get_state_by_id(state_id);
+    if(s == nullptr)
+        return "";
+
+    return s->get_accept_token_name();
+}
