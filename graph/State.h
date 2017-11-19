@@ -22,15 +22,15 @@ public:
 
     void set_state_id(unsigned int id);
 
-    void set_transition(State *next, string input);
+    void set_transition(State *next, char input);
 
-    State *get_transition_on(string input);
+    State *get_transition_on(char input);
 
     void set_epsilon_transition(State *state);
 
     vector<State *> get_epsilon_transitions() const;
 
-    map<string, State *> get_transitions() const;
+    map<char, State *> get_transitions() const;
 
     string get_token_type() const;
 
@@ -47,7 +47,7 @@ private:
     bool input_state = false;
     string token_type = "";
     vector<State *> epsilon_transitions;
-    map<string, State *> transitions;
+    map<char, State *> transitions;
 };
 
 #endif //LEXICAL_ANALYZER_STATE_H

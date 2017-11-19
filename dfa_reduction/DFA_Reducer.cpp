@@ -4,7 +4,7 @@
 
 #include "DFA_Reducer.h"
 
-DFA_Reducer::DFA_Reducer(Graph *dfa, set<string> language_chars) {
+DFA_Reducer::DFA_Reducer(Graph *dfa, set<char> language_chars) {
     this->dfa = dfa;
     this->language_chars = std::move(language_chars);
 }
@@ -33,7 +33,7 @@ void DFA_Reducer::print() {
 
     printf("%s\n               ", line.c_str());
     for (auto &input: this->language_chars) {
-        printf("| %-5s", input.c_str());
+        printf("| %-5c", input);
     }
 
     printf("\n%s\n", line.c_str());
@@ -158,7 +158,7 @@ void DFA_Reducer::min_dfa_builder(int partition_count) {
     for (auto &state: this->old_state_mapper) {
         min_state.insert(state.second);
         for (auto &move: state.first->get_transitions()) {
-            pair<int, string> cur_pair = make_pair(this->old_state_mapper[state.first], move.first);
+            pair<int, char> cur_pair = make_pair(this->old_state_mapper[state.first], move.first);
             this->transition_table[cur_pair] = this->old_state_mapper[move.second];
         }
     }
@@ -182,6 +182,9 @@ void DFA_Reducer::min_dfa_builder(int partition_count) {
                 }
                 if (state.first->is_accept_state()) {
                     dummy->set_accept_state(true);
+                    // TODO : set token type in accepting state according to priority
+                    if (state.first->get_token_type().length())
+                        dummy->set_token_type(state.first->get_token_type());
                 }
             }
         }
