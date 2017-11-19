@@ -33,7 +33,9 @@ private:
     vector<vector<int>>     entries;
     vector<bool>            isMarked;
 
+    vector<string> finalStateTokenNames;
     vector<int>             finalStates;
+
     vector<int> set_to_vector(set<int> set);
     set<int> vector_to_set(vector<int> vector);
     int FindEntry(vector<int> entry);
@@ -42,13 +44,16 @@ private:
     void MarkEntry(int index);
     vector<int> GetEntry(int index);
 
-    void SetFinalState(int nfa_fs);
+    void SetDFAFinalState(int dfa_fs, string token_name);
+
+    void SetNFAFinalState(int nfa_fs);
 
     void SetTransition(int from, int to, char value);
 
     string GetFinalState();
 
     string join(vector<int> vector, string delimiter);
+
 };
 
 
