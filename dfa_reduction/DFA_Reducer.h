@@ -32,6 +32,8 @@ private:
      */
     void remove_redundancies();
 
+    void replace_redundant(set<State *> states, State *A, State *B);
+
     /**
      * @brief run's hopcroft minimizing algorithm, and maps every dfa state to a state in the minimized dfa
      * @return partitions count

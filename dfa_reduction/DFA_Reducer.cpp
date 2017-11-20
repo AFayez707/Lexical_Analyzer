@@ -14,10 +14,9 @@ Graph *DFA_Reducer::get_dfa() const {
 }
 
 void DFA_Reducer::minimize() {
+    printf("\n\nMinimizing DFA:\n\n");
     // removes redundancies
     this->remove_redundancies();
-
-//    this->print();
 
     // merging states using disjoint sets
     int partition_count = this->merge_non_distinguishable();
@@ -58,53 +57,59 @@ void DFA_Reducer::print() {
 }
 
 void DFA_Reducer::remove_redundancies() {
-    printf("\nEliminating redundancies\n=========================\n");
+    printf("1- Eliminating redundancies\n============================\n");
     set<State *> states = dfa->get_states();
     map<State *, State *> redundant;
+    set<State *> updated;
 
     for (auto &A: states) {
-        states.erase(A);
+        if (updated.find(A) != updated.end()) continue;
         for (auto &B: states) {
-            bool valid = false;
-            // for DFA, must be always true.
+            if (A == B || updated.find(B) != updated.end()) continue;
+
+            // Two states are equivalent if => `input & accept & token_name & transitions` are equal
             bool condition = A->get_transitions().size() == B->get_transitions().size();
             condition = condition && (A->is_accept_state() == B->is_accept_state());
+            condition = condition && (A->get_token_name() == B->get_token_name());
+            condition = condition && (A->is_input_state() == B->is_input_state());
+
             if (condition) {
-                for (auto &nextA: A->get_transitions()) {
-                    valid = false;
-                    for (auto &nextB: B->get_transitions()) {
-                        if (nextA.first == nextB.first && nextA.second == nextB.second) {
-                            valid = true;
-                            break;
-                        }
-                    }
-                    if (!valid)
+                auto A_transitions = A->get_transitions();
+                auto B_transitions = B->get_transitions();
+                bool valid = true;
+
+                // Match all transitions on both states
+                for (auto nextA = A_transitions.begin(), nextB = B_transitions.begin();
+                     nextA != A_transitions.end() && nextB != B_transitions.end();
+                     ++nextA, ++nextB) {
+                    if (nextA->first != nextB->first || nextA->second != nextB->second) {
+                        valid = false;
                         break;
+                    }
                 }
                 if (valid) {
-                    redundant[A] = B;
+                    // Replace redundancies in the states set
+                    printf("Redundant: %-3d ==> %3d\n", A->get_id(), B->get_id());
+                    this->replace_redundant(states, A, B);
+                    updated.insert(B);
                 }
             }
         }
     }
+}
 
-    // Replace redundancies in the graph
-    for (auto &eq: redundant) {
-        printf("Redundant: %-3d ==> %3d\n", eq.first->get_id(), eq.second->get_id());
-        dfa->erase_state(eq.second);
-        for (auto &state: dfa->get_states()) {
-            for (auto &next_state: state->get_transitions()) {
-                if (next_state.second == eq.second) {
-                    state->add_transition(next_state.first, eq.first);
-                }
+void DFA_Reducer::replace_redundant(set<State *> states, State *A, State *B) {
+    for (auto &state: states) {
+        for (auto &next_state: state->get_transitions()) {
+            if (next_state.second == B) {
+                state->add_transition(next_state.first, A);
             }
         }
-        delete (eq.second);
     }
 }
 
 int DFA_Reducer::merge_non_distinguishable() {
-    printf("\nMerging non-distinguishable states\n==================================\n");
+    printf("\n2- Merging non-distinguishable states\n=====================================\n");
     int partition_count = 2; // starting with two partitions accept states & non-accept states
     map<int, set<State *> > disjoint_set;
 
