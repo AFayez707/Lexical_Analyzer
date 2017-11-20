@@ -20,7 +20,7 @@ void DFA_Reducer::minimize() {
 
     // merging states using disjoint sets
     int partition_count = this->merge_non_distinguishable();
-    this->min_dfa_builder(partition_count);
+    this->build_min_dfa(partition_count);
 }
 
 void DFA_Reducer::print() {
@@ -28,7 +28,7 @@ void DFA_Reducer::print() {
 
     string line = "---------------";
     for (int i = 0; i < language_chars.size(); ++i)
-        line += "--------";
+        line += "-------";
 
     printf("%s\n               ", line.c_str());
     for (auto &input: this->language_chars) {
@@ -90,7 +90,7 @@ void DFA_Reducer::remove_redundancies() {
                 if (valid) {
                     // Replace redundancies in the states set
                     printf("Redundant: %-3d ==> %3d\n", A->get_id(), B->get_id());
-                    this->replace_redundant(states, A, B);
+                    this->replace_redundant(A, B);
                     updated.insert(B);
                 }
             }
@@ -98,8 +98,8 @@ void DFA_Reducer::remove_redundancies() {
     }
 }
 
-void DFA_Reducer::replace_redundant(set<State *> states, State *A, State *B) {
-    for (auto &state: states) {
+void DFA_Reducer::replace_redundant(State *A, State *B) {
+    for (auto &state: this->dfa->get_states()) {
         for (auto &next_state: state->get_transitions()) {
             if (next_state.second == B) {
                 state->add_transition(next_state.first, A);
@@ -113,6 +113,7 @@ int DFA_Reducer::merge_non_distinguishable() {
     int partition_count = 2; // starting with two partitions accept states & non-accept states
     map<int, set<State *> > disjoint_set;
 
+    // Create initial two sets, accepting and non-accepting states
     for (auto &state: this->get_dfa()->get_states()) {
         if (state->is_accept_state()) {
             disjoint_set[1].insert(state);
@@ -157,24 +158,23 @@ int DFA_Reducer::merge_non_distinguishable() {
     return partition_count;
 }
 
-void DFA_Reducer::min_dfa_builder(int partition_count) {
-    set<int> min_state;
-    // form transition_table table
+void DFA_Reducer::build_min_dfa(int partition_count) {
+    set<int> min_states;
+
+    // Form transition_table table
     for (auto &state: this->old_state_mapper) {
-        min_state.insert(state.second);
+        min_states.insert(state.second);
         for (auto &move: state.first->get_transitions()) {
             pair<int, char> cur_pair = make_pair(this->old_state_mapper[state.first], move.first);
             this->transition_table[cur_pair] = this->old_state_mapper[move.second];
         }
     }
 
-    /*
-     * building new min_dfa
-     */
+    // Building new min_dfa
     delete (this->dfa);
     this->dfa = new Graph();
 
-    // add states to the new min_dfa
+    // Add states to the new min_dfa
     for (unsigned int i = 1; i <= partition_count; ++i) {
         auto *dummy = new State();
         dummy->set_id(i);
@@ -189,16 +189,14 @@ void DFA_Reducer::min_dfa_builder(int partition_count) {
                     dummy->set_accept_state(state.first->get_token_name());
                     // TODO: (in case of overlapping accept states)
                     // TODO: set token type in accepting state according to priority
-//                    if (state.first->get_token_name().length())
-//                        dummy->set_token_name(state.first->get_token_name());
                 }
             }
         }
         this->new_state_mapper[i] = dummy;
     }
 
-    // add transitions to each state
-    for (auto &state_id: min_state) {
+    // Add transitions to each state
+    for (auto &state_id: min_states) {
         State *cur = this->new_state_mapper.at(state_id);
         for (auto &input: this->language_chars) {
             State *next_state = this->new_state_mapper[this->transition_table[make_pair(state_id, input)]];
@@ -206,7 +204,7 @@ void DFA_Reducer::min_dfa_builder(int partition_count) {
         }
     }
 
-    // release old DFA pointers
+    // Release old DFA pointers
     for (auto &old_state: this->old_state_mapper) {
         delete (old_state.first);
     }
