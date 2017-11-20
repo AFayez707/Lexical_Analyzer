@@ -1,19 +1,19 @@
-#include "nfa.h"
+#include "NFA.h"
 #include <stack>
 
-nfa::nfa(char c) {
-    start = new NFAState();
-    end = new NFAState();
-    start->set_transition_On(c, end);
+NFA::NFA(char c) {
+    start = new State();
+    end = new State();
+    start->add_transition(c, end);
 
     // add the new states to the states map
     add_state_to_map(start);
     add_state_to_map(end);
 }
 
-void nfa::kleene_closure() {
-    NFAState *newStart = new NFAState();
-    NFAState *newEnd = new NFAState();
+void NFA::kleene_closure() {
+    State *newStart = new State();
+    State *newEnd = new State();
 
     // add the new states to the states map
     add_state_to_map(newStart);
@@ -29,14 +29,14 @@ void nfa::kleene_closure() {
     this->end = newEnd;
 }
 
-void nfa::positive_closure() {
+void NFA::positive_closure() {
     // Thompson Construction inductive steps
-    NFAState *newStart = new NFAState();
-    NFAState *newEnd = new NFAState();
+    State *newStart = new State();
+    State *newEnd = new State();
 
     // add the new states to the states map
-    add_state_to_map(newStart);
-    add_state_to_map(newEnd);
+    this->add_state_to_map(newStart);
+    this->add_state_to_map(newEnd);
 
     newStart->add_epsilon_transition(this->start);
     this->end->add_epsilon_transition(newEnd);
@@ -46,7 +46,7 @@ void nfa::positive_closure() {
     this->end = newEnd;
 }
 
-void nfa::concatenate(nfa *n) {
+void NFA::concatenate(NFA *n) {
     // Thompson Construction inductive steps
     this->end->add_epsilon_transition(n->start);
 
@@ -54,9 +54,9 @@ void nfa::concatenate(nfa *n) {
     states.insert(n->states.begin(), n->states.end());
 }
 
-void nfa::alternate(nfa *n) {
-    NFAState *newStart = new NFAState();
-    NFAState *newEnd = new NFAState();
+void NFA::alternate(NFA *n) {
+    State *newStart = new State();
+    State *newEnd = new State();
 
     // add the new states to the states map
     add_state_to_map(newStart);
@@ -79,12 +79,12 @@ void nfa::alternate(nfa *n) {
     states.insert(n->states.begin(), n->states.end());
 }
 
-void nfa::add_state_to_map(NFAState *state) {
+void NFA::add_state_to_map(State *state) {
     states[state->get_id()] = state;
 }
 
-NFAState *nfa::get_state_by_id(int id) {
-    if(states.find(id) == states.end()) // not found
+State *NFA::get_state_by_id(int id) {
+    if (states.find(id) == states.end()) // not found
         return nullptr;
     else
         return states[id];
@@ -93,32 +93,31 @@ NFAState *nfa::get_state_by_id(int id) {
 /**
  * Implements the algorithm in the book
  */
-set<int> nfa::epsilon_closure(set<int> state_ids) {
+set<int> NFA::epsilon_closure(set<int> state_ids) {
     stack<int> s;
 
     set<int> eps_closure;
 
     // push all states of T onto stack
-    for(auto element : state_ids)
+    for (auto element : state_ids)
         s.push(element);
 
     // initialize epsilon closure to T
-    for(auto element : state_ids)
+    for (auto element : state_ids)
         eps_closure.insert(element);
 
-    while(s.size() > 0) {
+    while (!s.empty()) {
         int top = s.top();
         s.pop();
-        NFAState *top_state = this->get_state_by_id(top);
+        State *top_state = this->get_state_by_id(top);
 
         // for each state u with an edge from to to u labeled eps
-        vector<NFAState*> eps = top_state->get_epsilon_transitions();
-        for(int i = 0; i < eps.size(); i++) {
-
+        vector<State *> eps = top_state->get_epsilon_transitions();
+        for (State *&ep: eps) {
             // if u is not in eps_closure
-            if(eps_closure.find(eps[i]->get_id()) == eps_closure.end()) {
-                eps_closure.insert(eps[i]->get_id());
-                s.push(eps[i]->get_id());
+            if (eps_closure.find(ep->get_id()) == eps_closure.end()) {
+                eps_closure.insert(ep->get_id());
+                s.push(ep->get_id());
             }
         }
     }
@@ -126,14 +125,14 @@ set<int> nfa::epsilon_closure(set<int> state_ids) {
     return eps_closure;
 }
 
-set<int> nfa::move(set<int> state_ids, char c) {
+set<int> NFA::move(set<int> state_ids, char c) {
     set<int> move;
 
-    for(auto element : state_ids) {
-        NFAState *s = this->get_state_by_id(element);
+    for (auto element : state_ids) {
+        State *s = this->get_state_by_id(element);
 
-        NFAState *transitions_to = s->get_transition_On(c);
-        if(transitions_to != nullptr) {
+        State *transitions_to = s->get_transition_on(c);
+        if (transitions_to != nullptr) {
             move.insert(transitions_to->get_id());
         }
     }
@@ -141,64 +140,64 @@ set<int> nfa::move(set<int> state_ids, char c) {
     return move;
 }
 
-bool nfa::is_accepting(int state_id) {
-    NFAState *s = this->get_state_by_id(state_id);
-    if(s == nullptr)
+bool NFA::is_accepting(int state_id) {
+    State *s = this->get_state_by_id(state_id);
+    if (s == nullptr)
         return false;
 
-    return s->is_accepting();
+    return s->is_accept_state();
 }
 
-int nfa::get_start_state() {
+int NFA::get_start_state() {
     return this->start->get_id();
 }
 
-void nfa::print_dfs() {
+void NFA::print_dfs() {
     bool *visited = new bool[states.size() + 5];
-    for(int i = 0; i < states.size() + 5; i++)
+    for (int i = 0; i < states.size() + 5; i++)
         visited[i] = false;
 
     cout << "starting at state with id " << start->get_id() << endl;
     dfs_util(start->get_id(), visited);
 }
 
-void nfa::dfs_util(int v, bool visited[]) {
+void NFA::dfs_util(int v, bool visited[]) {
     visited[v] = true;
     cout << v << " ";
 
     // Recur for all the vertices adjacent
     // to this vertex
-    NFAState *s;
-    if(states.find(v) == states.end())
+    State *s;
+    if (states.find(v) == states.end())
         cout << "null pointer: state with id " << v << " is not in this NFA";
     s = states[v];
 
-    for(int c = 'a'; c <= 'd'; c++) {
-        NFAState *next = s->get_transition_On(c);
-        if(next != nullptr && !visited[next->get_id()])
+    for (int c = 'a'; c <= 'd'; c++) {
+        State *next = s->get_transition_on(c);
+        if (next != nullptr && !visited[next->get_id()])
             dfs_util(next->get_id(), visited);
-
     }
+
     for (auto element : s->get_epsilon_transitions())
         if (!visited[element->get_id()])
             dfs_util(element->get_id(), visited);
 }
 
-void nfa::set_accept_token_name(string token_name) {
-    end->setAccepting(token_name);
+void NFA::set_accept_token_name(string token_name) {
+    end->set_accept_state(std::move(token_name));
 }
 
-void nfa::combine(vector<nfa *> list_of_nfa) {
-    NFAState *newStart = new NFAState();
+void NFA::combine(vector<NFA *> list_of_nfa) {
+    State *newStart = new State();
 
-    // make this nfa have the highest priority
-    this->end->setPriority(0);
+    // make this NFA have the highest priority
+    this->end->set_priority(0);
     newStart->add_epsilon_transition(this->start);
 
     int priority = 1;
-    for(auto nfa : list_of_nfa) {
+    for (auto nfa : list_of_nfa) {
         newStart->add_epsilon_transition(nfa->start);
-        nfa->end->setPriority(priority);
+        nfa->end->set_priority(priority);
         priority++;
 
         // merge the state maps of the two NFAs
@@ -209,10 +208,9 @@ void nfa::combine(vector<nfa *> list_of_nfa) {
     add_state_to_map(newStart);
 }
 
-string nfa::get_accepting_token_name(int state_id) {
-    NFAState *s = this->get_state_by_id(state_id);
-    if(s == nullptr)
+string NFA::get_accepting_token_name(int state_id) {
+    State *s = this->get_state_by_id(state_id);
+    if (s == nullptr)
         return "";
-
-    return s->get_accept_token_name();
+    return s->get_token_name();
 }

@@ -2,19 +2,17 @@
 // Created by ahmed on 14/11/17.
 //
 
-#include "dfa.h"
-#include "../graph/Graph.h"
-#include "../graph/State.h"
+#include "DFA_Generator.h"
 
 /* Add new DFA Entry */
-int dfa::AddEntry(vector<int> entry) {
+int DFA::AddEntry(vector<int> entry) {
     entries.push_back(entry);
     isMarked.push_back(false);
-    return entries.size() - 1;
+    return (int) (entries.size() - 1);
 }
 
 /* Return the next unMarked entry */
-int dfa::GetNextUnMarkedIndex() {
+int DFA::GetNextUnMarkedIndex() {
     for (int index = 0; index < isMarked.size(); index++) {
         if (!isMarked.at(index)) {
             return index;
@@ -25,17 +23,17 @@ int dfa::GetNextUnMarkedIndex() {
 }
 
 /* Mark entry with given index */
-void dfa::MarkEntry(int index) {
+void DFA::MarkEntry(int index) {
     isMarked.at(index) = true;
 }
 
 /* Get Entry using it's index */
-vector<int> dfa::GetEntry(int index) {
+vector<int> DFA::GetEntry(int index) {
     return entries.at(index);
 }
 
 /* Search for entry */
-int dfa::FindEntry(vector<int> entry) {
+int DFA::FindEntry(vector<int> entry) {
     for (int i = 0; i < entries.size(); i++) {
         vector<int> it = entries.at(i);
         if (it == entry) {
@@ -46,7 +44,7 @@ int dfa::FindEntry(vector<int> entry) {
     return -1;
 }
 
-void dfa::SetNFAFinalState(int nfa_fs) {
+void DFA::SetNFAFinalState(int nfa_fs) {
     for (int i = 0; i < entries.size(); i++) {
         vector<int> entry = entries.at(i);
 
@@ -59,17 +57,17 @@ void dfa::SetNFAFinalState(int nfa_fs) {
     }
 }
 
-void dfa::SetDFAFinalState(int dfa_fs, string token_name) {
+void DFA::SetDFAFinalState(int dfa_fs, string token_name) {
     finalStates.push_back(dfa_fs);
     finalStateTokenNames.push_back(token_name);
 }
 
-string dfa::GetFinalState() {
+string DFA::GetFinalState() {
     return join(finalStates, ",");
 }
 
 /* Set new transition values */
-void dfa::SetTransition(int from, int to, char value) {
+void DFA::SetTransition(int from, int to, char value) {
     transition trans;
     trans.from = from;
     trans.to = to;
@@ -77,7 +75,7 @@ void dfa::SetTransition(int from, int to, char value) {
     transitions.push_back(trans);
 }
 
-void dfa::display() {
+void DFA::display() {
     transition newTransition;
     cout << "\n";
     for (int i = 0; i < transitions.size(); i++) {
@@ -89,7 +87,7 @@ void dfa::display() {
     cout << "\nThe final state is q : " << join(finalStates, ",") << endl;
 }
 
-set<int> dfa::vector_to_set(vector<int> vec) {
+set<int> DFA::vector_to_set(vector<int> vec) {
     set<int> result;
 
     for (int element : vec)
@@ -101,7 +99,7 @@ set<int> dfa::vector_to_set(vector<int> vec) {
 /**
  * Implements the subset construction algorithm as described in the reference
  */
-dfa::dfa(nfa *n, set<char> language) {
+DFA::DFA(NFA *n, set<char> language) {
     // initially e-closure(S0) is the only state in Dstates, and it is unmarked
     set<int> start;
     start.insert(n->get_start_state());
@@ -150,7 +148,7 @@ dfa::dfa(nfa *n, set<char> language) {
                 } else {
                     accepting = true;
                     token_name = n->get_accepting_token_name(j);
-                    cout << "nfa state with ID: " << j << " is accepting, it's token name is: " << token_name << endl;
+                    cout << "NFA state with ID: " << j << " is accepting, it's token name is: " << token_name << endl;
                 }
             }
         }
@@ -161,7 +159,7 @@ dfa::dfa(nfa *n, set<char> language) {
 
 }
 
-vector<int> dfa::set_to_vector(set<int> set) {
+vector<int> DFA::set_to_vector(set<int> set) {
     vector<int> result;
 
     for (int element : set)
@@ -170,7 +168,7 @@ vector<int> dfa::set_to_vector(set<int> set) {
     return result;
 }
 
-string dfa::join(vector<int> vector, string delimiter) {
+string DFA::join(vector<int> vector, string delimiter) {
     string result;
 
     for (int i : vector)
@@ -179,8 +177,8 @@ string dfa::join(vector<int> vector, string delimiter) {
     return result.substr(0, result.length() - 1);
 }
 
-Graph *dfa::as_graph() {
-    // create a state for each dfa entry
+Graph *DFA::as_graph() {
+    // create a state for each DFA entry
     vector<State *> states;
     for (int i = 0; i < entries.size(); i++) {
         // side note: a State and it's corresponding DFA have the same index in both vectors
@@ -192,17 +190,17 @@ Graph *dfa::as_graph() {
         State *from = states[trans.from];
         State *to = states[trans.to];
 
-        from->set_transition(to, trans.value);
+        from->add_transition(trans.value, to);
     }
 
-    for(int i = 0; i < finalStates.size(); i++) {
+    for (int i = 0; i < finalStates.size(); i++) {
         int dfa_fs_index = finalStates[i];
         string token_name = finalStateTokenNames[i];
 
         State *s = states[dfa_fs_index];
 
-        s->set_accept_state(true);
-        s->set_token_type(token_name);
+        s->set_accept_state(token_name);
+//        s->set_token_name(token_name);
     }
 
     Graph *g = new Graph();

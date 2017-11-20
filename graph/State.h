@@ -16,36 +16,40 @@ public:
 
     bool is_accept_state() const;
 
-    void set_accept_state(bool is_accept_state);
+    void set_accept_state(string token_name);
 
-    int get_state_id() const;
+    int get_id() const;
 
-    void set_state_id(unsigned int id);
+    void set_id(unsigned int id);
 
-    void set_transition(State *next, char input);
+    void add_transition(char input, State *next);
 
     State *get_transition_on(char input);
 
-    void set_epsilon_transition(State *state);
+    void add_epsilon_transition(State *state);
 
     vector<State *> get_epsilon_transitions() const;
 
     map<char, State *> get_transitions() const;
 
-    string get_token_type() const;
+    string get_token_name() const;
 
-    void set_token_type(string token_type);
+    void set_token_name(string token_name);
 
     bool is_input_state() const;
 
     void set_input_state(bool input_state);
 
+    void set_priority(int priority);
+
+    int get_priority();
+
 private:
     static unsigned int state_count;
-    unsigned int state_id = 0;
-    bool accept_state = false;
+    unsigned int id = 0;
+    int priority = -1;
     bool input_state = false;
-    string token_type = "";
+    string token_name = "";
     vector<State *> epsilon_transitions;
     map<char, State *> transitions;
 };

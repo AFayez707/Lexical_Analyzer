@@ -36,7 +36,7 @@ private:
      * @brief run's hopcroft minimizing algorithm, and maps every dfa state to a state in the minimized dfa
      * @return partitions count
      */
-    int merge_nondistinguishable();
+    int merge_non_distinguishable();
 
     /**
      * @brief creates transition table, then the minimized dfa
