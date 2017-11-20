@@ -32,6 +32,8 @@ private:
      */
     void remove_redundancies();
 
+    void replace_redundant(State *A, State *B);
+
     /**
      * @brief run's hopcroft minimizing algorithm, and maps every dfa state to a state in the minimized dfa
      * @return partitions count
@@ -41,7 +43,7 @@ private:
     /**
      * @brief creates transition table, then the minimized dfa
      */
-    void min_dfa_builder(int);
+    void build_min_dfa(int partition_count);
 };
 
 #endif //LEXICAL_ANALYZER_DFA_REDUCER_H

@@ -49,7 +49,7 @@ private:
     unsigned int id = 0;
     int priority = -1;
     bool input_state = false;
-    string token_name = "";
+    string token_name = "undefined";
     vector<State *> epsilon_transitions;
     map<char, State *> transitions;
 };
