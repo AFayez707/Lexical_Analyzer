@@ -12,6 +12,11 @@ private:
 
 public:
     /**
+     * creates an nfa that accepts only the empty string
+     */
+    NFA();
+
+    /**
      * creates an nfa that accepts only the character c
      */
     explicit NFA(char c);

@@ -1,6 +1,17 @@
 #include "NFA.h"
 #include <stack>
 
+
+NFA::NFA() {
+    start = new State();
+    end = new State();
+    start->add_epsilon_transition(end);
+
+    // add the new states to the states map
+    add_state_to_map(start);
+    add_state_to_map(end);
+}
+
 NFA::NFA(char c) {
     start = new State();
     end = new State();
