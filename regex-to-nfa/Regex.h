@@ -23,6 +23,7 @@ public:
 
     void reg_exp_to_post(map<string, string> ExpMap);
 
+
 private:
     string path;
     set<char> language_characters;
