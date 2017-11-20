@@ -20,7 +20,7 @@ void DFA_Reducer::minimize() {
 //    this->print();
 
     // merging states using disjoint sets
-    int partition_count = this->merge_nondistinguishable();
+    int partition_count = this->merge_non_distinguishable();
     this->min_dfa_builder(partition_count);
 }
 
@@ -48,9 +48,9 @@ void DFA_Reducer::print() {
         else
             printf(" ");
 
-        printf("%5d  =>  ", state->get_state_id());
+        printf("%5d  =>  ", state->get_id());
         for (auto &next_state: state->get_transitions()) {
-            printf("| %-5d", next_state.second->get_state_id());
+            printf("| %-5d", next_state.second->get_id());
         }
         printf("\n");
     }
@@ -66,7 +66,7 @@ void DFA_Reducer::remove_redundancies() {
         states.erase(A);
         for (auto &B: states) {
             bool valid = false;
-            // for dfa, must be always true.
+            // for DFA, must be always true.
             bool condition = A->get_transitions().size() == B->get_transitions().size();
             condition = condition && (A->is_accept_state() == B->is_accept_state());
             if (condition) {
@@ -90,12 +90,12 @@ void DFA_Reducer::remove_redundancies() {
 
     // Replace redundancies in the graph
     for (auto &eq: redundant) {
-        printf("Redundant: %-3d ==> %3d\n", eq.first->get_state_id(), eq.second->get_state_id());
+        printf("Redundant: %-3d ==> %3d\n", eq.first->get_id(), eq.second->get_id());
         dfa->erase_state(eq.second);
         for (auto &state: dfa->get_states()) {
             for (auto &next_state: state->get_transitions()) {
                 if (next_state.second == eq.second) {
-                    state->set_transition(eq.first, next_state.first);
+                    state->add_transition(next_state.first, eq.first);
                 }
             }
         }
@@ -103,9 +103,9 @@ void DFA_Reducer::remove_redundancies() {
     }
 }
 
-int DFA_Reducer::merge_nondistinguishable() {
+int DFA_Reducer::merge_non_distinguishable() {
     printf("\nMerging non-distinguishable states\n==================================\n");
-    int partition_count = 2;
+    int partition_count = 2; // starting with two partitions accept states & non-accept states
     map<int, set<State *> > disjoint_set;
 
     for (auto &state: this->get_dfa()->get_states()) {
@@ -172,7 +172,7 @@ void DFA_Reducer::min_dfa_builder(int partition_count) {
     // add states to the new min_dfa
     for (unsigned int i = 1; i <= partition_count; ++i) {
         auto *dummy = new State();
-        dummy->set_state_id(i);
+        dummy->set_id(i);
         dfa->insert_state(dummy);
         for (auto &state: this->old_state_mapper) {
             if (state.second == i) {
@@ -181,10 +181,11 @@ void DFA_Reducer::min_dfa_builder(int partition_count) {
                     this->dfa->set_start_state(dummy);
                 }
                 if (state.first->is_accept_state()) {
-                    dummy->set_accept_state(true);
-                    // TODO : set token type in accepting state according to priority
-                    if (state.first->get_token_type().length())
-                        dummy->set_token_type(state.first->get_token_type());
+                    dummy->set_accept_state(state.first->get_token_name());
+                    // TODO: (in case of overlapping accept states)
+                    // TODO: set token type in accepting state according to priority
+//                    if (state.first->get_token_name().length())
+//                        dummy->set_token_name(state.first->get_token_name());
                 }
             }
         }
@@ -196,11 +197,11 @@ void DFA_Reducer::min_dfa_builder(int partition_count) {
         State *cur = this->new_state_mapper.at(state_id);
         for (auto &input: this->language_chars) {
             State *next_state = this->new_state_mapper[this->transition_table[make_pair(state_id, input)]];
-            cur->set_transition(next_state, input);
+            cur->add_transition(input, next_state);
         }
     }
 
-    // release old dfa pointers
+    // release old DFA pointers
     for (auto &old_state: this->old_state_mapper) {
         delete (old_state.first);
     }

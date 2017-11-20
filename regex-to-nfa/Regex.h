@@ -13,7 +13,9 @@
 class Regex {
 public:
     Regex(std::string path);
+
     std::unordered_map<std::string, std::string> parse();
+
     std::vector<char> get_language();
 
 private:

@@ -4,28 +4,27 @@
 
 
 #include <stack>
-#include "nfa.h"
+#include "NFA.h"
 
 
-bool isInput(char c) {
-    return ! (c == '(' || c == ')' || c == '*' || c == '+' || c == '.');
+bool is_input(char c) {
+    return !(c == '(' || c == ')' || c == '*' || c == '+' || c == '.');
 }
-
 
 /**
  * takes in a regex in postfix notation containing only "( ) | * +"
  * and constructs an nfa that accepts only the strings that match the given RE
  */
-nfa* regex_to_nfa(std:: string regex) {
-    stack<nfa*> operands;
+NFA *regex_to_nfa(string regex) {
+    stack<NFA *> operands;
 
-    for(int i = 0; i < regex.size(); i++) {
+    for (int i = 0; i < regex.size(); i++) {
         char c = regex[i];
 
-        nfa *first;
-        nfa *second;
-        nfa *top;
-        switch(c) {
+        NFA *first;
+        NFA *second;
+        NFA *top;
+        switch (c) {
             case '.':
                 second = operands.top();
                 operands.pop();
@@ -55,23 +54,22 @@ nfa* regex_to_nfa(std:: string regex) {
                 operands.push(first);
                 break;
             default: // input language
-                // create a new nfa that accepts only this character ("c")
-                nfa* single_character = new nfa(c);
+                // create a new NFA that accepts only this character ("c")
+                NFA *single_character = new NFA(c);
                 operands.push(single_character);
                 break;
         }
 
     }
 
-    nfa *result = operands.top();
+    NFA *result = operands.top();
     operands.pop();
 
     // sanity check (if stack is not empty now then the input regex was invalid)
-    if(operands.size() != 0) {
+    if (operands.size() != 0) {
         // error
-        return 0;
+        return nullptr;
     }
 
     return result;
-
 }

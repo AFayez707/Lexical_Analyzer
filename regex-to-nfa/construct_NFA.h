@@ -5,12 +5,10 @@
 #ifndef LEXICAL_ANALYZER_CONSTRUCT_NFA_H
 #define LEXICAL_ANALYZER_CONSTRUCT_NFA_H
 
-#include "nfa.h"
+#include "NFA.h"
 
-bool isInput(char c);
+bool is_input(char c);
 
-nfa* regex_to_nfa(std:: string regex);
-
-
+NFA *regex_to_nfa(std::string regex);
 
 #endif //LEXICAL_ANALYZER_CONSTRUCT_NFA_H
