@@ -11,4 +11,6 @@ bool is_input(char c);
 
 NFA *regex_to_nfa(std::string regex);
 
+NFA *language_to_nfa(vector<pair<string, string>> regexes)
+
 #endif //LEXICAL_ANALYZER_CONSTRUCT_NFA_H

@@ -89,3 +89,28 @@ NFA *regex_to_nfa(string regex) {
 
     return result;
 }
+
+
+NFA *language_to_nfa(vector<pair<string, string>> regexes) {
+    if(regexes.empty())
+        return nullptr;
+
+    vector<NFA *> NFAs;
+
+    for(pair<string, string> regex : regexes) {
+        NFA *nfa = regex_to_nfa(regex.second);
+
+        nfa->set_accept_token_name(regex.first);
+
+        NFAs.push_back(nfa);
+    }
+
+    NFA *first_nfa = NFAs[0];
+
+    // remove the first element
+    NFAs.erase(NFAs.begin());
+
+    first_nfa->combine(NFAs);
+
+    return first_nfa;
+}
