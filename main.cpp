@@ -1,8 +1,2 @@
-#include <iostream>
-
-using namespace std;
-
-int main() {
-    cout << "Hello World!" << endl;
-    return 0;
-}
+// TODO : To be implemented
+// To run, create dir `test` then create `main.cpp` in side this test dir

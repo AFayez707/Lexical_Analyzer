@@ -5,9 +5,8 @@
 #ifndef LEXICAL_ANALYZER_STATE_H
 #define LEXICAL_ANALYZER_STATE_H
 
-#include <iostream>
 #include <vector>
-#include "Edge.h"
+#include <map>
 
 using namespace std;
 
@@ -15,27 +14,44 @@ class State {
 public:
     State();
 
-    vector<Edge> *get_out_edges();
+    bool is_accept_state() const;
 
-    void add_child(State *child, string weight);
+    void set_accept_state(string token_name);
 
-    void set_accept_state(bool is_accept_state);
+    int get_id() const;
 
-    bool is_accept_state();
+    void set_id(unsigned int id);
 
-    void set_token_type(string token_type);
+    void add_transition(char input, State *next);
 
-    string get_token_type();
+    State *get_transition_on(char input);
 
-    int get_state_name();
+    void add_epsilon_transition(State *state);
 
-    static int state_count;
+    vector<State *> get_epsilon_transitions() const;
+
+    map<char, State *> get_transitions() const;
+
+    string get_token_name() const;
+
+    void set_token_name(string token_name);
+
+    bool is_input_state() const;
+
+    void set_input_state(bool input_state);
+
+    void set_priority(int priority);
+
+    int get_priority();
 
 private:
-    int state_name = 0;
-    string token_type = "";
-    bool accept_state = false;
-    vector<Edge> children;
+    static unsigned int state_count;
+    unsigned int id = 0;
+    int priority = -1;
+    bool input_state = false;
+    string token_name = "undefined";
+    vector<State *> epsilon_transitions;
+    map<char, State *> transitions;
 };
 
 #endif //LEXICAL_ANALYZER_STATE_H

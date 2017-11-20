@@ -4,37 +4,71 @@
 
 #include "State.h"
 
-int State::state_count = 1;
+unsigned int State::state_count = 1;
 
 State::State() {
-    this->state_name = state_count++;
+    this->id = state_count++;
 }
 
-vector<Edge> *State::get_out_edges() {
-    return &children;
+bool State::is_accept_state() const {
+    return this->token_name != "undefined";
 }
 
-void State::add_child(State *child, string weight) {
-    Edge edge(this, child, std::move(weight));
-    children.push_back(edge);
+void State::set_accept_state(string token_name) {
+    this->token_name = std::move(token_name);
+    this->priority = 0; // default value (highest priority)
 }
 
-void State::set_accept_state(bool is_accept_state) {
-    this->accept_state = is_accept_state;
+int State::get_id() const {
+    return this->id;
 }
 
-bool State::is_accept_state() {
-    return this->accept_state;
+void State::set_id(unsigned int id) {
+    this->id = id;
 }
 
-void State::set_token_type(string token_type) {
-    this->token_type = std::move(token_type);
+void State::add_transition(char input, State *next) {
+    this->transitions[input] = next;
 }
 
-string State::get_token_type() {
-    return token_type;
+State *State::get_transition_on(char input) {
+    if (transitions.find(input) == transitions.end())
+        return nullptr;
+    return this->transitions[input];
 }
 
-int State::get_state_name() {
-    return this->state_name;
+void State::add_epsilon_transition(State *state) {
+    this->epsilon_transitions.push_back(state);
+}
+
+vector<State *> State::get_epsilon_transitions() const {
+    return this->epsilon_transitions;
+}
+
+map<char, State *> State::get_transitions() const {
+    return this->transitions;
+}
+
+void State::set_token_name(string token_name) {
+    this->token_name = std::move(token_name);
+}
+
+string State::get_token_name() const {
+    return this->token_name;
+}
+
+bool State::is_input_state() const {
+    return input_state;
+}
+
+void State::set_input_state(bool input_state) {
+    State::input_state = input_state;
+}
+
+void State::set_priority(int priority) {
+    this->priority = priority;
+}
+
+int State::get_priority() {
+    return this->priority;
 }
