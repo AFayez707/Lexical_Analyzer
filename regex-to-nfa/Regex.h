@@ -5,25 +5,28 @@
 #ifndef LEXICAL_ANALYZER_REGEX_H
 #define LEXICAL_ANALYZER_REGEX_H
 
-#include "LinkedStack.h"
-#include <fstream>
-#include <unordered_map>
+#include <map>
+#include <set>
 #include <string>
-#include <vector>
+
+using namespace std;
 
 class Regex {
 public:
-    Regex(std::string path);
-    std::unordered_map<std::string, std::string> parse();
-    std::set<char> get_language();
-    void Regex::InsertConcatenation(unordered_map<std::string, std::string> ExpMap);
-    void RegExpToPost();
+    explicit Regex(string path);
+
+    map<string, string> parse();
+
+    set<char> get_language();
+
+    void insert_concatenation(map<string, string> ExpMap);
+
+    void reg_exp_to_post(map<string, string> ExpMap);
 
 private:
-    std::string path;
-    char *exp;
-    char *post;
-    int Precedence(char symbol);
+    string path;
+
+    int precedence(char symbol);
 };
 
 #endif //LEXICAL_ANALYZER_REGEX_H

@@ -3,28 +3,22 @@
 //
 
 #include "Regex.h"
-#include <iostream>
 #include <fstream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <cstring>
-using namespace std;
+#include <stack>
 
-
-Regex::Regex(std::string file_path) {
-    path = file_path;
+Regex::Regex(string file_path) {
+    this->path = std::move(file_path);
 }
 
-std::unordered_map<std::string, std::string> Regex::parse(path) {
-    unordered_map<std::string, std::string> ExpMap;  //Expressions Map >> Returned
-    unordered_map<std::string, std::string> DefMap;  //Definitions Map >> Only Used Here to replace definitions
-    ifstream infile("/Users/macpro/Documents/Term7/project/file.txt");
+map<string, string> Regex::parse() {
+    map<string, string> exp_map;  //Expressions Map >> Returned
+    map<string, string> def_map;  //Definitions Map >> Only Used Here to replace definitions
+    ifstream infile(this->path);
     string line, exp_name, expression, temp, keyword, punctuation;
     char low_letter = 'a', up_Letter = 'A', num = '0';
 
-    while (std::getline(infile, line)) {
+    while (getline(infile, line)) {
         // Function on line
-
         int i = 0;
 
         // skip white spaces in the beggining of the file
@@ -40,11 +34,11 @@ std::unordered_map<std::string, std::string> Regex::parse(path) {
                 if (line[i] == '}')
                     break;
                 while (i < line.length() && isalpha(line[i])) {
-                    keyword = string(keyword + line[i]);
+                    keyword += line[i];
                     i++;
                 }
-                if (ExpMap.find(keyword) == ExpMap.end())
-                    ExpMap.insert({keyword, keyword});
+                if (exp_map.find(keyword) == exp_map.end())
+                    exp_map[keyword] = keyword;
                 keyword.clear();
             }
         } else if (i < line.length() && line[i] == '[') {
@@ -52,17 +46,17 @@ std::unordered_map<std::string, std::string> Regex::parse(path) {
             while (i < line.length() && line[i] != ']') {
                 while (i < line.length() && (line[i] == ' ' || line[i] == '\t'))
                     i++;
-                punctuation = string(punctuation + line[i]);
+                punctuation += line[i];
                 if (line[i] != 92)
-                    punctuation = string(punctuation + '|');
+                    punctuation += '|';
                 i++;
             }
             punctuation.pop_back();
-            ExpMap.insert({"punctuation", punctuation});
+            exp_map.insert({"punctuation", punctuation});
             punctuation.clear();
         } else {
             while (i < line.length() && line[i] != ' ' && line[i] != '\t' && line[i] != '=' && line[i] != ':')
-                exp_name = string(exp_name + line[i++]);
+                exp_name += line[i++];
 
             // skip white spaces after exp name
             while (i < line.length() && (line[i] == ' ' || line[i] == '\t'))
@@ -76,56 +70,56 @@ std::unordered_map<std::string, std::string> Regex::parse(path) {
                         i++;
 
                     if (i < line.length() && (line[i] == 'a' && (line[i + 1] == '-' || line[i + 2] == '-'))) {
-                        expression = string(expression + '(');
+                        expression += '(';
                         for (int j = 0; j < 26; j++)
-                            expression = string(expression + (low_letter++) + '|');
+                            expression += ((low_letter++) + '|');
                         expression.pop_back();
-                        expression = string(expression + ')');
+                        expression += ')';
                         while (line[i] != 'z')
                             i++;
                         i++;
                     } else if (i < line.length() && (line[i] == 'A' && (line[i + 1] == '-' || line[i + 2] == '-'))) {
-                        expression = string(expression + '(');
+                        expression += '(';
                         for (int j = 0; j < 26; j++)
-                            expression = string(expression + (up_Letter++) + '|');
+                            expression += ((up_Letter++) + '|');
                         expression.pop_back();
-                        expression = string(expression + ')');
+                        expression += ')';
                         while (line[i] != 'Z')
                             i++;
                         i++;
                     } else if (i < line.length() && (line[i] == '0' && (line[i + 1] == '-' || line[i + 2] == '-'))) {
-                        expression = string(expression + '(');
+                        expression += '(';
                         for (int j = 0; j < 10; j++)
-                            expression = string(expression + (num++) + '|');
+                            expression += ((num++) + '|');
                         expression.pop_back();
-                        expression = string(expression + ')');
+                        expression += ')';
                         while (line[i] != '9')
                             i++;
                         i++;
                     } else if (i < line.length() &&
                                (line[i] == '(' || line[i] == ')' || line[i] == '*' || line[i] == '+' ||
                                 line[i] == '|')) {
-                        expression = string(expression + line[i]);
+                        expression += line[i];
                         i++;
-                    } else {     // word is already in the DefMap
+                    } else {     // word is already in the def_map
                         while (i < line.length() && isalpha(line[i])) {
-                            temp = string(temp + line[i]);
+                            temp += line[i];
                             i++;
                         }
-                        if (DefMap.find(temp) != DefMap.end()) {
-                            string value = DefMap[temp];
-                            expression = string(expression + value);
+                        if (def_map.find(temp) != def_map.end()) {
+                            string value = def_map[temp];
+                            expression += value;
                         }
                     }
                     temp.clear();
                 }
-                if(expression[0] == '(' && expression[expression.length() - 1] == ')' &&
-                   expression.find(")|(") != std::string::npos){
+                if (expression[0] == '(' && expression[expression.length() - 1] == ')' &&
+                    expression.find(")|(") != string::npos) {
                     expression.push_back(')');
-                    expression.insert(0,1,'(');
+                    expression.insert(0, 1, '(');
                 }
 
-                DefMap.insert({exp_name, expression});
+                def_map[exp_name] = expression;
                 exp_name.clear();
                 expression.clear();
             }
@@ -137,28 +131,28 @@ std::unordered_map<std::string, std::string> Regex::parse(path) {
                         i++;
                     if (i < line.length() && (line[i] == '(' || line[i] == ')' || line[i] == '*' || line[i] == '+' ||
                                               line[i] == '|')) {
-                        expression = string(expression + line[i]);
+                        expression = line[i];
                         i++;
                     } else if (i < line.length() && isalpha(line[i])) {
                         while (i < line.length() && isalpha(line[i])) {
-                            temp = string(temp + line[i]);
+                            temp = line[i];
                             i++;
                         }
-                        if (DefMap.find(temp) != DefMap.end()) {
-                            string value = DefMap[temp];
-                            expression = string(expression + value);
+                        if (def_map.find(temp) != def_map.end()) {
+                            string value = def_map[temp];
+                            expression += value;
                         } else {
-                            expression = string(expression + temp);
+                            expression += temp;
                         }
                     } else {
                         if (line[i] == '.')
-                            expression = string(expression + '\\');
-                        expression = string(expression + line[i]);
+                            expression += '\\';
+                        expression = line[i];
                         i++;
                     }
                     temp.clear();
                 }
-                ExpMap.insert({exp_name, expression});
+                exp_map[exp_name] = expression;
                 exp_name.clear();
                 expression.clear();
             }
@@ -166,25 +160,26 @@ std::unordered_map<std::string, std::string> Regex::parse(path) {
         }
         // now we loop back and get the next line in 'Line'
     }
-    Regex::InsertConcatenation(ExpMap);
-    return ExpMap;
+    this->insert_concatenation(exp_map);
+    this->reg_exp_to_post(exp_map);
+    return exp_map;
 }
 
+void Regex::insert_concatenation(map<string, string> exp_map) {
+    for (auto &it : exp_map) {
+        string exp = it.second;
 
-void Regex::InsertConcatenation(unordered_map<std::string, std::string> ExpMap){
-    for (auto it = ExpMap.begin(); it != ExpMap.end(); ++it) {
-        string exp = it->second;
-
-        int i = 0, j, len = exp.length();
+        int i = 0, j, len = (int) (exp.length());
         while (exp[i + 1] != '\0') {
-            if ((((exp[i] != '('  && exp[i] != '|' && exp[i] != '\\')
+            if ((((exp[i] != '(' && exp[i] != '|' && exp[i] != '\\')
                   || exp[i] == ')'
                   || exp[i] == '*'
                   || exp[i] == '+')
                  &&
-                 (exp[i + 1] != ')' && exp[i + 1] != '.' && exp[i + 1] != '|' && exp[i + 1] != '*' && exp[i + 1] != '+'))) {
-                exp = string(exp + ' ');
-                for (j = len+1; j > i + 1; j--) {
+                 (exp[i + 1] != ')' && exp[i + 1] != '.' && exp[i + 1] != '|' && exp[i + 1] != '*' &&
+                  exp[i + 1] != '+'))) {
+                exp += ' ';
+                for (j = len + 1; j > i + 1; j--) {
                     exp[j] = exp[j - 1];
                 }
                 exp[i + 1] = '.';
@@ -194,14 +189,80 @@ void Regex::InsertConcatenation(unordered_map<std::string, std::string> ExpMap){
             }
             i++;
         }
-        it->second = exp;
+        it.second = exp;
+    }
+}
+
+void Regex::reg_exp_to_post(map<string, string> exp_map) {
+    for (auto &it : exp_map) {
+        string post;
+        string expr = it.second;
+        int i = 0;
+        char ch, cl;
+        stack<char> my_stack;
+        my_stack.push('#');
+        ch = expr[i];
+        while (ch != '\0') {
+            if (ch == '(') {
+                my_stack.push(ch);
+                ch = expr[++i];
+            } else if (ch == ')') {
+                while (my_stack.top() != '(') {
+                    post += my_stack.top();
+                    my_stack.pop();
+                }
+                my_stack.pop();
+                ch = expr[++i];
+            } else if ((ch == '|') || (ch == '.' && expr[i - 1] != 92)) {
+                cl = my_stack.top();
+                while (precedence(cl) >= precedence(ch)) {
+                    post += cl;
+                    my_stack.pop();
+                    cl = my_stack.top();
+                }
+                my_stack.push(ch);
+                ch = expr[++i];
+            } else {
+                post += ch;
+                ch = expr[++i];
+            }
+        }
+        ch = my_stack.top();
+        my_stack.pop();
+        while ((ch == '|') || (ch == '*') || (ch == '.') || (ch == '+')) {
+            post += ch;
+            ch = my_stack.top();
+            my_stack.pop();
+        }
+        if (it.first == "punctuation")
+            post = expr;
+        it.second = post;
     }
 }
 
 
+int Regex::precedence(char symbol) {
+    int priority;
+    switch (symbol) {
+        case '|':
+            priority = 1;
+            break;
+        case '.':
+            priority = 2;
+            break;
+        case '*':
+            priority = 3;
+            break;
+        case '+':
+            priority = 4;
+            break;
+        default:
+            priority = 0;
+            break;
+    }
+    return priority;
+}
 
-
-
-std::set<char> Regex::get_language() {
+set<char> Regex::get_language() {
 
 }
