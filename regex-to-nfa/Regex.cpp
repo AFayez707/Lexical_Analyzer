@@ -160,6 +160,20 @@ map<string, string> Regex::parse() {
         }
         // now we loop back and get the next line in 'Line'
     }
+
+    for (auto it = exp_map.begin(); it != exp_map.end(); ++it) {
+        string exp = it->second;
+
+        int i = 0;
+        while (i < exp.length()) {
+            while (((exp[i] == '|' || exp[i] == '(' || exp[i] == ')' || exp[i] == '*' || exp[i] == '+' || exp[i] == 92)
+                    && exp[i - 1] != 92) || (!isprint(exp[i])))
+                i++;
+            this->language_characters.insert(exp[i]);
+            i++;
+        }
+    }
+
     this->insert_concatenation(exp_map);
     this->reg_exp_to_post(exp_map);
     return exp_map;
@@ -264,5 +278,5 @@ int Regex::precedence(char symbol) {
 }
 
 set<char> Regex::get_language() {
-
+    return language_characters;
 }

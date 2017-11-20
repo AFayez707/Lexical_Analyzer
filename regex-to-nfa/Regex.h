@@ -1,5 +1,5 @@
 //
-// Created by abdelrahman on 13/11/17.
+// Created by H.H.H on 20/11/17.
 //
 
 #ifndef LEXICAL_ANALYZER_REGEX_H
@@ -25,6 +25,7 @@ public:
 
 private:
     string path;
+    set<char> language_characters;
 
     int precedence(char symbol);
 };
