@@ -1,25 +1,34 @@
 //
-// Created by abdelrahman on 13/11/17.
+// Created by H.H.H on 20/11/17.
 //
 
 #ifndef LEXICAL_ANALYZER_REGEX_H
 #define LEXICAL_ANALYZER_REGEX_H
 
-#include <fstream>
-#include <unordered_map>
+#include <map>
+#include <set>
 #include <string>
-#include <vector>
+
+using namespace std;
 
 class Regex {
 public:
-    Regex(std::string path);
+    explicit Regex(string path);
 
-    std::unordered_map<std::string, std::string> parse();
+    map<string, string> parse();
 
-    std::vector<char> get_language();
+    set<char> get_language();
+
+    void insert_concatenation(map<string, string> ExpMap);
+
+    void reg_exp_to_post(map<string, string> ExpMap);
+
 
 private:
-    std::string path;
+    string path;
+    set<char> language_characters;
+
+    int precedence(char symbol);
 };
 
 #endif //LEXICAL_ANALYZER_REGEX_H
