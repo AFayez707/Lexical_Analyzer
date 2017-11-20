@@ -18,8 +18,24 @@ bool is_input(char c) {
 NFA *regex_to_nfa(string regex) {
     stack<NFA *> operands;
 
+    bool escape = false;
+
     for (int i = 0; i < regex.size(); i++) {
         char c = regex[i];
+
+        if(escape) {
+            // treat the current char as if it is a normal letter
+            NFA *single_character = new NFA(c);
+            operands.push(single_character);
+
+            escape = false;
+            continue;
+        }
+
+        if(c == '\\') {
+            escape = true;
+            continue;
+        }
 
         NFA *first;
         NFA *second;
