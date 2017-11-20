@@ -10,7 +10,7 @@ Regex::Regex(string file_path) {
     this->path = std::move(file_path);
 }
 
-map<string, string> Regex::parse() {
+vector<pair<string, string> > Regex::parse() {
     map<string, string> exp_map;  //Expressions Map >> Returned
     map<string, string> def_map;  //Definitions Map >> Only Used Here to replace definitions
     ifstream infile(this->path);
@@ -37,8 +37,10 @@ map<string, string> Regex::parse() {
                     keyword += line[i];
                     i++;
                 }
-                if (exp_map.find(keyword) == exp_map.end())
+                if (exp_map.find(keyword) == exp_map.end()) {
                     exp_map[keyword] = keyword;
+                    this->expression_names.push_back(keyword);
+                }
                 keyword.clear();
             }
         } else if (i < line.length() && line[i] == '[') {
@@ -53,6 +55,7 @@ map<string, string> Regex::parse() {
             }
             punctuation.pop_back();
             exp_map.insert({"punctuation", punctuation});
+            this->expression_names.push_back("punctuation");
             punctuation.clear();
         } else {
             while (i < line.length() && line[i] != ' ' && line[i] != '\t' && line[i] != '=' && line[i] != ':')
@@ -125,6 +128,7 @@ map<string, string> Regex::parse() {
             }
 
             if (i < line.length() && line[i] == ':') {
+                this->expression_names.push_back(exp_name);
                 i++;
                 while (i < line.length()) {
                     while (i < line.length() && (line[i] == ' ' || line[i] == '\t'))
@@ -173,10 +177,14 @@ map<string, string> Regex::parse() {
             i++;
         }
     }
-
     this->insert_concatenation(exp_map);
     this->reg_exp_to_post(exp_map);
-    return exp_map;
+
+    for (string name : this->expression_names) {
+        this->expressions.push_back(make_pair(name, exp_map[name]));
+    }
+
+    return this->expressions;
 }
 
 void Regex::insert_concatenation(map<string, string> exp_map) {

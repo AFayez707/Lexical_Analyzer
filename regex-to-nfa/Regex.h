@@ -8,6 +8,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ class Regex {
 public:
     explicit Regex(string path);
 
-    map<string, string> parse();
+    vector< pair<string, string> > parse();
 
     set<char> get_language();
 
@@ -24,6 +25,8 @@ public:
 private:
     string path;
     set<char> language_characters;
+    vector<string> expression_names;
+    vector<pair<string,string>> expressions;
 
     int precedence(char symbol);
 
