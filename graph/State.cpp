@@ -11,7 +11,7 @@ State::State() {
 }
 
 bool State::is_accept_state() const {
-    return !this->token_name.empty();
+    return this->token_name != "undefined";
 }
 
 void State::set_accept_state(string token_name) {
