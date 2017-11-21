@@ -2,16 +2,11 @@
 // Created by abdelrahman on 20/11/17.
 //
 
-
-#include <iostream>
-#include <set>
-#include "../regex-to-nfa/NFA.h"
-#include "../regex-to-nfa/construct_NFA.h"
-#include "../dfa_reduction/DFA_Reducer.h"
-#include "../dfa_generator/DFA_Generator.h"
-#include "../regex-to-nfa/Regex.h"
-
-
+#include "regex-to-nfa/NFA.h"
+#include "regex-to-nfa/construct_NFA.h"
+#include "dfa_reduction/DFA_Reducer.h"
+#include "dfa_generator/DFA_Generator.h"
+#include "regex-to-nfa/Regex.h"
 
 int main() {
     string grammar_file_path;
