@@ -24,11 +24,16 @@ public:
 
     Graph *as_graph();
 
+    void simulate(string source_code);
+
 //    bool is_accept_state(int id);
 //    int transitions_to(int state, char c);
 //    set<int> get_states();
 
 private:
+
+    int get_next_state(int current_state, char c);
+    bool is_accept_state(int state);
 
     // set of DFA states
     vector<transition> transitions;
