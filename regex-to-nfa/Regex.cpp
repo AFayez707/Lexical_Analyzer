@@ -454,7 +454,7 @@ void Regex::parse2() {
         int i = 0, j, len = exp.length();
         while (i < len) {
             while (((exp[i] == '|' || exp[i] == '(' || exp[i] == ')' || exp[i] == '*' || exp[i] == '+' || exp[i] == 92)
-                    && exp[i - 1] != 92) || (!isprint(exp[i])))
+                    && exp[i - 1] != 92) || (exp[i] == 'L' && exp[i - 1] == 92))
                 i++;
             if(!(i<len))
                 break;
