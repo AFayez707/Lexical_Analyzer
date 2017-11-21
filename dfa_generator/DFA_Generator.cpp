@@ -203,10 +203,13 @@ Graph *DFA::as_graph() {
 //        s->set_token_name(token_name);
     }
 
+
     Graph *g = new Graph();
     for (State *s : states) {
         g->insert_state(s);
     }
+
+    g->set_start_state(states[0]);
 
     return g;
 }
