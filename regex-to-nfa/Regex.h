@@ -18,17 +18,18 @@ public:
 
     vector< pair<string, string> > parse();
 
+    void parse2();
+
+    set<char> language_characters;
+    vector<pair<string,string>> expressions;
     set<char> get_language();
 
-
-
 private:
-    string path;
-    set<char> language_characters;
     vector<string> expression_names;
-    vector<pair<string,string>> expressions;
 
-    int precedence(char symbol);
+    string path;
+
+    int Precedence(char symbol);
 
     void insert_concatenation(map<string, string> ExpMap);
 
