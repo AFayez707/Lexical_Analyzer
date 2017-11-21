@@ -50,10 +50,6 @@ map<char, State *> State::get_transitions() const {
     return this->transitions;
 }
 
-void State::set_token_name(string token_name) {
-    this->token_name = std::move(token_name);
-}
-
 string State::get_token_name() const {
     return this->token_name;
 }

@@ -30,16 +30,8 @@ State *Graph::get_end_state() {
     return this->end_state;
 }
 
-unsigned long Graph::get_state_count() {
-    return this->states.size();
-}
-
 set<State *> Graph::get_states() {
     return this->states;
-}
-
-void Graph::erase_state(State *state) {
-    this->states.erase(state);
 }
 
 void Graph::insert_state(State *state) {

@@ -22,11 +22,7 @@ public:
 
     State *get_end_state();
 
-    unsigned long get_state_count();
-
     set<State *> get_states();
-
-    void erase_state(State *state);
 
     void insert_state(State *state);
 

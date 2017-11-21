@@ -19,6 +19,8 @@ public:
 
     void set_accept_state(string token_name);
 
+    string get_token_name() const;
+
     int get_id() const;
 
     void set_id(unsigned int id);
@@ -32,10 +34,6 @@ public:
     vector<State *> get_epsilon_transitions() const;
 
     map<char, State *> get_transitions() const;
-
-    string get_token_name() const;
-
-    void set_token_name(string token_name);
 
     bool is_input_state() const;
 
