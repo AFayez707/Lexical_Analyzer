@@ -20,6 +20,8 @@ public:
 
     void print();
 
+    void simulate(string source_code);
+
 private:
     Graph *dfa;
     set<char> language_chars;

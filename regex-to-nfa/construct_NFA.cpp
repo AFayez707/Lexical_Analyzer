@@ -23,7 +23,7 @@ NFA *regex_to_nfa(string regex) {
     for (int i = 0; i < regex.size(); i++) {
         char c = regex[i];
 
-        if(escape) {
+        if (escape) {
             // treat the current char as if it is a normal letter
             NFA *single_character = new NFA(c);
             operands.push(single_character);
@@ -32,7 +32,7 @@ NFA *regex_to_nfa(string regex) {
             continue;
         }
 
-        if(c == '\\') {
+        if (c == '\\') {
             escape = true;
             continue;
         }
@@ -92,12 +92,12 @@ NFA *regex_to_nfa(string regex) {
 
 
 NFA *language_to_nfa(vector<pair<string, string>> regexes) {
-    if(regexes.empty())
+    if (regexes.empty())
         return nullptr;
 
     vector<NFA *> NFAs;
 
-    for(pair<string, string> regex : regexes) {
+    for (pair<string, string> regex : regexes) {
         NFA *nfa = regex_to_nfa(regex.second);
 
         nfa->set_accept_token_name(regex.first);

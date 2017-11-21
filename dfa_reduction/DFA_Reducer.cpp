@@ -16,7 +16,7 @@ Graph *DFA_Reducer::get_dfa() const {
 void DFA_Reducer::minimize() {
     printf("\n\nMinimizing DFA:\n\n");
     // removes redundancies
-    this->remove_redundancies();
+//    this->remove_redundancies();
 
     // merging states using disjoint sets
     int partition_count = this->merge_non_distinguishable();
@@ -74,19 +74,18 @@ void DFA_Reducer::remove_redundancies() {
             condition = condition && (A->is_input_state() == B->is_input_state());
 
             if (condition) {
-                auto A_transitions = A->get_transitions();
-                auto B_transitions = B->get_transitions();
                 bool valid = true;
 
                 // Match all transitions on both states
-                for (auto nextA = A_transitions.begin(), nextB = B_transitions.begin();
-                     nextA != A_transitions.end() && nextB != B_transitions.end();
-                     ++nextA, ++nextB) {
-                    if (nextA->first != nextB->first || nextA->second != nextB->second) {
+                for (char c: this->language_chars) {
+                    State *tran_a = A->get_transition_on(c);
+                    State *tran_b = B->get_transition_on(c);
+                    if (tran_a != tran_b) {
                         valid = false;
                         break;
                     }
                 }
+
                 if (valid) {
                     // Replace redundancies in the states set
                     printf("Redundant: %-3d ==> %3d\n", A->get_id(), B->get_id());
@@ -95,6 +94,10 @@ void DFA_Reducer::remove_redundancies() {
                 }
             }
         }
+    }
+
+    for (auto state: updated) {
+        this->dfa->erase_state(state);
     }
 }
 
@@ -124,32 +127,62 @@ int DFA_Reducer::merge_non_distinguishable() {
         }
     }
 
+    set<State *> minimized_states;
     bool flag = true;
     while (flag) {
         flag = false;
-        for (auto &cur_set: disjoint_set) {
-            for (auto &stateA: cur_set.second) {
-                for (auto &stateB: cur_set.second) {
+        // loop all partitions
+        for (auto &partition: disjoint_set) {
+            // loop all states in the same partitions
+            set<State *> partition_states = partition.second;
+            if (partition_states.size() < 2) continue;
+
+            for (auto &stateA: partition_states) {
+//                if (minimized_states.find(stateA) != minimized_states.end())
+//                    continue;
+                set<State *> cur_set;
+                cur_set.insert(stateA);
+                for (auto &stateB: partition_states) {
                     if (stateA == stateB) continue;
-                    for (auto &transition: stateA->get_transitions()) {
-                        if (this->old_state_mapper[transition.second] !=
-                            this->old_state_mapper[stateB->get_transitions()[transition.first]]) {
-                            if (this->old_state_mapper[stateA] != this->old_state_mapper[transition.second]) {
-                                this->old_state_mapper[stateA] = ++partition_count;
-                                cur_set.second.erase(stateA);
-                                disjoint_set[partition_count].insert(stateA);
-                            } else {
-                                this->old_state_mapper[stateB] = ++partition_count;
-                                cur_set.second.erase(stateB);
-                                disjoint_set[partition_count].insert(stateB);
-                            }
-                            flag = true;
+                    bool may_be = true;
+                    may_be = may_be && (stateA->is_input_state() == stateB->is_input_state());
+                    may_be = may_be && (stateA->is_accept_state() == stateB->is_accept_state());
+                    may_be = may_be && (stateA->get_token_name() == stateB->get_token_name());
+                    if (may_be)
+                        continue;
+//                    if (stateA == stateB || minimized_states.find(stateB) != minimized_states.end())
+//                        continue;
+                    bool in_same_set = true;
+                    for (char c: this->language_chars) {
+                        State *a_on_c = stateA->get_transition_on(c);
+                        State *b_on_c = stateB->get_transition_on(c);
+                        if (old_state_mapper[a_on_c] != old_state_mapper[b_on_c]) {
+                            in_same_set = false;
                             break;
                         }
                     }
+                    // if stateA matches stateB for each char c
+                    if (in_same_set) {
+                        cur_set.insert(stateB);
+                    }
                 }
-                if (flag)
+                // this partitions is not minimized
+                if (cur_set.size() != partition_states.size()) {
+                    // this partitions is split
+                    flag = true;
+
+                    partition_count++;
+                    // insert new partition
+                    disjoint_set[partition_count] = cur_set;
+                    // loop all the states of new set and move to new partitions
+                    for (auto &state: cur_set) {
+                        partition_states.erase(state);
+                        old_state_mapper[state] = partition_count;
+                        minimized_states.insert(state);
+                    }
+                    disjoint_set[partition.first] = partition_states;
                     break;
+                }
             }
             if (flag)
                 break;
@@ -207,5 +240,51 @@ void DFA_Reducer::build_min_dfa(int partition_count) {
     // Release old DFA pointers
     for (auto &old_state: this->old_state_mapper) {
         delete (old_state.first);
+    }
+}
+
+void DFA_Reducer::simulate(string source_code) {
+    State *current_state1 = this->dfa->get_start_state();
+    int current_state = 0;
+    State *lexem_start1;
+    int lexem_start = 0;
+    State *lexem_end1;
+    int lexeme_end = 0;
+    State *last_accepting_lexem;
+    int last_accepting_lexeme_end = 0;
+    State *last_accepting_state1;
+    int last_accepting_state = -1;
+
+    source_code.push_back(' ');
+
+    while (lexem_start < source_code.size() && lexeme_end < source_code.size()) {
+        char c = source_code[lexeme_end];
+
+        if (current_state1->is_accept_state()) {
+            last_accepting_state1 = current_state1;
+            last_accepting_lexeme_end = lexeme_end;
+        }
+
+        current_state1 = current_state1->get_transition_on(c);
+        lexeme_end++;
+
+        if (lexeme_end == source_code.size() && lexem_start < source_code.size()) {
+            if (lexem_start == source_code.size() - 1) {
+                return;
+            }
+            if (lexem_start == last_accepting_lexeme_end) {
+                printf("Couldn't detect any accepting token\n");
+                exit(1);
+            } else {
+                string token = source_code.substr(lexem_start, last_accepting_lexeme_end - lexem_start);
+
+                printf("Found token: * %-10s *  ===>  %-10s\n", token.c_str(),
+                       last_accepting_state1->get_token_name().c_str());
+
+                lexem_start = last_accepting_lexeme_end;
+                lexeme_end = lexem_start;
+                current_state1 = this->dfa->get_start_state();
+            }
+        }
     }
 }

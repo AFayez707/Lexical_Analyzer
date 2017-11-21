@@ -6,8 +6,6 @@
 #include <fstream>
 #include <stack>
 #include <iostream>
-#include <map>
-#include <vector>
 #include <unordered_map>
 
 Regex::Regex(string file_path) {
@@ -360,7 +358,7 @@ void Regex::parse2() {
                         i++;
                         while (!isalpha(line[i]))
                             i++;
-                        char end = line [i];
+                        char end = line[i];
                         expression = string(expression + '(');
                         int range = (end - start) + 1;
                         for (int j = 0; j < range; j++)
@@ -373,7 +371,7 @@ void Regex::parse2() {
                         i++;
                         while (!isdigit(line[i]))
                             i++;
-                        char end = line [i];
+                        char end = line[i];
                         expression = string(expression + '(');
                         int range = (end - start) + 1;
                         for (int j = 0; j < range; j++)
@@ -456,7 +454,7 @@ void Regex::parse2() {
             while (((exp[i] == '|' || exp[i] == '(' || exp[i] == ')' || exp[i] == '*' || exp[i] == '+' || exp[i] == 92)
                     && exp[i - 1] != 92) || (exp[i] == 'L' && exp[i - 1] == 92))
                 i++;
-            if(!(i<len))
+            if (!(i < len))
                 break;
             language_characters.insert(exp[i]);
             i++;
@@ -500,10 +498,10 @@ void Regex::parse2() {
         stack1.push('#');
         ch = expr[i];
         while (ch != '\0') {
-            if (ch == '(' && expr[i-1] != 92) {
+            if (ch == '(' && expr[i - 1] != 92) {
                 stack1.push(ch);
                 ch = expr[++i];
-            } else if (ch == ')' && expr[i-1] != 92) {
+            } else if (ch == ')' && expr[i - 1] != 92) {
                 while (stack1.top() != '(') {
                     post = string(post + stack1.top());
                     stack1.pop();
@@ -539,7 +537,7 @@ void Regex::parse2() {
 
 
     for (string id : ids) {
-        expressions.push_back(make_pair(id,ExpMap[id]));
+        expressions.push_back(make_pair(id, ExpMap[id]));
     }
 
 

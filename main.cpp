@@ -29,27 +29,31 @@ int main() {
     DFA language_dfa(language_nfa, language);
     language_dfa.display();
 
+    Graph *g = language_dfa.as_graph();
+    DFA_Reducer reducer(g, language);
+    reducer.minimize();
+    reducer.print();
 
     freopen("source.txt", "r", stdin);
     string source_code;
 
-    while (1) {
+    while (true) {
         int c = getchar();
 
-        if(c == EOF)
+        if (c == EOF) {
+            reducer.simulate(source_code);
             break;
+        }
+        if (c == ' ' | c == '\t' | c == '\n' && !source_code.empty()) {
+            reducer.simulate(source_code);
+            source_code = "";
+            continue;
+        }
+        if (c == ' ' | c == '\t' | c == '\n' | c == EOF)
+            continue;
 
         source_code.push_back((char) c);
     }
-
-    language_dfa.simulate(source_code);
-
-
-//    Graph *g = language_dfa.as_graph();
-//    DFA_Reducer reducer(g, language);
-//    reducer.print();
-//    reducer.minimize();
-//    reducer.print();
-
+    printf("\nParsing done succesfully !\n");
     return 0;
 }

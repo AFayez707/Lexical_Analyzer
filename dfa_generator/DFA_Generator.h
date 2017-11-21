@@ -33,6 +33,7 @@ public:
 private:
 
     int get_next_state(int current_state, char c);
+
     bool is_accept_state(int state);
 
     // set of DFA states

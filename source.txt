@@ -1,0 +1,22 @@
+int sum , count , pass ,
+mnt; while (pass != 10)
+{
+
+
+
+
+
+boolean hamada;
+
+
+
+float zabady
+
+
+if(zozo!=mish m3 bobo) ektib dodo
+
+
+
+
+pass = pass + 1 ;
+}

@@ -16,12 +16,13 @@ class Regex {
 public:
     explicit Regex(string path);
 
-    vector< pair<string, string> > parse();
+    vector<pair<string, string> > parse();
 
     void parse2();
 
     set<char> language_characters;
-    vector<pair<string,string>> expressions;
+    vector<pair<string, string>> expressions;
+
     set<char> get_language();
 
 private:

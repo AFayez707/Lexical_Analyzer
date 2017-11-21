@@ -200,7 +200,6 @@ Graph *DFA::as_graph() {
         State *s = states[dfa_fs_index];
 
         s->set_accept_state(token_name);
-//        s->set_token_name(token_name);
     }
 
 
@@ -209,14 +208,15 @@ Graph *DFA::as_graph() {
         g->insert_state(s);
     }
 
+    states[0]->set_input_state(true);
     g->set_start_state(states[0]);
 
     return g;
 }
 
 int DFA::get_next_state(int current_state, char c) {
-    for(transition t : transitions) {
-        if(t.from == current_state && t.value == c)
+    for (transition t : transitions) {
+        if (t.from == current_state && t.value == c)
             return t.to;
     }
 }
@@ -231,10 +231,10 @@ void DFA::simulate(string source_code) {
 
     int last_accepting_state = -1;
 
-    while(lexem_start < source_code.size() && lexeme_end < source_code.size()) {
+    while (lexem_start < source_code.size() && lexeme_end < source_code.size()) {
         char c = source_code[lexeme_end];
 
-        if(is_accept_state(current_state)) {
+        if (is_accept_state(current_state)) {
             last_accepting_state = current_state;
             last_accepting_lexeme_end = lexeme_end;
         }
@@ -244,8 +244,8 @@ void DFA::simulate(string source_code) {
 
         lexeme_end++;
 
-        if(lexeme_end == source_code.size() && lexem_start < source_code.size()) {
-            if(lexem_start == last_accepting_lexeme_end) {
+        if (lexeme_end == source_code.size() && lexem_start < source_code.size()) {
+            if (lexem_start == last_accepting_lexeme_end) {
                 // couldn't detect any accepting token
                 cout << "couldn't detect any accepting token" << endl;
                 exit(1);
@@ -253,9 +253,9 @@ void DFA::simulate(string source_code) {
                 // get the token and it's type
                 string token = source_code.substr(lexem_start, last_accepting_lexeme_end - lexem_start);
 
-                for(int i = 0; i < finalStates.size(); i++) {
-                    if(finalStates[i] == last_accepting_state) {
-                        cout << "found token: { \"" << token << "\" , " << finalStateTokenNames[i] << " }"<< endl;
+                for (int i = 0; i < finalStates.size(); i++) {
+                    if (finalStates[i] == last_accepting_state) {
+                        cout << "found token: { \"" << token << "\" , " << finalStateTokenNames[i] << " }" << endl;
                         break;
                     }
                 }
@@ -271,8 +271,8 @@ void DFA::simulate(string source_code) {
 }
 
 bool DFA::is_accept_state(int state) {
-    for(int i = 0; i < finalStates.size(); i++) {
-        if(finalStates[i] == state)
+    for (int i = 0; i < finalStates.size(); i++) {
+        if (finalStates[i] == state)
             return true;
     }
 
