@@ -17,7 +17,7 @@ public:
     explicit Regex(string path);
 
 
-    void parse2();
+    void parse();
 
     set<char> language_characters;
     vector<pair<string, string>> expressions;

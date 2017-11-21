@@ -18,7 +18,7 @@ public:
      */
     void minimize();
 
-    void print();
+    void display();
 
     void simulate(string source_code);
 
@@ -30,14 +30,9 @@ private:
     map<pair<int, char>, int> transition_table;
 
     /**
-     * @brief deletes all redundant states
-     */
-    void remove_redundancies();
-
-    void replace_redundant(State *A, State *B);
-
-    /**
-     * @brief run's hopcroft minimizing algorithm, and maps every dfa state to a state in the minimized dfa
+     * @brief merging the non-distinguishable states of a DFA, due to Hop-croft algorithm, is based on partition refinement,
+     * partitioning the DFA states into groups by their behavior.
+     * Whereby every two states of the same partition are equivalent if they have the same behavior for all the input sequences.
      * @return partitions count
      */
     int merge_non_distinguishable();
@@ -45,7 +40,7 @@ private:
     /**
      * @brief creates transition table, then the minimized dfa
      */
-    void build_min_dfa(int partition_count);
+    void build_minimized_dfa(int partition_count);
 };
 
 #endif //LEXICAL_ANALYZER_DFA_REDUCER_H

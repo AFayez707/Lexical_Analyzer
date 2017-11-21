@@ -12,8 +12,7 @@ Regex::Regex(string file_path) {
     this->path = std::move(file_path);
 }
 
-
-void Regex::parse2() {
+void Regex::parse() {
     vector<string> ids;     ///////////////////////Here
     unordered_map<std::string, std::string> ExpMap;  //Expressions Map >> Returned
     unordered_map<std::string, std::string> DefMap;  //Definitions Map >> Only Used Here to replace definitions
@@ -168,7 +167,8 @@ void Regex::parse2() {
         }
         // now we loop back and get the next line in 'Line'
     }
-
+    // Close file input stream
+    infile.close();
 
     for (auto it = ExpMap.begin(); it != ExpMap.end(); ++it) {
         string exp = it->second;
@@ -295,7 +295,6 @@ void Regex::parse2() {
     }
 }
 
-
 int Regex::Precedence(char symbol) {
     int priority;
     switch (symbol) {
@@ -317,4 +316,3 @@ int Regex::Precedence(char symbol) {
     }
     return priority;
 }
-
