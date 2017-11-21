@@ -56,60 +56,60 @@ void DFA_Reducer::print() {
     printf("%s\n", line.c_str());
 }
 
-void DFA_Reducer::remove_redundancies() {
-    printf("1- Eliminating redundancies\n============================\n");
-    set<State *> states = dfa->get_states();
-    map<State *, State *> redundant;
-    set<State *> updated;
+//void DFA_Reducer::remove_redundancies() {
+//    printf("1- Eliminating redundancies\n============================\n");
+//    set<State *> states = dfa->get_states();
+//    map<State *, State *> redundant;
+//    set<State *> updated;
+//
+//    for (auto &A: states) {
+//        if (updated.find(A) != updated.end()) continue;
+//        for (auto &B: states) {
+//            if (A == B || updated.find(B) != updated.end()) continue;
+//
+//            // Two states are equivalent if => `input & accept & token_name & transitions` are equal
+//            bool condition = A->get_transitions().size() == B->get_transitions().size();
+//            condition = condition && (A->is_accept_state() == B->is_accept_state());
+//            condition = condition && (A->get_token_name() == B->get_token_name());
+//            condition = condition && (A->is_input_state() == B->is_input_state());
+//
+//            if (condition) {
+//                bool valid = true;
+//
+//                // Match all transitions on both states
+//                for (char c: this->language_chars) {
+//                    State *tran_a = A->get_transition_on(c);
+//                    State *tran_b = B->get_transition_on(c);
+//                    if (tran_a != tran_b) {
+//                        valid = false;
+//                        break;
+//                    }
+//                }
+//
+//                if (valid) {
+//                    // Replace redundancies in the states set
+//                    printf("Redundant: %-3d ==> %3d\n", A->get_id(), B->get_id());
+//                    this->replace_redundant(A, B);
+//                    updated.insert(B);
+//                }
+//            }
+//        }
+//    }
+//
+//    for (auto state: updated) {
+//        this->dfa->erase_state(state);
+//    }
+//}
 
-    for (auto &A: states) {
-        if (updated.find(A) != updated.end()) continue;
-        for (auto &B: states) {
-            if (A == B || updated.find(B) != updated.end()) continue;
-
-            // Two states are equivalent if => `input & accept & token_name & transitions` are equal
-            bool condition = A->get_transitions().size() == B->get_transitions().size();
-            condition = condition && (A->is_accept_state() == B->is_accept_state());
-            condition = condition && (A->get_token_name() == B->get_token_name());
-            condition = condition && (A->is_input_state() == B->is_input_state());
-
-            if (condition) {
-                bool valid = true;
-
-                // Match all transitions on both states
-                for (char c: this->language_chars) {
-                    State *tran_a = A->get_transition_on(c);
-                    State *tran_b = B->get_transition_on(c);
-                    if (tran_a != tran_b) {
-                        valid = false;
-                        break;
-                    }
-                }
-
-                if (valid) {
-                    // Replace redundancies in the states set
-                    printf("Redundant: %-3d ==> %3d\n", A->get_id(), B->get_id());
-                    this->replace_redundant(A, B);
-                    updated.insert(B);
-                }
-            }
-        }
-    }
-
-    for (auto state: updated) {
-        this->dfa->erase_state(state);
-    }
-}
-
-void DFA_Reducer::replace_redundant(State *A, State *B) {
-    for (auto &state: this->dfa->get_states()) {
-        for (auto &next_state: state->get_transitions()) {
-            if (next_state.second == B) {
-                state->add_transition(next_state.first, A);
-            }
-        }
-    }
-}
+//void DFA_Reducer::replace_redundant(State *A, State *B) {
+//    for (auto &state: this->dfa->get_states()) {
+//        for (auto &next_state: state->get_transitions()) {
+//            if (next_state.second == B) {
+//                state->add_transition(next_state.first, A);
+//            }
+//        }
+//    }
+//}
 
 int DFA_Reducer::merge_non_distinguishable() {
     printf("\n2- Merging non-distinguishable states\n=====================================\n");
@@ -245,10 +245,7 @@ void DFA_Reducer::build_min_dfa(int partition_count) {
 
 void DFA_Reducer::simulate(string source_code) {
     State *current_state1 = this->dfa->get_start_state();
-    int current_state = 0;
-    State *lexem_start1;
     int lexem_start = 0;
-    State *lexem_end1;
     int lexeme_end = 0;
     State *last_accepting_lexem;
     int last_accepting_lexeme_end = 0;
@@ -266,6 +263,10 @@ void DFA_Reducer::simulate(string source_code) {
         }
 
         current_state1 = current_state1->get_transition_on(c);
+        if(current_state1 == nullptr && (c != ' ' && c != '\t' && c != '\n')) {
+            printf("Syntax Error: unknown character: \'%c\'\n", c);
+            exit(1);
+        }
         lexeme_end++;
 
         if (lexeme_end == source_code.size() && lexem_start < source_code.size()) {

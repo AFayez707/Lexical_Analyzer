@@ -29,13 +29,15 @@ int main() {
     DFA language_dfa(language_nfa, language);
     language_dfa.display();
 
+
     Graph *g = language_dfa.as_graph();
     DFA_Reducer reducer(g, language);
     reducer.minimize();
     reducer.print();
 
-    freopen("source.txt", "r", stdin);
     string source_code;
+    freopen("source.txt", "r", stdin);
+    source_code.clear();
 
     while (true) {
         int c = getchar();

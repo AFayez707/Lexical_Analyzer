@@ -25,7 +25,12 @@ NFA *regex_to_nfa(string regex) {
 
         if (escape) {
             // treat the current char as if it is a normal letter
-            NFA *single_character = new NFA(c);
+            NFA *single_character;
+            if(c == 'L')
+                single_character =  new NFA();
+            else
+                single_character = new NFA(c);
+
             operands.push(single_character);
 
             escape = false;
