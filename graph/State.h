@@ -5,6 +5,7 @@
 #ifndef LEXICAL_ANALYZER_STATE_H
 #define LEXICAL_ANALYZER_STATE_H
 
+#include <string>
 #include <vector>
 #include <map>
 

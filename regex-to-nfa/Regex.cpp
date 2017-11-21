@@ -355,32 +355,31 @@ void Regex::parse2() {
                     while (i < line.length() && (line[i] == ' ' || line[i] == '\t'))
                         i++;
 
-                    if (i < line.length() && (line[i] == 'a' && (line[i + 1] == '-' || line[i + 2] == '-'))) {
-                        expression = string(expression + '(');
-                        for (int j = 0; j < 26; j++)
-                            expression = string(expression + (low_letter++) + '|');
-                        expression.pop_back();
-                        expression = string(expression + ')');
-                        while (line[i] != 'z')
-                            i++;
+                    if (i < line.length() && (isalpha(line[i]) && (line[i + 1] == '-' || line[i + 2] == '-'))) {
+                        char start = line[i];
                         i++;
-                    } else if (i < line.length() && (line[i] == 'A' && (line[i + 1] == '-' || line[i + 2] == '-'))) {
+                        while (!isalpha(line[i]))
+                            i++;
+                        char end = line [i];
                         expression = string(expression + '(');
-                        for (int j = 0; j < 26; j++)
-                            expression = string(expression + (up_Letter++) + '|');
+                        int range = (end - start) + 1;
+                        for (int j = 0; j < range; j++)
+                            expression = string(expression + (start++) + '|');
                         expression.pop_back();
                         expression = string(expression + ')');
-                        while (line[i] != 'Z')
-                            i++;
                         i++;
-                    } else if (i < line.length() && (line[i] == '0' && (line[i + 1] == '-' || line[i + 2] == '-'))) {
+                    } else if (i < line.length() && (isdigit(line[i]) && (line[i + 1] == '-' || line[i + 2] == '-'))) {
+                        char start = line[i];
+                        i++;
+                        while (!isdigit(line[i]))
+                            i++;
+                        char end = line [i];
                         expression = string(expression + '(');
-                        for (int j = 0; j < 10; j++)
-                            expression = string(expression + (num++) + '|');
+                        int range = (end - start) + 1;
+                        for (int j = 0; j < range; j++)
+                            expression = string(expression + (start++) + '|');
                         expression.pop_back();
                         expression = string(expression + ')');
-                        while (line[i] != '9')
-                            i++;
                         i++;
                     } else if (i < line.length() &&
                                (line[i] == '(' || line[i] == ')' || line[i] == '*' || line[i] == '+' ||
@@ -455,8 +454,10 @@ void Regex::parse2() {
         int i = 0, j, len = exp.length();
         while (i < len) {
             while (((exp[i] == '|' || exp[i] == '(' || exp[i] == ')' || exp[i] == '*' || exp[i] == '+' || exp[i] == 92)
-                    && exp[i - 1] != 92) || (!isprint(exp[i])))
+                    && exp[i - 1] != 92) || (exp[i] == 'L' && exp[i - 1] == 92))
                 i++;
+            if(!(i<len))
+                break;
             language_characters.insert(exp[i]);
             i++;
         }
