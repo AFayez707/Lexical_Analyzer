@@ -42,24 +42,15 @@ void NFA::kleene_closure() {
 
 void NFA::positive_closure() {
     // Thompson Construction inductive steps
-    State *newStart = new State();
-    State *newEnd = new State();
-
-    // add the new states to the states map
-    this->add_state_to_map(newStart);
-    this->add_state_to_map(newEnd);
-
-    newStart->add_epsilon_transition(this->start);
-    this->end->add_epsilon_transition(newEnd);
     this->end->add_epsilon_transition(this->start);
 
-    this->start = newStart;
-    this->end = newEnd;
 }
 
 void NFA::concatenate(NFA *n) {
     // Thompson Construction inductive steps
     this->end->add_epsilon_transition(n->start);
+
+    this->end = n->end;
 
     // merge the state maps of the two NFAs
     states.insert(n->states.begin(), n->states.end());
