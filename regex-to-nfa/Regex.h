@@ -14,17 +14,14 @@ using namespace std;
 
 class Regex {
 public:
-    explicit Regex(string path);
-
-
-    void parse();
-
     set<char> language_characters;
     vector<pair<string, string>> expressions;
 
-private:
-    vector<string> expression_names;
+    explicit Regex(string path);
 
+    void parse();
+
+private:
     string path;
 
     int Precedence(char symbol);

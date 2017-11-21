@@ -14,7 +14,7 @@ Graph *DFA_Reducer::get_dfa() const {
 }
 
 void DFA_Reducer::minimize() {
-    printf("\n\nMinimizing DFA:\n\n");
+    printf("\n\nMinimizing DFA:\n");
 
     // merging states using disjoint sets
     int partition_count = this->merge_non_distinguishable();

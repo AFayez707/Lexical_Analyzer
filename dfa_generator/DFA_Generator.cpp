@@ -76,9 +76,9 @@ void DFA::SetTransition(int from, int to, char value) {
 }
 
 void DFA::display() {
-    transition newTransition;
+    transition newTransition{};
     cout << "\n";
-    for (int i = 0; i < transitions.size(); i++) {
+    for (unsigned long i = 0; i < transitions.size(); i++) {
         newTransition = transitions.at(i);
         cout << "q" << newTransition.from << " {" << join(entries.at(newTransition.from), ",")
              << "} -> q" << newTransition.to << " {" << join(entries.at(newTransition.to), ",")
@@ -143,7 +143,7 @@ DFA::DFA(NFA *n, set<char> language) {
                 if (accepting) {
                     // error (not really an error)
                     // found to NFA accepting states mapping to the same DFA state
-                    cout << "found to NFA accepting states mapping to the same DFA state. This means that one of "
+                    cout << "Found two NFA accepting states mapping to the same DFA state. One of "
                             "the tokens will never be detected" << endl;
                 } else {
                     accepting = true;
@@ -156,7 +156,6 @@ DFA::DFA(NFA *n, set<char> language) {
         if (accepting)
             SetDFAFinalState(i, token_name);
     }
-
 }
 
 vector<int> DFA::set_to_vector(set<int> set) {
@@ -278,6 +277,3 @@ bool DFA::is_accept_state(int state) {
 
     return false;
 }
-
-
-

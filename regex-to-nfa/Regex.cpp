@@ -6,23 +6,21 @@
 #include <fstream>
 #include <stack>
 #include <iostream>
-#include <unordered_map>
 
 Regex::Regex(string file_path) {
-    this->path = std::move(file_path);
+    this->path = move(file_path);
 }
 
 void Regex::parse() {
     vector<string> ids;     ///////////////////////Here
-    unordered_map<std::string, std::string> ExpMap;  //Expressions Map >> Returned
-    unordered_map<std::string, std::string> DefMap;  //Definitions Map >> Only Used Here to replace definitions
+    map<string, string> exp_map;  //Expressions Map >> Returned
+    map<string, string> def_map;  //Definitions Map >> Only Used Here to replace definitions
     ifstream infile(this->path);
     string line, exp_name, expression, temp, keyword, punctuation;
     char low_letter = 'a', up_Letter = 'A', num = '0';
 
-    while (std::getline(infile, line)) {
+    while (getline(infile, line)) {
         // Function on line
-
         int i = 0;
 
         // skip white spaces in the beggining of the file
@@ -41,8 +39,8 @@ void Regex::parse() {
                     keyword = string(keyword + line[i]);
                     i++;
                 }
-                if (ExpMap.find(keyword) == ExpMap.end()) {
-                    ExpMap.insert({keyword, keyword});
+                if (exp_map.find(keyword) == exp_map.end()) {
+                    exp_map.insert({keyword, keyword});
                     ids.push_back(keyword);    ///////////////////////////// Here
                 }
                 keyword.clear();
@@ -58,8 +56,8 @@ void Regex::parse() {
                 i++;
             }
             punctuation.pop_back();
-            ExpMap.insert({"punctuation", punctuation});
-            ids.push_back("punctuation");    ///////////////////////////// Here
+            exp_map.insert({"punctuation", punctuation});
+            ids.emplace_back("punctuation");    ///////////////////////////// Here
             punctuation.clear();
         } else {
             while (i < line.length() && line[i] != ' ' && line[i] != '\t' && line[i] != '=' && line[i] != ':')
@@ -107,25 +105,25 @@ void Regex::parse() {
                                 line[i] == '|')) {
                         expression = string(expression + line[i]);
                         i++;
-                    } else {     // word is already in the DefMap
+                    } else {     // word is already in the def_map
                         while (i < line.length() && isalpha(line[i])) {
                             temp = string(temp + line[i]);
                             i++;
                         }
-                        if (DefMap.find(temp) != DefMap.end()) {
-                            string value = DefMap[temp];
+                        if (def_map.find(temp) != def_map.end()) {
+                            string value = def_map[temp];
                             expression = string(expression + value);
                         }
                     }
                     temp.clear();
                 }
                 if (expression[0] == '(' && expression[expression.length() - 1] == ')' &&
-                    expression.find(")|(") != std::string::npos) {
+                    expression.find(")|(") != string::npos) {
                     expression.push_back(')');
                     expression.insert(0, 1, '(');
                 }
 
-                DefMap.insert({exp_name, expression});
+                def_map.insert({exp_name, expression});
                 exp_name.clear();
                 expression.clear();
             }
@@ -145,8 +143,8 @@ void Regex::parse() {
                             temp = string(temp + line[i]);
                             i++;
                         }
-                        if (DefMap.find(temp) != DefMap.end()) {
-                            string value = DefMap[temp];
+                        if (def_map.find(temp) != def_map.end()) {
+                            string value = def_map[temp];
                             expression = string(expression + value);
                         } else {
                             expression = string(expression + temp);
@@ -159,18 +157,17 @@ void Regex::parse() {
                     }
                     temp.clear();
                 }
-                ExpMap.insert({exp_name, expression});
+                exp_map.insert({exp_name, expression});
                 exp_name.clear();
                 expression.clear();
             }
-
         }
         // now we loop back and get the next line in 'Line'
     }
     // Close file input stream
     infile.close();
 
-    for (auto it = ExpMap.begin(); it != ExpMap.end(); ++it) {
+    for (auto it = exp_map.begin(); it != exp_map.end(); ++it) {
         string exp = it->second;
 
         int i = 0, j, len = exp.length();
@@ -178,7 +175,7 @@ void Regex::parse() {
             while (((exp[i] == '|' || exp[i] == '(' || exp[i] == ')' || exp[i] == '*' || exp[i] == '+' || exp[i] == 92)
                     && exp[i - 1] != 92) || (exp[i] == 'L' && exp[i - 1] == 92))
                 i++;
-            if (!(i < len))
+            if (i >= len)
                 break;
             language_characters.insert(exp[i]);
             i++;
@@ -186,7 +183,7 @@ void Regex::parse() {
     }
 
     ///// Insert Concatenation
-    for (auto it = ExpMap.begin(); it != ExpMap.end(); ++it) {
+    for (auto it = exp_map.begin(); it != exp_map.end(); ++it) {
         string exp = it->second;
 
         int i = 0, j, len = exp.length();
@@ -213,7 +210,7 @@ void Regex::parse() {
     }
 
     ///// In-To-Post
-    for (auto it = ExpMap.begin(); it != ExpMap.end(); ++it) {
+    for (auto it = exp_map.begin(); it != exp_map.end(); ++it) {
         string post;
         string expr = it->second;
         int i = 0, j = 0;
@@ -253,46 +250,42 @@ void Regex::parse() {
             ch = stack1.top();
             stack1.pop();
         }
-//        if (it->first == "punctuation")
-//            post = expr;
         it->second = post;
-
     }
-
 
     for (string id : ids) {
-        expressions.push_back(make_pair(id, ExpMap[id]));
+        expressions.emplace_back(id, exp_map[id]);
     }
 
-
-    std::cout << "Definitions:";
-    std::cout << std::endl;
-    for (auto it = DefMap.begin(); it != DefMap.end(); ++it) {
-        std::cout << " " << it->first << ":" << it->second;
-        std::cout << std::endl;
+    cout << "Definitions:";
+    cout << endl;
+    for (auto &it : def_map) {
+        cout << " " << it.first << ":" << it.second;
+        cout << endl;
     }
-    std::cout << std::endl;
-    std::cout << std::endl;
-    std::cout << "Expressions:";
-    std::cout << std::endl;
-    for (auto it = ExpMap.begin(); it != ExpMap.end(); ++it) {
-        std::cout << " " << it->first << ":" << it->second;
-        std::cout << std::endl;
+    cout << endl;
+    cout << endl;
+    cout << "Expressions:";
+    cout << endl;
+    for (auto &it : exp_map) {
+        cout << " " << it.first << ":" << it.second;
+        cout << endl;
     }
-    std::cout << std::endl;
-    std::cout << std::endl;
-    std::cout << "Language:";
-    std::cout << std::endl;
+    cout << endl;
+    cout << endl;
+    cout << "Language:";
+    cout << endl;
     for (char c : language_characters) {
-        std::cout << c << " ";
+        cout << c << " ";
     }
-    std::cout << std::endl;
-    std::cout << std::endl;
-    std::cout << "Expressions Vector:";
-    std::cout << std::endl;
+    cout << endl;
+    cout << endl;
+    cout << "Expressions Vector:";
+    cout << endl;
     for (pair<string, string> c : expressions) {
-        std::cout << c.first << ":" << c.second << endl;
+        cout << c.first << ":" << c.second << endl;
     }
+    cout << endl;
 }
 
 int Regex::Precedence(char symbol) {

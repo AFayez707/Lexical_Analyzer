@@ -2,14 +2,8 @@
 // Created by abdelrahman on 13/11/17.
 //
 
-
 #include <stack>
 #include "NFA.h"
-
-
-bool is_input(char c) {
-    return !(c == '(' || c == ')' || c == '*' || c == '+' || c == '.');
-}
 
 /**
  * takes in a regex in postfix notation containing only "( ) | * +"
@@ -80,21 +74,19 @@ NFA *regex_to_nfa(string regex) {
                 operands.push(single_character);
                 break;
         }
-
     }
 
     NFA *result = operands.top();
     operands.pop();
 
     // sanity check (if stack is not empty now then the input regex was invalid)
-    if (operands.size() != 0) {
+    if (!operands.empty()) {
         // error
         return nullptr;
     }
 
     return result;
 }
-
 
 NFA *language_to_nfa(vector<pair<string, string>> regexes) {
     if (regexes.empty())

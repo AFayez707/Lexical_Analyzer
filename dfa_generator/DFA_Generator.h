@@ -5,7 +5,6 @@
 #ifndef LEXICAL_ANALYZER_DFA_H
 #define LEXICAL_ANALYZER_DFA_H
 
-#include <set>
 #include "../regex-to-nfa/NFA.h"
 #include "../graph/Graph.h"
 
@@ -26,23 +25,17 @@ public:
 
     void simulate(string source_code);
 
-//    bool is_accept_state(int id);
-//    int transitions_to(int state, char c);
-//    set<int> get_states();
-
 private:
-
-    int get_next_state(int current_state, char c);
-
-    bool is_accept_state(int state);
-
     // set of DFA states
     vector<transition> transitions;
     vector<vector<int>> entries;
     vector<bool> isMarked;
-
     vector<string> finalStateTokenNames;
     vector<int> finalStates;
+
+    int get_next_state(int current_state, char c);
+
+    bool is_accept_state(int state);
 
     vector<int> set_to_vector(set<int> set);
 
@@ -67,7 +60,6 @@ private:
     string GetFinalState();
 
     string join(vector<int> vector, string delimiter);
-
 };
 
 

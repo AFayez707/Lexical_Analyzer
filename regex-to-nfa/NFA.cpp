@@ -1,7 +1,6 @@
 #include "NFA.h"
 #include <stack>
 
-
 NFA::NFA() {
     start = new State();
     end = new State();
