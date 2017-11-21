@@ -34,7 +34,7 @@ vector<pair<string, string> > Regex::parse() {
                 if (line[i] == '}')
                     break;
                 while (i < line.length() && isalpha(line[i])) {
-                    keyword += line[i];
+                    keyword = string(keyword + line[i]);
                     i++;
                 }
                 if (exp_map.find(keyword) == exp_map.end()) {
@@ -48,9 +48,9 @@ vector<pair<string, string> > Regex::parse() {
             while (i < line.length() && line[i] != ']') {
                 while (i < line.length() && (line[i] == ' ' || line[i] == '\t'))
                     i++;
-                punctuation += line[i];
+                punctuation = string(punctuation + line[i]);
                 if (line[i] != 92)
-                    punctuation += '|';
+                    punctuation = string(punctuation + '|');
                 i++;
             }
             punctuation.pop_back();
@@ -59,7 +59,7 @@ vector<pair<string, string> > Regex::parse() {
             punctuation.clear();
         } else {
             while (i < line.length() && line[i] != ' ' && line[i] != '\t' && line[i] != '=' && line[i] != ':')
-                exp_name += line[i++];
+                exp_name = string(exp_name + line[i++]);
 
             // skip white spaces after exp name
             while (i < line.length() && (line[i] == ' ' || line[i] == '\t'))
@@ -73,45 +73,45 @@ vector<pair<string, string> > Regex::parse() {
                         i++;
 
                     if (i < line.length() && (line[i] == 'a' && (line[i + 1] == '-' || line[i + 2] == '-'))) {
-                        expression += '(';
+                        expression = string(expression + '(');
                         for (int j = 0; j < 26; j++)
-                            expression += ((low_letter++) + '|');
+                            expression = string(expression + ((low_letter++) + '|'));
                         expression.pop_back();
-                        expression += ')';
+                        expression = string(expression + ')');
                         while (line[i] != 'z')
                             i++;
                         i++;
                     } else if (i < line.length() && (line[i] == 'A' && (line[i + 1] == '-' || line[i + 2] == '-'))) {
-                        expression += '(';
+                        expression = string(expression + '(');
                         for (int j = 0; j < 26; j++)
-                            expression += ((up_Letter++) + '|');
+                            expression = string(expression + ((up_Letter++) + '|'));
                         expression.pop_back();
-                        expression += ')';
+                        expression = string(expression + ')');
                         while (line[i] != 'Z')
                             i++;
                         i++;
                     } else if (i < line.length() && (line[i] == '0' && (line[i + 1] == '-' || line[i + 2] == '-'))) {
-                        expression += '(';
+                        expression = string(expression + '(');
                         for (int j = 0; j < 10; j++)
-                            expression += ((num++) + '|');
+                            expression = string(expression + ((num++) + '|'));
                         expression.pop_back();
-                        expression += ')';
+                        expression = string(expression + ')');
                         while (line[i] != '9')
                             i++;
                         i++;
                     } else if (i < line.length() &&
                                (line[i] == '(' || line[i] == ')' || line[i] == '*' || line[i] == '+' ||
                                 line[i] == '|')) {
-                        expression += line[i];
+                        expression = string(expression + line[i]);
                         i++;
                     } else {     // word is already in the def_map
                         while (i < line.length() && isalpha(line[i])) {
-                            temp += line[i];
+                            temp = string(temp + line[i]);
                             i++;
                         }
                         if (def_map.find(temp) != def_map.end()) {
                             string value = def_map[temp];
-                            expression += value;
+                            expression = string(expression + value);
                         }
                     }
                     temp.clear();
@@ -144,13 +144,13 @@ vector<pair<string, string> > Regex::parse() {
                         }
                         if (def_map.find(temp) != def_map.end()) {
                             string value = def_map[temp];
-                            expression += value;
+                            expression = string(expression + value);
                         } else {
-                            expression += temp;
+                            expression = string(expression + temp);
                         }
                     } else {
                         if (line[i] == '.')
-                            expression += '\\';
+                            expression = string(expression + '\\');
                         expression = line[i];
                         i++;
                     }
