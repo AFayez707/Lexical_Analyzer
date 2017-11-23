@@ -25,6 +25,10 @@ private:
     string path;
 
     int Precedence(char symbol);
+
+    map<string, string> InToPost(map<string, string> exp);
+
+    map<string, string> InsertConcatenate(map<string, string> exp);
 };
 
 #endif //LEXICAL_ANALYZER_REGEX_H

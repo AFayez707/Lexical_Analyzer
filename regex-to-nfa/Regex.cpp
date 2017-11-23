@@ -12,7 +12,7 @@ Regex::Regex(string file_path) {
 }
 
 void Regex::parse() {
-    vector<string> ids;     ///////////////////////Here
+    vector<string> ids;
     map<string, string> exp_map;  //Expressions Map >> Returned
     map<string, string> def_map;  //Definitions Map >> Only Used Here to replace definitions
     ifstream infile(this->path);
@@ -41,7 +41,7 @@ void Regex::parse() {
                 }
                 if (exp_map.find(keyword) == exp_map.end()) {
                     exp_map.insert({keyword, keyword});
-                    ids.push_back(keyword);    ///////////////////////////// Here
+                    ids.push_back(keyword);
                 }
                 keyword.clear();
             }
@@ -57,7 +57,7 @@ void Regex::parse() {
             }
             punctuation.pop_back();
             exp_map.insert({"punctuation", punctuation});
-            ids.emplace_back("punctuation");    ///////////////////////////// Here
+            ids.emplace_back("punctuation");
             punctuation.clear();
         } else {
             while (i < line.length() && line[i] != ' ' && line[i] != '\t' && line[i] != '=' && line[i] != ':')
@@ -129,7 +129,7 @@ void Regex::parse() {
             }
 
             if (i < line.length() && line[i] == ':') {
-                ids.push_back(exp_name);    ///////////////////////////// Here
+                ids.push_back(exp_name);
                 i++;
                 while (i < line.length()) {
                     while (i < line.length() && (line[i] == ' ' || line[i] == '\t'))
@@ -183,34 +183,49 @@ void Regex::parse() {
     }
 
     ///// Insert Concatenation
-    for (auto it = exp_map.begin(); it != exp_map.end(); ++it) {
-        string exp = it->second;
-
-        int i = 0, j, len = exp.length();
-        while (exp[i + 1] != '\0') {
-            if ((((exp[i] != '(' /*&& exp[i] != '.'*/ && exp[i] != '|' && exp[i] != '\\')
-                  || exp[i] == ')'
-                  || exp[i] == '*'
-                  || exp[i] == '+')
-                 &&
-                 (exp[i + 1] != ')' && exp[i + 1] != '.' && exp[i + 1] != '|' && exp[i + 1] != '*' &&
-                  exp[i + 1] != '+'))) {
-                exp = string(exp + ' ');
-                for (j = len + 1; j > i + 1; j--) {
-                    exp[j] = exp[j - 1];
-                }
-                exp[i + 1] = '.';
-                len++;
-                exp[len] = '\0';
-                i++;
-            }
-            i++;
-        }
-        it->second = exp;
-    }
+    exp_map = InsertConcatenate(exp_map);
 
     ///// In-To-Post
-    for (auto it = exp_map.begin(); it != exp_map.end(); ++it) {
+    exp_map = InToPost(exp_map);
+
+    for (string id : ids) {
+        expressions.emplace_back(id, exp_map[id]);
+    }
+
+    cout << "Definitions:";
+    cout << endl;
+    for (auto &it : def_map) {
+        cout << " " << it.first << ":" << it.second;
+        cout << endl;
+    }
+    cout << endl;
+    cout << endl;
+    cout << "Expressions:";
+    cout << endl;
+    for (auto &it : exp_map) {
+        cout << " " << it.first << ":" << it.second;
+        cout << endl;
+    }
+    cout << endl;
+    cout << endl;
+    cout << "Language:";
+    cout << endl;
+    for (char c : language_characters) {
+        cout << c << " ";
+    }
+    cout << endl;
+    cout << endl;
+    cout << "Expressions Vector:";
+    cout << endl;
+    for (pair<string, string> c : expressions) {
+        cout << c.first << ":" << c.second << endl;
+    }
+    cout << endl;
+}
+
+
+map<string, string> Regex::InToPost(map<string, string> exp) {
+    for (auto it = exp.begin(); it != exp.end(); ++it) {
         string post;
         string expr = it->second;
         int i = 0, j = 0;
@@ -252,40 +267,7 @@ void Regex::parse() {
         }
         it->second = post;
     }
-
-    for (string id : ids) {
-        expressions.emplace_back(id, exp_map[id]);
-    }
-
-    cout << "Definitions:";
-    cout << endl;
-    for (auto &it : def_map) {
-        cout << " " << it.first << ":" << it.second;
-        cout << endl;
-    }
-    cout << endl;
-    cout << endl;
-    cout << "Expressions:";
-    cout << endl;
-    for (auto &it : exp_map) {
-        cout << " " << it.first << ":" << it.second;
-        cout << endl;
-    }
-    cout << endl;
-    cout << endl;
-    cout << "Language:";
-    cout << endl;
-    for (char c : language_characters) {
-        cout << c << " ";
-    }
-    cout << endl;
-    cout << endl;
-    cout << "Expressions Vector:";
-    cout << endl;
-    for (pair<string, string> c : expressions) {
-        cout << c.first << ":" << c.second << endl;
-    }
-    cout << endl;
+    return exp;
 }
 
 int Regex::Precedence(char symbol) {
@@ -308,4 +290,33 @@ int Regex::Precedence(char symbol) {
             break;
     }
     return priority;
+}
+
+map<string, string> Regex::InsertConcatenate(map<string, string> exp) {
+    for (auto it = exp.begin(); it != exp.end(); ++it) {
+        string exp = it->second;
+
+        int i = 0, j, len = exp.length();
+        while (exp[i + 1] != '\0') {
+            if ((((exp[i] != '(' /*&& exp[i] != '.'*/ && exp[i] != '|' && exp[i] != '\\')
+                  || exp[i] == ')'
+                  || exp[i] == '*'
+                  || exp[i] == '+')
+                 &&
+                 (exp[i + 1] != ')' && exp[i + 1] != '.' && exp[i + 1] != '|' && exp[i + 1] != '*' &&
+                  exp[i + 1] != '+'))) {
+                exp = string(exp + ' ');
+                for (j = len + 1; j > i + 1; j--) {
+                    exp[j] = exp[j - 1];
+                }
+                exp[i + 1] = '.';
+                len++;
+                exp[len] = '\0';
+                i++;
+            }
+            i++;
+        }
+        it->second = exp;
+    }
+    return exp;
 }
