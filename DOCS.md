@@ -11,7 +11,7 @@ their API, how do they fit together, data structures and algorithms used.
 
 The following is an outline of some of the modules:
 - Converting all regular definitions and regular expressions to a set of regular expressions that uses only the
-operators alternation `|`, concatenation, kleene closure, and parenthesis.
+    operators alternation `|`, concatenation, kleene closure, and parenthesis.
 - Converting the regular expressions from the previous step from infix to postfix notation.
 - Converting postfix regular expressions to NFAs using Thompson Construction.
 - Converting NFAs to DFAs using subset construction.
@@ -37,7 +37,6 @@ To make the resulting NFA we create a new start state that has epsilon transitio
 state that E1 and E2 are connected to with epsilon transitions.
 
 ### Representing an NFA
-
 An NFA has a set of states, a start state, and an end state. States have a hash map of characters to states that denote
 the transitions on each input symbol, and a list of transitions on epsilon (because there can be multiple transition
 on epsilon).
@@ -58,10 +57,6 @@ Some undetermined design decisions:
 represented and allow for the representation to change.
 - `conacenate()`, `alternate()`, `iterate()` could either modify `this` NFA or return a new one.
 
-### A global ID generator
-To simplify state generation and modification of NFAs, we can use a global ID generator for state IDs that generate a 
-unique number each time it is called.
-
 ### Representing a DFA
 a DFA is generated from a corresponding NFA using the subset construction algorithm. Each DFA state needs to keep track
 of the set of NFA states it correspond to. Unlike an NFA, a DFA is backed-up (represented) by its transition table,
@@ -71,6 +66,15 @@ which can roughly be thought of as an adjacency matrix.
 The subset construction algorithm needs to perform the operations `closure(Set<State>)` and `move(Set<State>, char)` 
 which are already implemented by the NFA. It will also need to know the start symbol and whether a particular state is
 an accepting state or not.
+
+### DFA Minimization Using Hop-Croft's algorithm
+Merging the non-distinguishable states of a DFA, due to Hop-croft algorithm, is based on partition refinement,
+partitioning the DFA states into groups by their behavior.
+Whereby every two states of the same partition are equivalent if they have the same behavior for all the input sequences.
+
+DFA Reducer supports the following operations:
+- `minimize()`: Given a DFA, it reduces it using Partitioning refinment
+- `display()`: Prints the DFA in any state (i.e. before & after minimization)
 
 Design Decisions:
 - we can memoize the epsilon closure of each NFA state to avoid recomputing it each time. We will still need to combine

@@ -3,3 +3,5 @@ cmake-build-debug/
 test/
 lexical_analyzer
 log.txt
+*.o
+

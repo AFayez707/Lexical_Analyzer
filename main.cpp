@@ -2,7 +2,6 @@
 // Created by ahmed on 21/11/17.
 //
 
-#include <zconf.h>
 #include "regex-to-nfa/NFA.h"
 #include "regex-to-nfa/construct_NFA.h"
 #include "dfa_reduction/DFA_Reducer.h"

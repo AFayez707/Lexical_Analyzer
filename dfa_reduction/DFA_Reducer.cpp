@@ -195,8 +195,9 @@ void DFA_Reducer::simulate(string source_code) {
 
         state = state->get_transition_on(c);
         if (state == nullptr && (c != ' ' && c != '\t' && c != '\n')) {
-            printf("Syntax Error: unknown character: \'%c\'\n", c);
-            exit(1);
+            printf("Syntax Error: unknown character \'%c\'\n", c);
+            source_code.erase(lexeme_end);
+            state = this->dfa->get_start_state();
         }
 
         lexeme_end++;
