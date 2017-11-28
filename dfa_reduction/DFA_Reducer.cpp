@@ -195,9 +195,19 @@ void DFA_Reducer::simulate(string source_code) {
 
         state = state->get_transition_on(c);
         if (state == nullptr && (c != ' ' && c != '\t' && c != '\n')) {
-            printf("Syntax Error: unknown character \'%c\'\n", c);
-            source_code.erase(lexeme_end);
+            source_code.erase(lexeme_end, 1);
             state = this->dfa->get_start_state();
+
+            if (!accepted_token.empty()) {
+                string token = source_code.substr(lexeme_start, last_accept_lexeme_end - lexeme_start);
+                printf("Found token: * %-10s *  ===>  %-10s\n", token.c_str(), accepted_token.c_str());
+                lexeme_start = last_accept_lexeme_end;
+                lexeme_end = lexeme_start;
+                accepted_token = "";
+            }
+
+            printf("Syntax Error: unknown character \'%c\'\n", c);
+            continue;
         }
 
         lexeme_end++;
