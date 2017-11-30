@@ -25,7 +25,7 @@ void DFA_Reducer::display() {
     set<State *> states = this->dfa->get_states();
 
     string line = "---------------";
-    for (int i = 0; i < language_chars.size(); ++i)
+    for (unsigned int i = 0; i < language_chars.size(); ++i)
         line += "-------";
 
     printf("%s\n               ", line.c_str());
@@ -143,9 +143,9 @@ void DFA_Reducer::build_minimized_dfa(int partition_count) {
     this->dfa = new Graph();
 
     // Add states to the new min_dfa
-    for (unsigned int i = 1; i <= partition_count; ++i) {
+    for (int i = 1; i <= partition_count; ++i) {
         auto *dummy = new State();
-        dummy->set_id(i);
+        dummy->set_id((unsigned int) i);
         dfa->insert_state(dummy);
         for (auto &state: this->old_state_mapper) {
             if (state.second == i) {
@@ -177,54 +177,39 @@ void DFA_Reducer::build_minimized_dfa(int partition_count) {
         delete (old_state.first);
 }
 
-void DFA_Reducer::simulate(string source_code) {
-    int lexeme_start = 0;
+void DFA_Reducer::tokenize(string source_code) {
+    int start = 0;
+    int end = 0;
     int lexeme_end = 0;
-    int last_accept_lexeme_end = 0;
-    string accepted_token;
-    State *state = this->dfa->get_start_state();
+    string token, lexeme;
+    State *cur_state = this->dfa->get_start_state();
 
+    // space is the end of string flag
     source_code.push_back(' ');
-    while (lexeme_start < source_code.size() && lexeme_end < source_code.size()) {
-        char c = source_code[lexeme_end];
+    while (start != (int) source_code.size() - 1) {
+        char c = source_code[end];
 
-        if (state->is_accept_state()) {
-            accepted_token = state->get_token_name();
-            last_accept_lexeme_end = lexeme_end;
-        }
-
-        state = state->get_transition_on(c);
-        if (state == nullptr && (c != ' ' && c != '\t' && c != '\n')) {
-            source_code.erase(lexeme_end, 1);
-            state = this->dfa->get_start_state();
-
-            if (!accepted_token.empty()) {
-                string token = source_code.substr(lexeme_start, last_accept_lexeme_end - lexeme_start);
-                printf("Found token: * %-10s *  ===>  %-10s\n", token.c_str(), accepted_token.c_str());
-                lexeme_start = last_accept_lexeme_end;
-                lexeme_end = lexeme_start;
-                accepted_token = "";
-            }
-
-            printf("Syntax Error: unknown character \'%c\'\n", c);
+        // if this char is not in the language chars && not end of string
+        if (this->language_chars.find(c) == this->language_chars.end() && c != ' ') {
+            source_code.erase(end, 1);
+            printf("syntax error: unknown character \'%c\'\n", c);
             continue;
         }
 
-        lexeme_end++;
-        if (lexeme_end == source_code.size() && lexeme_start < source_code.size()) {
-            if (lexeme_start == source_code.size() - 1)
-                return;
+        end++;
+        // if reached end of string, return the longest token found
+        if (start < end && end == (int) source_code.size()) {
+            lexeme = source_code.substr(start, lexeme_end - start);
+            printf("  %-10s =>    %s\n", lexeme.c_str(), token.c_str());
+            end = start = lexeme_end;
+            cur_state = this->dfa->get_start_state();
+            continue;
+        }
 
-            if (lexeme_start == last_accept_lexeme_end) {
-                printf("Couldn't detect any accepting token\n");
-                exit(1);
-            } else {
-                string token = source_code.substr(lexeme_start, last_accept_lexeme_end - lexeme_start);
-                printf("Found token: * %-10s *  ===>  %-10s\n", token.c_str(), accepted_token.c_str());
-                lexeme_start = last_accept_lexeme_end;
-                lexeme_end = lexeme_start;
-                state = this->dfa->get_start_state();
-            }
+        cur_state = cur_state->get_transition_on(c);
+        if (cur_state->is_accept_state()) {
+            token = cur_state->get_token_name();
+            lexeme_end = end;
         }
     }
 }

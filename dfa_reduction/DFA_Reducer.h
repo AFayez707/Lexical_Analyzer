@@ -20,7 +20,11 @@ public:
 
     void display();
 
-    void simulate(string source_code);
+    /**
+     * @brief tokenize a give string of the source code
+     * @param source_code white space free string of the source code input file
+     */
+    void tokenize(string source_code);
 
 private:
     Graph *dfa;

@@ -2,44 +2,29 @@
 // Created by ahmed on 21/11/17.
 //
 
+#include <zconf.h>
+#include <fstream>
 #include "regex-to-nfa/NFA.h"
 #include "regex-to-nfa/construct_NFA.h"
 #include "dfa_reduction/DFA_Reducer.h"
 #include "dfa_generator/DFA_Generator.h"
 #include "regex-to-nfa/Regex.h"
 
-void match_source_code(DFA_Reducer minimized_dfa, const string &source_code_file) {
-    printf("\n\nParsing source code..\n\n");
-    string source_code;
-    freopen(source_code_file.c_str(), "r", stdin);
+void init(string &grammar_file, string &source_code_file);
 
-    while (true) {
-        int c = getchar();
+void match_source_code(DFA_Reducer minimized_dfa, const string &source_code_file);
 
-        if (c == EOF) {
-            minimized_dfa.simulate(source_code);
-            break;
-        }
-        if (c == ' ' | c == '\t' | c == '\n' && !source_code.empty()) {
-            minimized_dfa.simulate(source_code);
-            source_code = "";
-            continue;
-        }
-        if (c == ' ' | c == '\t' | c == '\n' | c == EOF)
-            continue;
+int main(int argc) {
+    string grammar_file, source_code_file, log_to_file;
 
-        source_code.push_back((char) c);
+    if (argc == 1) {
+        fprintf(stdout, "using default files, writing all output to log.txt\n");
+        source_code_file = "source.txt";
+        grammar_file = "grammar.txt";
+        freopen("log.txt", "w", stdout);
+    } else {
+        init(grammar_file, source_code_file);
     }
-    printf("\nParsing done successfully !\n");
-}
-
-int main() {
-    string log_file = "log.txt";
-    string grammar_file = "grammar.txt";
-    string source_code_file = "source.txt";
-
-    // Redirect output from stdout to log file
-    freopen(log_file.c_str(), "w", stdout);
 
     // Parse grammar file, and form language chars
     Regex regex_library(grammar_file);
@@ -61,4 +46,51 @@ int main() {
 
     match_source_code(reducer, source_code_file);
     return 0;
+}
+
+void init(string &grammar_file, string &source_code_file) {
+    fprintf(stdout, "Grammar file: ");
+    cin >> grammar_file;
+    if (access(grammar_file.c_str(), F_OK) == -1) {
+        fprintf(stderr, "could find/open grammar file.\n");
+        exit(1);
+    }
+
+    fprintf(stdout, "Source code file: ");
+    cin >> source_code_file;
+    if (access(source_code_file.c_str(), F_OK) == -1) {
+        fprintf(stderr, "could find/open grammar file.\n");
+        exit(1);
+    }
+
+    string log_to_file;
+    fprintf(stdout, "write to log file (Y/N): ");
+    cin >> log_to_file;
+    if (log_to_file == "Y" || log_to_file == "y") {
+        fprintf(stdout, "all output is written to log.txt\n");
+        freopen("log.txt", "w", stdout);
+    }
+}
+
+void match_source_code(DFA_Reducer minimized_dfa, const string &source_code_file) {
+    ifstream file(source_code_file, ios_base::in);
+    string source_code;
+    printf("\n\nParsing source code..\n\n");
+    while (true) {
+        int c = file.get();
+        if (c == EOF) {
+            minimized_dfa.tokenize(source_code);
+            break;
+        }
+        if (c == ' ' || c == '\t' || c == '\n') {
+            if (!source_code.empty()) {
+                minimized_dfa.tokenize(source_code);
+                source_code = "";
+            }
+            continue;
+        }
+        source_code.push_back((char) c);
+    }
+    file.close();
+    printf("\nParsing done successfully !\n");
 }
