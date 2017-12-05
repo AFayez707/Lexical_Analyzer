@@ -10,4 +10,3 @@ lexical-analyzer-generator/log.txt
 cmake-build-debug/
 test/
 parser_generator
-
