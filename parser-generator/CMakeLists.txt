@@ -5,4 +5,5 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
-add_executable(parser_generator test/main.cpp)
+add_executable(parser_generator test/main.cpp table_generator/Table_Generator.cpp table_generator/Table_Generator.h
+        parser/Parser.cpp parser/Parser.h grammar_reader/Input_Reader.cpp grammar_reader/Input_Reader.h)
