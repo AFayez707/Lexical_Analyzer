@@ -8,7 +8,6 @@ lexical-analyzer-generator/log.txt
 
 parser-generator/.idea
 parser-generator/cmake-build-debug
-parser-generator/CMakeLists.txt
 parser-generator/test/
 parser-generator/parser_generator
 
