@@ -88,7 +88,7 @@ int DFA_Reducer::merge_non_distinguishable() {
                     bool may_match = (stateA->is_input_state() == stateB->is_input_state());
                     may_match = may_match && (stateA->is_accept_state() == stateB->is_accept_state());
                     may_match = may_match && (stateA->get_token_name() == stateB->get_token_name());
-                    if (may_match) continue;
+                    if (!may_match) continue;
 
                     bool in_same_set = true;
                     for (char c: this->language_chars) {
