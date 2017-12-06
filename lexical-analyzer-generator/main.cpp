@@ -12,9 +12,7 @@
 
 void init(string &grammar_file, string &source_code_file);
 
-void match_source_code(DFA_Reducer minimized_dfa, const string &source_code_file);
-
-int main(int argc) {
+int main(int argc, char *argv[]) {
     string grammar_file, source_code_file, log_to_file;
 
     if (argc == 1) {
@@ -40,11 +38,11 @@ int main(int argc) {
 //    dfa.display();
 
     // Minimize DFA
-    DFA_Reducer reducer(dfa.as_graph(), language_chars);
-    reducer.minimize();
-    reducer.display();
+    DFA_Reducer minimized_dfa(dfa.as_graph(), language_chars);
+    minimized_dfa.minimize();
+    minimized_dfa.display();
+    minimized_dfa.tokenize(source_code_file);
 
-    match_source_code(reducer, source_code_file);
     return 0;
 }
 
@@ -70,27 +68,4 @@ void init(string &grammar_file, string &source_code_file) {
         fprintf(stdout, "all output is written to log.txt\n");
         freopen("log.txt", "w", stdout);
     }
-}
-
-void match_source_code(DFA_Reducer minimized_dfa, const string &source_code_file) {
-    ifstream file(source_code_file, ios_base::in);
-    string source_code;
-    printf("\n\nParsing source code..\n\n");
-    while (true) {
-        int c = file.get();
-        if (c == EOF) {
-            minimized_dfa.tokenize(source_code);
-            break;
-        }
-        if (c == ' ' || c == '\t' || c == '\n') {
-            if (!source_code.empty()) {
-                minimized_dfa.tokenize(source_code);
-                source_code = "";
-            }
-            continue;
-        }
-        source_code.push_back((char) c);
-    }
-    file.close();
-    printf("\nParsing done successfully !\n");
 }

@@ -6,6 +6,7 @@
 #define LEXICAL_ANALYZER_DFA_REDUCER_H
 
 #include "../graph/Graph.h"
+#include <queue>
 
 class DFA_Reducer {
 public:
@@ -20,11 +21,13 @@ public:
 
     void display();
 
+    void tokenize(string file_path);
+
     /**
-     * @brief tokenize a give string of the source code
-     * @param source_code white space free string of the source code input file
+     * @brief get_tokens returns a queue of recognized tokens
+     * @returns queue of recognized lexeme with their corresponding tokens
      */
-    void tokenize(string source_code);
+    queue<pair<string, string> > get_tokens();
 
 private:
     Graph *dfa;
@@ -32,6 +35,7 @@ private:
     map<int, State *> new_state_mapper;
     map<State *, int> old_state_mapper;
     map<pair<int, char>, int> transition_table;
+    queue<pair<string, string> > tokens;
 
     /**
      * @brief merging the non-distinguishable states of a DFA, due to Hop-croft algorithm, is based on partition refinement,
@@ -45,6 +49,12 @@ private:
      * @brief creates transition table, then the minimized dfa
      */
     void build_minimized_dfa(int partition_count);
+
+    /**
+     * @brief tokenize a given sub-string of the source code file
+     * @param source_code white space free string of the source code input file
+     */
+    void tokenizer(string source_code);
 };
 
 #endif //LEXICAL_ANALYZER_DFA_REDUCER_H

@@ -3,6 +3,7 @@
 //
 
 #include "DFA_Reducer.h"
+#include <fstream>
 
 DFA_Reducer::DFA_Reducer(Graph *dfa, set<char> language_chars) {
     this->dfa = dfa;
@@ -24,11 +25,11 @@ void DFA_Reducer::minimize() {
 void DFA_Reducer::display() {
     set<State *> states = this->dfa->get_states();
 
-    string line = "---------------";
+    string line = "-----------------------------";
     for (unsigned int i = 0; i < language_chars.size(); ++i)
         line += "-------";
 
-    printf("%s\n               ", line.c_str());
+    printf("%s\n                              ", line.c_str());
     for (auto &input: this->language_chars) {
         printf("| %-5c", input);
     }
@@ -36,14 +37,14 @@ void DFA_Reducer::display() {
     printf("\n%s\n", line.c_str());
     for (auto &state: states) {
         if (state->is_input_state())
-            printf(" ➜ ");
+            printf(" ➜ |");
         else
-            printf("   ");
+            printf("   |");
 
         if (state->is_accept_state())
-            printf("*");
+            printf(" %12s |", state->get_token_name().c_str());
         else
-            printf(" ");
+            printf("              |");
 
         printf("%5d  =>  ", state->get_id());
         for (auto &next_state: state->get_transitions()) {
@@ -177,16 +178,38 @@ void DFA_Reducer::build_minimized_dfa(int partition_count) {
         delete (old_state.first);
 }
 
-void DFA_Reducer::tokenize(string source_code) {
-    int start = 0;
-    int end = 0;
-    int lexeme_end = 0;
+void DFA_Reducer::tokenize(string file_path) {
+    ifstream file(file_path, ios_base::in);
+    string source_code;
+    printf("\n\nParsing source code..\n\n");
+    while (true) {
+        int c = file.get();
+        if (c == EOF) {
+            this->tokenizer(source_code);
+            break;
+        }
+        if (c == ' ' || c == '\t' || c == '\n') {
+            if (!source_code.empty()) {
+                this->tokenizer(source_code);
+                source_code = "";
+            }
+            continue;
+        }
+        source_code.push_back((char) c);
+    }
+    file.close();
+    printf("\nParsing done successfully !\n");
+}
+
+void DFA_Reducer::tokenizer(string source_code) {
+    unsigned int start = 0, end = 0;
+    unsigned int lexeme_end = 0;
     string token, lexeme;
     State *cur_state = this->dfa->get_start_state();
 
     // space is the end of string flag
     source_code.push_back(' ');
-    while (start != (int) source_code.size() - 1) {
+    while (start != source_code.size() - 1) {
         char c = source_code[end];
 
         // if this char is not in the language chars && not end of string
@@ -198,8 +221,9 @@ void DFA_Reducer::tokenize(string source_code) {
 
         end++;
         // if reached end of string, return the longest token found
-        if (start < end && end == (int) source_code.size()) {
+        if (start < end && end == source_code.size()) {
             lexeme = source_code.substr(start, lexeme_end - start);
+            tokens.push(make_pair(lexeme, token));
             printf("  %-10s =>    %s\n", lexeme.c_str(), token.c_str());
             end = start = lexeme_end;
             cur_state = this->dfa->get_start_state();
@@ -212,4 +236,9 @@ void DFA_Reducer::tokenize(string source_code) {
             lexeme_end = end;
         }
     }
+
+}
+
+queue<pair<string, string> > DFA_Reducer::get_tokens() {
+    return this->tokens;
 }
