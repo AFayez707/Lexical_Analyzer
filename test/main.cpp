@@ -1,6 +1,5 @@
-#include <iostream>
+#include "test_parse_table.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+    run_parse_table_test();
 }
