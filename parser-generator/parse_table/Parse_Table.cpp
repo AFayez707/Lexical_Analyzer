@@ -10,16 +10,12 @@ Parse_Table::Parse_Table(MSS first, MSS follow, MSV grammar, set<string> termina
     this->grammar = move(grammar);
     this->terminals = move(terminals);
 
-    this->build_parse_table();
+    this->__sync_and_error();
+    this->__build_parse_table();
 }
 
-vector<string> Parse_Table::get_transition(string stack_top, string token) {
-    vector<string> production = this->parse_table[stack_top][token];
-
-    if (production.empty())
-        return {ERROR};
-
-    return production;
+vector<string> Parse_Table::peek(const string &stack_top, const string &token) {
+    return this->parse_table[stack_top][token];
 }
 
 void print_separator(unsigned long terminals_cnt) {
@@ -30,7 +26,7 @@ void print_separator(unsigned long terminals_cnt) {
     printf("%s\n", str.c_str());
 }
 
-void Parse_Table::display_parse_table() {
+void Parse_Table::display() {
     print_separator(terminals.size());
     fprintf(stdout, "                 |");
     for (auto &T: this->terminals)
@@ -54,7 +50,20 @@ void Parse_Table::display_parse_table() {
     print_separator(terminals.size());
 }
 
-void Parse_Table::build_parse_table() {
+void Parse_Table::__sync_and_error() {
+    for (auto &rule:this->grammar) {
+        string LHS = rule.first;
+        set<string> LHS_follow = this->follow[LHS];
+        for (const string &terminal: this->terminals) {
+            if (LHS_follow.find(terminal) != LHS_follow.end())
+                this->parse_table[LHS][terminal] = {SYNC};
+            else
+                this->parse_table[LHS][terminal] = {ERROR};
+        }
+    }
+}
+
+void Parse_Table::__build_parse_table() {
     // for each production rule
     for (auto &rule:this->grammar) {
         string LHS = rule.first;

@@ -109,11 +109,10 @@ void run_parse_table_test() {
     terminals.insert("(");
     terminals.insert(")");
     terminals.insert("id");
-    terminals.insert(EPS);
     terminals.insert(DOLLAR_SIGN);
 
-    Parse_Table *tg = new Parse_Table(first, follow, grammar, terminals);
-    tg->display_parse_table();
+    Parse_Table *parse_table = new Parse_Table(first, follow, grammar, terminals);
+    parse_table->display();
 }
 
 #endif //PARSER_GENERATOR_TEST_PARSE_TABLE_H
