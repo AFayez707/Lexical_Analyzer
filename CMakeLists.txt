@@ -8,4 +8,5 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 add_executable(parser_generator test/main.cpp parser-generator/parse_table/Parse_Table.cpp
         parser-generator/parse_table/Parse_Table.h
         parser-generator/parser/Parser.cpp parser-generator/parser/Parser.h
-        parser-generator/grammar_reader/Input_Reader.cpp parser-generator/grammar_reader/Input_Reader.h test/test_parse_table.h)
+        parser-generator/grammar_reader/CFG_Reader.cpp parser-generator/grammar_reader/CFG_Reader.h
+        test/test_parse_table.h test/test_input_reader.h)

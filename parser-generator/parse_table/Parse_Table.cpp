@@ -29,7 +29,7 @@ void print_separator(unsigned long terminals_cnt) {
 void Parse_Table::display() {
     print_separator(terminals.size());
     fprintf(stdout, "                 |");
-    for (auto &T: this->terminals)
+    for (const string &T: this->terminals)
         fprintf(stdout, " %-15s |", T.c_str());
 
     printf("\n");
@@ -37,9 +37,9 @@ void Parse_Table::display() {
 
     for (auto &non_T: this->parse_table) {
         fprintf(stdout, " %-15s |", non_T.first.c_str());
-        for (auto &T: this->terminals) {
+        for (const string &T: this->terminals) {
             string str;
-            for (auto &to: this->parse_table[non_T.first][T])
+            for (const string &to: this->parse_table[non_T.first][T])
                 str += to;
 
             fprintf(stdout, " %-15s |", str.c_str());
@@ -69,7 +69,7 @@ void Parse_Table::__build_parse_table() {
         string LHS = rule.first;
 
         // loop RHS products separated by OR
-        for (auto &RHS: rule.second) {
+        for (vector<string> &RHS: rule.second) {
             bool eps_in_first_RHS = false;
 
             // loop all the first of RHS

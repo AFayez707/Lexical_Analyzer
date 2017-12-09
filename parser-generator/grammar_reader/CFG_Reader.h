@@ -9,27 +9,27 @@
 #include <map>
 #include <vector>
 
+#define MSV map<string, vector<vector<string> > >
+
 using namespace std;
 
-typedef struct Entry {
-    bool is_terminal;
-    vector<Entry> production;
-} Entry;
-
-class Input_Reader {
+// Context Free Grammar Reader
+class CFG_Reader {
 public:
-    explicit Input_Reader(string file_path);
+    explicit CFG_Reader(string file_path);
+
+    MSV get_grammar();
 
     set<string> get_terminals();
 
-    map<string, vector<Entry> > get_grammar();
+    void display();
 
 private:
     string file_path;
+    MSV grammar;
     set<string> terminals;
-    map<string, vector<Entry> > grammar;
 
-    void read_file(string file_path);
+    void __read(string file_path);
 };
 
 #endif //PARSER_GENERATOR_INPUT_READER_H
