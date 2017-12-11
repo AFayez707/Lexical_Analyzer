@@ -6,8 +6,24 @@
 #define PARSER_GENERATOR_PARSER_H
 
 
-class Parser {
+#include <queue>
+#include <fstream>
+#include "../parse_table/Parse_Table.h"
 
+class Parser {
+public:
+    Parser(string file_path, const string &log_file, queue<string> tokens);
+
+    void parse();
+
+private:
+    string file_path;
+    ofstream *logger;
+    string start_symbol;
+    queue<string> tokens;
+    Parse_Table *parse_table;
+
+    void __init();
 };
 
 
