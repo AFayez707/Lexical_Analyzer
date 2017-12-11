@@ -2,8 +2,8 @@
 // Created by ahmed on 12/5/17.
 //
 
-#include <iomanip>
 #include "Parse_Table.h"
+#include <iomanip>
 
 Parse_Table::Parse_Table(FIRST_FOLLOW first, FIRST_FOLLOW follow, GRAMMAR grammar, set<string> terminals) {
     this->first = move(first);
@@ -27,7 +27,7 @@ string get_separator(unsigned long terminals_cnt) {
 }
 
 void Parse_Table::log(ofstream *log_file) {
-    *log_file << left;
+    *log_file << left << "Parse Table:\n\n";
     *log_file << get_separator(terminals.size()) << "                 |";
 
     for (const string &T: this->terminals)

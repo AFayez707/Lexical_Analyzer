@@ -9,6 +9,7 @@
 #include <set>
 #include <map>
 #include <vector>
+#include <fstream>
 
 #define GRAMMAR map<string, vector<vector<string> > >
 
@@ -25,7 +26,7 @@ public:
 
     string get_start_symbol();
 
-    void display();
+    void log(ofstream *log_file);
 
 private:
     string file_path;
