@@ -7,11 +7,14 @@
 
 
 #include <queue>
-#include "../parse_table/Parse_Table.h"
+#include "parse_table/Parse_Table.h"
 
 class Parser {
 public:
     Parser(string file_path, const string &log_file, queue<string> tokens);
+
+    // Constructor just for testing
+    Parser(string start_symbol, Parse_Table *parse_table, queue<string> tokens, const string &log_file);
 
     void parse();
 

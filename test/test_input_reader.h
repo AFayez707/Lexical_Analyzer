@@ -5,12 +5,12 @@
 #ifndef PARSER_GENERATOR_TEST_INPUT_READER_H
 #define PARSER_GENERATOR_TEST_INPUT_READER_H
 
-#include "../parser-generator/grammar_reader/CFG_Reader.h"
+#include "../parser/grammar_reader/CFG_Reader.h"
 
 void run_input_reader_test();
 
 void run_input_reader_test() {
-    auto *logger = new ofstream("parser-log.txt", ios_base::app);
+    auto *logger = new ofstream("parser-log.txt", ios_base::out);
 
     CFG_Reader ir("java_cfg.txt");
     ir.log(logger);

@@ -26,7 +26,7 @@ public:
 private:
     string start_symbol;
     GRAMMAR grammar;
-    GRAMMAR non_ambiguous_grammar;
+    GRAMMAR ambiguity_free_grammar;
 
     /**
      * @brief Responsible for eliminating grammar ambiguity

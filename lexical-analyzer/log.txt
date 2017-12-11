@@ -1,0 +1,333 @@
+Definitions:
+ digit:(0|1|2|3|4|5|6|7|8|9)
+ digits:(0|1|2|3|4|5|6|7|8|9)+
+ letter:((a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)|(A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z))
+
+
+Expressions:
+ addop:\+-|
+ assign:=
+ boolean:bo.o.l.e.a.n.
+ else:el.s.e.
+ float:fl.o.a.t.
+ id:ab|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|AB|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z||ab|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|AB|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z||01|2|3|4|5|6|7|8|9||*.
+ if:if.
+ int:in.t.
+ mulop:\*/|
+ num:01|2|3|4|5|6|7|8|9|+01|2|3|4|5|6|7|8|9|+\..01|2|3|4|5|6|7|8|9|+.\LE01|2|3|4|5|6|7|8|9|+.|.|
+ punctuation:;,|\(|\)|{|}|
+ relop:\=\=.!\=.|>|>\=.|<|<\=.|
+ while:wh.i.l.e.
+
+
+Language:
+! ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 ; < = > A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z { } 
+
+Expressions Vector:
+boolean:bo.o.l.e.a.n.
+int:in.t.
+float:fl.o.a.t.
+if:if.
+else:el.s.e.
+while:wh.i.l.e.
+id:ab|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|AB|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z||ab|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|AB|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z||01|2|3|4|5|6|7|8|9||*.
+num:01|2|3|4|5|6|7|8|9|+01|2|3|4|5|6|7|8|9|+\..01|2|3|4|5|6|7|8|9|+.\LE01|2|3|4|5|6|7|8|9|+.|.|
+relop:\=\=.!\=.|>|>\=.|<|<\=.|
+assign:=
+punctuation:;,|\(|\)|{|}|
+addop:\+-|
+mulop:\*/|
+
+NFA state with ID: 722 is accepting, it's token name is: punctuation
+NFA state with ID: 722 is accepting, it's token name is: punctuation
+NFA state with ID: 734 is accepting, it's token name is: mulop
+NFA state with ID: 728 is accepting, it's token name is: addop
+NFA state with ID: 722 is accepting, it's token name is: punctuation
+NFA state with ID: 728 is accepting, it's token name is: addop
+NFA state with ID: 734 is accepting, it's token name is: mulop
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 722 is accepting, it's token name is: punctuation
+NFA state with ID: 698 is accepting, it's token name is: relop
+NFA state with ID: 700 is accepting, it's token name is: assign
+NFA state with ID: 698 is accepting, it's token name is: relop
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 722 is accepting, it's token name is: punctuation
+NFA state with ID: 722 is accepting, it's token name is: punctuation
+NFA state with ID: 698 is accepting, it's token name is: relop
+NFA state with ID: 698 is accepting, it's token name is: relop
+NFA state with ID: 698 is accepting, it's token name is: relop
+NFA state with ID: 698 is accepting, it's token name is: relop
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 34 is accepting, it's token name is: if
+Found two NFA accepting states mapping to the same DFA state. One of the tokens will never be detected
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 20 is accepting, it's token name is: int
+Found two NFA accepting states mapping to the same DFA state. One of the tokens will never be detected
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 42 is accepting, it's token name is: else
+Found two NFA accepting states mapping to the same DFA state. One of the tokens will never be detected
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 668 is accepting, it's token name is: num
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 30 is accepting, it's token name is: float
+Found two NFA accepting states mapping to the same DFA state. One of the tokens will never be detected
+NFA state with ID: 52 is accepting, it's token name is: while
+Found two NFA accepting states mapping to the same DFA state. One of the tokens will never be detected
+NFA state with ID: 506 is accepting, it's token name is: id
+NFA state with ID: 14 is accepting, it's token name is: boolean
+Found two NFA accepting states mapping to the same DFA state. One of the tokens will never be detected
+
+
+Minimizing DFA:
+
+Partitioning refinement
+=======================
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                              | !    | (    | )    | *    | +    | ,    | -    | .    | /    | 0    | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    | 9    | ;    | <    | =    | >    | A    | B    | C    | D    | E    | F    | G    | H    | I    | J    | K    | L    | M    | N    | O    | P    | Q    | R    | S    | T    | U    | V    | W    | X    | Y    | Z    | a    | b    | c    | d    | e    | f    | g    | h    | i    | j    | k    | l    | m    | n    | o    | p    | q    | r    | s    | t    | u    | v    | w    | x    | y    | z    | {    | }    
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   |       assign |    1  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 7    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |              |    2  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |           id |    3  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 15   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |          num |    4  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 4    | 4    | 4    | 4    | 4    | 4    | 4    | 4    | 4    | 4    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |  punctuation |    5  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |        relop |    6  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 7    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |        relop |    7  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |        mulop |    8  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |        addop |    9  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |          int |   10  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |         else |   11  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           if |   12  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |        float |   13  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |        while |   14  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |      boolean |   15  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |              |   16  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 4    | 4    | 4    | 4    | 4    | 4    | 4    | 4    | 4    | 4    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+ ➜ |              |   17  =>  | 18   | 5    | 5    | 8    | 9    | 5    | 9    | 2    | 8    | 25   | 25   | 25   | 25   | 25   | 25   | 25   | 25   | 25   | 25   | 5    | 6    | 1    | 6    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 39   | 40   | 40   | 33   | 37   | 40   | 40   | 22   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 32   | 40   | 40   | 40   | 5    | 5    
+   |              |   18  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 7    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |           id |   19  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 3    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   20  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 11   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   21  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 13   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   22  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 12   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 23   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   23  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 10   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   24  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 14   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |          num |   25  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 27   | 2    | 25   | 25   | 25   | 25   | 25   | 25   | 25   | 25   | 25   | 25   | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |          num |   26  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 26   | 26   | 26   | 26   | 26   | 26   | 26   | 26   | 26   | 26   | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 16   | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |              |   27  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 26   | 26   | 26   | 26   | 26   | 26   | 26   | 26   | 26   | 26   | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    
+   |           id |   28  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 30   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   29  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 21   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   30  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 24   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   31  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 20   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   32  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 28   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   33  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 31   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   34  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 19   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   35  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 29   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   36  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 38   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   37  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 35   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   38  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 34   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   39  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 36   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+   |           id |   40  =>  | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    | 2    | 2    | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 40   | 2    | 2    
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Parsing source code..
+
+  float      =>    float
+  sum        =>    id
+  ,          =>    punctuation
+  count      =>    id
+  ;          =>    punctuation
+  pass       =>    id
+  +          =>    addop
+  +          =>    addop
+  ;          =>    punctuation
+  pass       =>    id
+  -          =>    addop
+  -          =>    addop
+  ;          =>    punctuation
+  while      =>    while
+  (          =>    punctuation
+  pass       =>    id
+  !=         =>    relop
+  10         =>    num
+  )          =>    punctuation
+  {          =>    punctuation
+  pass       =>    id
+  =          =>    assign
+  pass       =>    id
+  +          =>    addop
+  1          =>    num
+  ;          =>    punctuation
+  }          =>    punctuation
+  if         =>    if
+  (          =>    punctuation
+  mnt        =>    id
+  <=         =>    relop
+  0          =>    num
+  )          =>    punctuation
+  {          =>    punctuation
+  count      =>    id
+  =          =>    assign
+  count      =>    id
+  +          =>    addop
+  1.234      =>    num
+  ;          =>    punctuation
+  }          =>    punctuation
+  else       =>    else
+  {          =>    punctuation
+  sum        =>    id
+  =          =>    assign
+  sum        =>    id
+  +          =>    addop
+  mnt        =>    id
+  ;          =>    punctuation
+  }          =>    punctuation
+
+Parsing done successfully !

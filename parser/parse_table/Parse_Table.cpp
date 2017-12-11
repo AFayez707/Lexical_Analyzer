@@ -27,7 +27,7 @@ string get_separator(unsigned long terminals_cnt) {
 }
 
 void Parse_Table::log(ofstream *log_file) {
-    *log_file << left << "Parse Table:\n";
+    *log_file << left << "\n\nParse Table:\n";
     *log_file << get_separator(terminals.size()) << "                 |";
 
     for (const string &T: this->terminals)
