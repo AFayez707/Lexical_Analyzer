@@ -1,10 +1,10 @@
 *.o
 
-lexical-analyzer-generator/.idea/
-lexical-analyzer-generator/cmake-build-debug/
-lexical-analyzer-generator/test/
-lexical-analyzer-generator/lexical_analyzer
-lexical-analyzer-generator/log.txt
+lexical-analyzer/.idea/
+lexical-analyzer/cmake-build-debug/
+lexical-analyzer/test/
+lexical-analyzer/lexical_analyzer
+lexical-analyzer/log.txt
 
 .idea/
 cmake-build-debug/
