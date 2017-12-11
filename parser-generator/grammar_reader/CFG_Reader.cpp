@@ -19,6 +19,31 @@ set<string> CFG_Reader::get_terminals() {
     return this->terminals;
 }
 
+string CFG_Reader::get_start_symbol() {
+    return this->start_symbol;
+}
+
+void CFG_Reader::display() {
+    printf("\n\nTerminals:\n    ");
+    for (const string &t: this->terminals)
+        printf("%s    ", t.c_str());
+
+    printf("\n\nStart Symbol: %s", this->start_symbol.c_str());
+
+    printf("\n\nGrammar: \n");
+    for (auto &rule: this->grammar) {
+        printf("    # %-18s➜ ", rule.first.c_str());
+        for (int i = 0; i < rule.second.size(); i++) {
+            for (const string &j : rule.second[i])
+                printf("%s ", j.c_str());
+
+            if (i < rule.second.size() - 1)
+                printf("| ");
+        }
+        printf("\n");
+    }
+}
+
 void CFG_Reader::__read(string file_path) {
     ifstream file(file_path, ios_base::in);
     string str, LHS;
@@ -31,7 +56,6 @@ void CFG_Reader::__read(string file_path) {
     //       '      -> terminal
     // \n \t space  -> token
 
-    printf("\n\nReading context free grammar...\n");
     while (true) {
         int c = file.get();
 
@@ -58,6 +82,7 @@ void CFG_Reader::__read(string file_path) {
         } else if (c == ' ' || c == '\t' || c == '\n') {
             if (!str.empty()) {
                 LHS_lock ? void(LHS = str) : production.emplace_back(str);
+                start_symbol = start_symbol.empty() ? LHS : start_symbol;
                 LHS_lock = false;
                 str = "";
             }
@@ -66,24 +91,4 @@ void CFG_Reader::__read(string file_path) {
         str.push_back((char) c);
     }
     file.close();
-    printf("Grammar read successfully !\n");
-}
-
-void CFG_Reader::display() {
-    printf("\n\nTerminals:\n    ");
-    for (const string &t: this->terminals)
-        printf("%s    ", t.c_str());
-
-    printf("\n\nGrammar: \n");
-    for (auto &rule: this->grammar) {
-        printf("    # %-18s➜ ", rule.first.c_str());
-        for (int i = 0; i < rule.second.size(); i++) {
-            for (const string &j : rule.second[i])
-                printf("%s ", j.c_str());
-
-            if (i < rule.second.size() - 1)
-                printf("| ");
-        }
-        printf("\n");
-    }
 }

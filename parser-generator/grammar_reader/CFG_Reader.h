@@ -22,10 +22,13 @@ public:
 
     set<string> get_terminals();
 
+    string get_start_symbol();
+
     void display();
 
 private:
     string file_path;
+    string start_symbol;
     MSV grammar;
     set<string> terminals;
 
