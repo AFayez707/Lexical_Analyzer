@@ -5,6 +5,7 @@
 #ifndef PARSER_GENERATOR_TEST_PARSE_TABLE_H
 #define PARSER_GENERATOR_TEST_PARSE_TABLE_H
 
+#include <fstream>
 #include "../parser-generator/parse_table/Parse_Table.h"
 
 void run_parse_table_test();
@@ -13,20 +14,15 @@ void run_parse_table_test() {
     FIRST_FOLLOW first, follow;
     GRAMMAR grammar;
 
-    first["E"].insert("(");
-    first["E"].insert("id");
+    first["E"].insert("("), first["E"].insert("id");
 
-    first["E^"].insert("+");
-    first["E^"].insert(EPS);
+    first["E^"].insert("+"), first["E^"].insert(EPS);
 
-    first["T"].insert("(");
-    first["T"].insert("id");
+    first["T"].insert("("), first["T"].insert("id");
 
-    first["T^"].insert("*");
-    first["T^"].insert(EPS);
+    first["T^"].insert("*"), first["T^"].insert(EPS);
 
-    first["F"].insert("(");
-    first["F"].insert("id");
+    first["F"].insert("("), first["F"].insert("id");
 
     first["("].insert("(");
     first[")"].insert(")");
@@ -36,39 +32,25 @@ void run_parse_table_test() {
     first[EPS].insert(EPS);
 
     /**
-     *
      */
-    follow["E"].insert(")");
-    follow["E"].insert(DOLLAR_SIGN);
+    follow["E"].insert(")"), follow["E"].insert(DOLLAR_SIGN);
 
-    follow["E^"].insert(")");
-    follow["E^"].insert(DOLLAR_SIGN);
+    follow["E^"].insert(")"), follow["E^"].insert(DOLLAR_SIGN);
 
-    follow["T"].insert("+");
-    follow["T"].insert(")");
-    follow["T"].insert(DOLLAR_SIGN);
+    follow["T"].insert("+"), follow["T"].insert(")"), follow["T"].insert(DOLLAR_SIGN);
 
-    follow["T^"].insert("+");
-    follow["T^"].insert(")");
-    follow["T^"].insert(DOLLAR_SIGN);
+    follow["T^"].insert("+"), follow["T^"].insert(")"), follow["T^"].insert(DOLLAR_SIGN);
 
-    follow["F"].insert("*");
-    follow["F"].insert("+");
-    follow["F"].insert(")");
-    follow["F"].insert(DOLLAR_SIGN);
+    follow["F"].insert("*"), follow["F"].insert("+"), follow["F"].insert(")"), follow["F"].insert(DOLLAR_SIGN);
 
     /**
-     *
      */
     vector<string> v;
-    v.emplace_back("T");
-    v.emplace_back("E^");
+    v.emplace_back("T"), v.emplace_back("E^");
     grammar["E"].emplace_back(v);
 
     v.clear();
-    v.emplace_back("+");
-    v.emplace_back("T");
-    v.emplace_back("E^");
+    v.emplace_back("+"), v.emplace_back("T"), v.emplace_back("E^");
     grammar["E^"].emplace_back(v);
 
     v.clear();
@@ -76,14 +58,11 @@ void run_parse_table_test() {
     grammar["E^"].emplace_back(v);
 
     v.clear();
-    v.emplace_back("F");
-    v.emplace_back("T^");
+    v.emplace_back("F"), v.emplace_back("T^");
     grammar["T"].emplace_back(v);
 
     v.clear();
-    v.emplace_back("*");
-    v.emplace_back("F");
-    v.emplace_back("T^");
+    v.emplace_back("*"), v.emplace_back("F"), v.emplace_back("T^");
     grammar["T^"].emplace_back(v);
 
     v.clear();
@@ -95,13 +74,10 @@ void run_parse_table_test() {
     grammar["F"].emplace_back(v);
 
     v.clear();
-    v.emplace_back("(");
-    v.emplace_back("E");
-    v.emplace_back(")");
+    v.emplace_back("("), v.emplace_back("E"), v.emplace_back(")");
     grammar["F"].emplace_back(v);
 
     /**
-     *
      */
     set<string> terminals;
     terminals.insert("+");
@@ -112,7 +88,9 @@ void run_parse_table_test() {
     terminals.insert(DOLLAR_SIGN);
 
     Parse_Table *parse_table = new Parse_Table(first, follow, grammar, terminals);
-    parse_table->display();
+    auto *log = new ofstream("parser-log.txt", ios_base::out);
+    parse_table->log(log);
+    log->close();
 }
 
 #endif //PARSER_GENERATOR_TEST_PARSE_TABLE_H

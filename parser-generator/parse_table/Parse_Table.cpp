@@ -2,6 +2,7 @@
 // Created by ahmed on 12/5/17.
 //
 
+#include <iomanip>
 #include "Parse_Table.h"
 
 Parse_Table::Parse_Table(FIRST_FOLLOW first, FIRST_FOLLOW follow, GRAMMAR grammar, set<string> terminals) {
@@ -18,36 +19,34 @@ vector<string> Parse_Table::peek(const string &stack_top, const string &token) {
     return this->parse_table[stack_top][token];
 }
 
-void print_separator(unsigned long terminals_cnt) {
+string get_separator(unsigned long terminals_cnt) {
     string str;
     for (unsigned int i = 0; i < (terminals_cnt + 1) * 18; i++)
         str += "-";
-
-    printf("%s\n", str.c_str());
+    return str + "\n";
 }
 
-void Parse_Table::display() {
-    print_separator(terminals.size());
-    fprintf(stdout, "                 |");
-    for (const string &T: this->terminals)
-        fprintf(stdout, " %-15s |", T.c_str());
+void Parse_Table::log(ofstream *log_file) {
+    *log_file << left;
+    *log_file << get_separator(terminals.size()) << "                 |";
 
-    printf("\n");
-    print_separator(terminals.size());
+    for (const string &T: this->terminals)
+        *log_file << " " << setw(15) << T << " |";
+
+    *log_file << "\n" << get_separator(terminals.size());
 
     for (auto &non_T: this->parse_table) {
-        fprintf(stdout, " %-15s |", non_T.first.c_str());
+        *log_file << " " << setw(15) << non_T.first << " |";
         for (const string &T: this->terminals) {
             string str;
             for (const string &to: this->parse_table[non_T.first][T])
                 str += to;
 
-            fprintf(stdout, " %-15s |", str.c_str());
+            *log_file << " " << setw(15) << str << " |";
         }
-        fprintf(stdout, "\n");
+        *log_file << "\n";
     }
-
-    print_separator(terminals.size());
+    *log_file << get_separator(terminals.size());
 }
 
 void Parse_Table::__sync_and_error() {

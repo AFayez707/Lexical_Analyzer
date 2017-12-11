@@ -9,6 +9,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <fstream>
 
 #define SYNC        "\\SYNC\\"
 #define ERROR       "\\ERROR\\"
@@ -27,7 +28,7 @@ public:
 
     vector<string> peek(const string &stack_top, const string &token);
 
-    void display();
+    void log(ofstream *log_file);
 
 private:
     FIRST_FOLLOW first;

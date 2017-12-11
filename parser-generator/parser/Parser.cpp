@@ -10,7 +10,7 @@
 
 Parser::Parser(string file_path, const string &log_file, queue<string> tokens) {
     this->file_path = move(file_path);
-    this->logger = new ofstream(log_file);
+    this->logger = new ofstream(log_file, ios_base::out);
     this->tokens = move(tokens);
 
     __init();
@@ -18,6 +18,8 @@ Parser::Parser(string file_path, const string &log_file, queue<string> tokens) {
 
 void Parser::parse() {
 
+    // Close log file buffer
+    this->logger->close();
 }
 
 void Parser::__init() {
