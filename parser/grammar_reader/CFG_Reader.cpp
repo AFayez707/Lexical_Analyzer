@@ -53,9 +53,12 @@ void CFG_Reader::__read(string file_path) {
     //       =      -> rule definition
     //       '      -> terminal
     // \n \t space  -> token
+    // \L           -> EPSILON
 
     while (true) {
         int c = file.get();
+
+        str = str == "\\L" ? EPS : str;
 
         if (c == EOF) {
             str.length() ? production.emplace_back(str) : void();
@@ -65,18 +68,14 @@ void CFG_Reader::__read(string file_path) {
             !production.empty() ? grammar[LHS].emplace_back(production) : void();
             LHS_lock = true;
             str = "";
-            continue;
         } else if (c == '\'') {
             comma_lock ? void(this->terminals.insert(str)) : void();
             comma_lock = !comma_lock;
-            continue;
         } else if (c == '=' && !comma_lock) {
             production.clear();
-            continue;
         } else if (c == '|') {
             grammar[LHS].emplace_back(production);
             production.clear();
-            continue;
         } else if (c == ' ' || c == '\t' || c == '\n') {
             if (!str.empty()) {
                 LHS_lock ? void(LHS = str) : production.emplace_back(str);
@@ -84,9 +83,8 @@ void CFG_Reader::__read(string file_path) {
                 LHS_lock = false;
                 str = "";
             }
-            continue;
-        }
-        str.push_back((char) c);
+        } else
+            str.push_back((char) c);
     }
     file.close();
 }
