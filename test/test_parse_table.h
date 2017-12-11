@@ -6,11 +6,11 @@
 #define PARSER_GENERATOR_TEST_PARSE_TABLE_H
 
 #include <fstream>
-#include "../parser-generator/parse_table/Parse_Table.h"
+#include "../parser/parse_table/Parse_Table.h"
 
-void run_parse_table_test();
+Parse_Table *run_parse_table_test();
 
-void run_parse_table_test() {
+Parse_Table *run_parse_table_test() {
     FIRST_FOLLOW first, follow;
     GRAMMAR grammar;
 
@@ -88,9 +88,11 @@ void run_parse_table_test() {
     terminals.insert(DOLLAR_SIGN);
 
     Parse_Table *parse_table = new Parse_Table(first, follow, grammar, terminals);
-    auto *log = new ofstream("parser-log.txt", ios_base::out);
+    auto *log = new ofstream("parser-log.txt", ios_base::app);
     parse_table->log(log);
     log->close();
+
+    return parse_table;
 }
 
 #endif //PARSER_GENERATOR_TEST_PARSE_TABLE_H
