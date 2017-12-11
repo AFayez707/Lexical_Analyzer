@@ -11,7 +11,7 @@ CFG_Reader::CFG_Reader(string file_path) {
     __read(this->file_path);
 }
 
-MSV CFG_Reader::get_grammar() {
+GRAMMAR CFG_Reader::get_grammar() {
     return this->grammar;
 }
 

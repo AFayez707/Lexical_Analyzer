@@ -5,6 +5,7 @@
 #ifndef PARSE_TABLE_H
 #define PARSE_TABLE_H
 
+
 #include <map>
 #include <set>
 #include <vector>
@@ -14,24 +15,24 @@
 #define EPS         "\\EPSILON\\"
 #define DOLLAR_SIGN "\\$\\"
 
-#define MSS     map<string, set<string> >
-#define MSV     map<string, vector<vector<string> > >
-#define TABLE   map<string, map<string, vector<string> > >
+#define FIRST_FOLLOW    map<string, set<string> >
+#define GRAMMAR         map<string, vector<vector<string> > >
+#define TABLE           map<string, map<string, vector<string> > >
 
 using namespace std;
 
 class Parse_Table {
 public:
-    Parse_Table(MSS first, MSS follow, MSV grammar, set<string> terminals);
+    Parse_Table(FIRST_FOLLOW first, FIRST_FOLLOW follow, GRAMMAR grammar, set<string> terminals);
 
     vector<string> peek(const string &stack_top, const string &token);
 
     void display();
 
 private:
-    MSS first;
-    MSS follow;
-    MSV grammar;
+    FIRST_FOLLOW first;
+    FIRST_FOLLOW follow;
+    GRAMMAR grammar;
     set<string> terminals;
     TABLE parse_table;
 
@@ -39,5 +40,6 @@ private:
 
     void __build_parse_table();
 };
+
 
 #endif //PARSE_TABLE_H

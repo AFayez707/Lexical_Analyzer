@@ -5,11 +5,12 @@
 #ifndef PARSER_GENERATOR_INPUT_READER_H
 #define PARSER_GENERATOR_INPUT_READER_H
 
+
 #include <set>
 #include <map>
 #include <vector>
 
-#define MSV map<string, vector<vector<string> > >
+#define GRAMMAR map<string, vector<vector<string> > >
 
 using namespace std;
 
@@ -18,7 +19,7 @@ class CFG_Reader {
 public:
     explicit CFG_Reader(string file_path);
 
-    MSV get_grammar();
+    GRAMMAR get_grammar();
 
     set<string> get_terminals();
 
@@ -29,10 +30,11 @@ public:
 private:
     string file_path;
     string start_symbol;
-    MSV grammar;
+    GRAMMAR grammar;
     set<string> terminals;
 
     void __read(string file_path);
 };
+
 
 #endif //PARSER_GENERATOR_INPUT_READER_H

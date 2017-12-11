@@ -4,7 +4,7 @@
 
 #include "Parse_Table.h"
 
-Parse_Table::Parse_Table(MSS first, MSS follow, MSV grammar, set<string> terminals) {
+Parse_Table::Parse_Table(FIRST_FOLLOW first, FIRST_FOLLOW follow, GRAMMAR grammar, set<string> terminals) {
     this->first = move(first);
     this->follow = move(follow);
     this->grammar = move(grammar);

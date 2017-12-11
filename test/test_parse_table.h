@@ -10,8 +10,8 @@
 void run_parse_table_test();
 
 void run_parse_table_test() {
-    MSS first, follow;
-    MSV grammar;
+    FIRST_FOLLOW first, follow;
+    GRAMMAR grammar;
 
     first["E"].insert("(");
     first["E"].insert("id");
