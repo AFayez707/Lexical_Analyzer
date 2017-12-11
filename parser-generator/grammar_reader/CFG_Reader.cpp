@@ -3,7 +3,7 @@
 //
 
 #include "CFG_Reader.h"
-#include <fstream>
+#include <iomanip>
 
 CFG_Reader::CFG_Reader(string file_path) {
     this->file_path = move(file_path);
@@ -23,24 +23,22 @@ string CFG_Reader::get_start_symbol() {
     return this->start_symbol;
 }
 
-void CFG_Reader::display() {
-    printf("\n\nTerminals:\n    ");
+void CFG_Reader::log(ofstream *log_file) {
+    *log_file << left << "\n\nTerminals:\n    ";
     for (const string &t: this->terminals)
-        printf("%s    ", t.c_str());
+        *log_file << t << "    ";
 
-    printf("\n\nStart Symbol: %s", this->start_symbol.c_str());
+    *log_file << "\n\nStart Symbol: " << start_symbol << "\n\nGrammar: \n";
 
-    printf("\n\nGrammar: \n");
     for (auto &rule: this->grammar) {
-        printf("    # %-18s➜ ", rule.first.c_str());
+        *log_file << "    # " << setw(18) << rule.first << "➜ ";
         for (int i = 0; i < rule.second.size(); i++) {
             for (const string &j : rule.second[i])
-                printf("%s ", j.c_str());
+                *log_file << j << " ";
 
-            if (i < rule.second.size() - 1)
-                printf("| ");
+            *log_file << (i < rule.second.size() - 1 ? "| " : "");
         }
-        printf("\n");
+        *log_file << endl;
     }
 }
 

@@ -10,8 +10,12 @@
 void run_input_reader_test();
 
 void run_input_reader_test() {
+    auto *logger = new ofstream("parser-log.txt", ios_base::app);
+
     CFG_Reader ir("java_cfg.txt");
-    ir.display();
+    ir.log(logger);
+
+    logger->close();
 }
 
 #endif //PARSER_GENERATOR_TEST_INPUT_READER_H
