@@ -210,7 +210,7 @@ void DFA_Reducer::tokenizer(string source_code) {
         // if this char is not in the language chars && not end of string
         if (this->language_chars.find(c) == this->language_chars.end() && c != ' ') {
             source_code.erase(end, 1);
-            printf("syntax_error: unknown character \'%c\'\n", c);
+            printf("lexical_error: unknown character \'%c\'\n", c);
             continue;
         }
 
