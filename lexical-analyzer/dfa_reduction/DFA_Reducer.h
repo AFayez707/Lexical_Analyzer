@@ -7,6 +7,7 @@
 
 #include "../graph/Graph.h"
 #include <queue>
+#include <fstream>
 
 class DFA_Reducer {
 public:
@@ -19,15 +20,9 @@ public:
      */
     void minimize();
 
-    void display();
+    void log(ofstream *log_file);
 
     void tokenize(string file_path);
-
-    /**
-     * @brief get_tokens returns a queue of recognized tokens
-     * @returns queue of recognized lexeme with their corresponding tokens
-     */
-    queue<pair<string, string> > get_tokens();
 
 private:
     Graph *dfa;

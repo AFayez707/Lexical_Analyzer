@@ -4,6 +4,7 @@
 
 #include "DFA_Reducer.h"
 #include <fstream>
+#include <iomanip>
 
 DFA_Reducer::DFA_Reducer(Graph *dfa, set<char> language_chars) {
     this->dfa = dfa;
@@ -15,48 +16,43 @@ Graph *DFA_Reducer::get_dfa() const {
 }
 
 void DFA_Reducer::minimize() {
-    printf("\n\nMinimizing DFA:\n");
-
-    // merging states using disjoint sets
     int partition_count = this->merge_non_distinguishable();
     this->build_minimized_dfa(partition_count);
 }
 
-void DFA_Reducer::display() {
-    set<State *> states = this->dfa->get_states();
+void DFA_Reducer::log(ofstream *log_file) {
+    *log_file << "\n\n\nMinimized DFA:\n";
 
+    set<State *> states = this->dfa->get_states();
     string line = "-----------------------------";
     for (unsigned int i = 0; i < language_chars.size(); ++i)
         line += "-------";
 
-    printf("%s\n                              ", line.c_str());
-    for (auto &input: this->language_chars) {
-        printf("| %-5c", input);
-    }
+    *log_file << line << "\n                              ";
+    for (auto &input: this->language_chars)
+        *log_file << "| " << setw(5) << input;
 
-    printf("\n%s\n", line.c_str());
+    *log_file << "\n" << line << "\n";
     for (auto &state: states) {
         if (state->is_input_state())
-            printf(" ➜ |");
+            *log_file << " ➜ |";
         else
-            printf("   |");
+            *log_file << "   |";
 
         if (state->is_accept_state())
-            printf(" %12s |", state->get_token_name().c_str());
+            *log_file << " " << setw(12) << state->get_token_name() << " |";
         else
-            printf("              |");
+            *log_file << "              |";
 
-        printf("%5d  =>  ", state->get_id());
-        for (auto &next_state: state->get_transitions()) {
-            printf("| %-5d", next_state.second->get_id());
-        }
-        printf("\n");
+        *log_file << setw(5) << state->get_id() << "  =>  ";
+        for (auto &next_state: state->get_transitions())
+            *log_file << "| " << setw(5) << next_state.second->get_id();
+        *log_file << endl;
     }
-    printf("%s\n", line.c_str());
+    *log_file << line << endl;
 }
 
 int DFA_Reducer::merge_non_distinguishable() {
-    printf("\nPartitioning refinement\n=======================\n");
     int partition_count = 2; // starting with two partitions accept states & non-accept states
     map<int, set<State *> > disjoint_set;
 
@@ -181,7 +177,7 @@ void DFA_Reducer::build_minimized_dfa(int partition_count) {
 void DFA_Reducer::tokenize(string file_path) {
     ifstream file(file_path, ios_base::in);
     string source_code;
-    printf("\n\nParsing source code..\n\n");
+
     while (true) {
         int c = file.get();
         if (c == EOF) {
@@ -198,7 +194,6 @@ void DFA_Reducer::tokenize(string file_path) {
         source_code.push_back((char) c);
     }
     file.close();
-    printf("\nParsing done successfully !\n");
 }
 
 void DFA_Reducer::tokenizer(string source_code) {
@@ -224,7 +219,7 @@ void DFA_Reducer::tokenizer(string source_code) {
         if (start < end && end == source_code.size()) {
             lexeme = source_code.substr(start, lexeme_end - start);
             tokens.push(make_pair(lexeme, token));
-            printf("  %-10s =>    %s\n", lexeme.c_str(), token.c_str());
+            printf("%-20s =>    %s\n", token.c_str(), lexeme.c_str());
             end = start = lexeme_end;
             cur_state = this->dfa->get_start_state();
             continue;
@@ -237,8 +232,4 @@ void DFA_Reducer::tokenizer(string source_code) {
         }
     }
 
-}
-
-queue<pair<string, string> > DFA_Reducer::get_tokens() {
-    return this->tokens;
 }
