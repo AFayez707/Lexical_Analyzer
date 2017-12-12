@@ -9,5 +9,5 @@ lexical-analyzer/lex-log.txt
 .idea/
 cmake-build-debug/
 parser_generator
-
+parse
 parser-log.txt
