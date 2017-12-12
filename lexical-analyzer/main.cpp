@@ -2,28 +2,47 @@
 // Created by ahmed on 21/11/17.
 //
 
-#include <zconf.h>
-#include <fstream>
 #include "regex-to-nfa/NFA.h"
 #include "regex-to-nfa/construct_NFA.h"
 #include "dfa_reduction/DFA_Reducer.h"
 #include "dfa_generator/DFA_Generator.h"
 #include "regex-to-nfa/Regex.h"
 
-void init(string &grammar_file, string &source_code_file);
+void check_files(string &grammar_file, string &source_code_file) {
+    ifstream f1(grammar_file.c_str());
+    if (!f1.good()) {
+        fprintf(stderr, "could find/open grammar file.\n");
+        exit(1);
+    }
 
-int main(int argc, char *argv[]) {
+    ifstream f2(source_code_file.c_str());
+    if (!f2.good()) {
+        fprintf(stderr, "could find/open source code file.\n");
+        exit(1);
+    }
+}
+
+int main(int argc, char **argv) {
     auto *log_file = new ofstream("lex-log.txt", ios_base::out);
     *log_file << left;
 
     string grammar_file, source_code_file;
 
     if (argc == 1) {
-        source_code_file = "source.txt";
         grammar_file = "grammar.txt";
+        source_code_file = "source.txt";
+    } else if (argc == 3) {
+        grammar_file = string(argv[1]);
+        source_code_file = string(argv[2]);
     } else {
-        init(grammar_file, source_code_file);
+        fprintf(stderr, "Invalid number of params, it takes zero or two params only !\n\n"
+                "to use default files: ./lexical_analyzer\n\n"
+                "    to use any files: ./lexical_analyzer [grammar file path] [source code file path]\n\n"
+                "Note: default file are files found in the same dir with names `grammar.txt` & `source.txt`\n\n");
+        exit(1);
     }
+
+    check_files(grammar_file, source_code_file);
 
     // Parse grammar file, and form language chars
     Regex regex_library(grammar_file, log_file);
@@ -43,21 +62,6 @@ int main(int argc, char *argv[]) {
     minimized_dfa.log(log_file);
     minimized_dfa.tokenize(source_code_file);
 
+    log_file->close();
     return 0;
-}
-
-void init(string &grammar_file, string &source_code_file) {
-    fprintf(stdout, "Grammar file: ");
-    cin >> grammar_file;
-    if (access(grammar_file.c_str(), F_OK) == -1) {
-        fprintf(stderr, "could find/open grammar file.\n");
-        exit(1);
-    }
-
-    fprintf(stdout, "Source code file: ");
-    cin >> source_code_file;
-    if (access(source_code_file.c_str(), F_OK) == -1) {
-        fprintf(stderr, "could find/open grammar file.\n");
-        exit(1);
-    }
 }
