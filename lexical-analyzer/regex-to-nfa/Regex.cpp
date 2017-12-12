@@ -7,8 +7,9 @@
 #include <stack>
 #include <iostream>
 
-Regex::Regex(string file_path) {
+Regex::Regex(string file_path, ofstream *log_file) {
     this->path = move(file_path);
+    this->log_file = log_file;
 }
 
 void Regex::parse() {
@@ -192,35 +193,23 @@ void Regex::parse() {
         expressions.emplace_back(id, exp_map[id]);
     }
 
-    cout << "Definitions:";
-    cout << endl;
-    for (auto &it : def_map) {
-        cout << " " << it.first << ":" << it.second;
-        cout << endl;
-    }
-    cout << endl;
-    cout << endl;
-    cout << "Expressions:";
-    cout << endl;
-    for (auto &it : exp_map) {
-        cout << " " << it.first << ":" << it.second;
-        cout << endl;
-    }
-    cout << endl;
-    cout << endl;
-    cout << "Language:";
-    cout << endl;
-    for (char c : language_characters) {
-        cout << c << " ";
-    }
-    cout << endl;
-    cout << endl;
-    cout << "Expressions Vector:";
-    cout << endl;
-    for (pair<string, string> c : expressions) {
-        cout << c.first << ":" << c.second << endl;
-    }
-    cout << endl;
+    *log_file << "Definitions:" << endl;
+    for (auto &it : def_map)
+        *log_file << "  " << it.first << ": " << it.second << endl;
+
+    *log_file << endl << endl << "Expressions:" << endl;
+    for (auto &it : exp_map)
+        *log_file << "  " << it.first << ": " << it.second << endl;
+
+    *log_file << endl << endl << "Language:" << endl << "  ";
+    for (char c : language_characters)
+        *log_file << c << " ";
+
+    *log_file << endl << endl << "Expressions Vector:" << endl;
+    for (pair<string, string> c : expressions)
+        *log_file << "  " << c.first << ": " << c.second << endl;
+
+    *log_file << endl;
 }
 
 

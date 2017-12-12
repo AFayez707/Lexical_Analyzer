@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Parse grammar file, and form language chars
-    Regex regex_library(grammar_file);
+    Regex regex_library(grammar_file, log_file);
     regex_library.parse();
     vector<pair<string, string>> simple_language_regex = regex_library.expressions;
     set<char> language_chars = regex_library.language_characters;

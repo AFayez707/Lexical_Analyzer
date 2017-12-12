@@ -17,12 +17,13 @@ public:
     set<char> language_characters;
     vector<pair<string, string>> expressions;
 
-    explicit Regex(string path);
+    Regex(string path, ofstream *log_file);
 
     void parse();
 
 private:
     string path;
+    ofstream *log_file;
 
     int Precedence(char symbol);
 
