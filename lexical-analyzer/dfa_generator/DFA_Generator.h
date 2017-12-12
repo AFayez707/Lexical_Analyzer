@@ -7,6 +7,7 @@
 
 #include "../regex-to-nfa/NFA.h"
 #include "../graph/Graph.h"
+#include <fstream>
 
 struct transition {
     int from;
@@ -17,9 +18,9 @@ struct transition {
 class DFA {
 
 public:
-    DFA(NFA *n, set<char> language);
+    DFA(NFA *n, set<char> language, ofstream *log_file);
 
-    void display();
+    void log(ofstream *log_file);
 
     Graph *as_graph();
 

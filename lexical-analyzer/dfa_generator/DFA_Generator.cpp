@@ -68,23 +68,23 @@ string DFA::GetFinalState() {
 
 /* Set new transition values */
 void DFA::SetTransition(int from, int to, char value) {
-    transition trans;
+    transition trans{};
     trans.from = from;
     trans.to = to;
     trans.value = value;
     transitions.push_back(trans);
 }
 
-void DFA::display() {
+void DFA::log(ofstream *log_file) {
     transition newTransition{};
-    cout << "\n";
-    for (unsigned long i = 0; i < transitions.size(); i++) {
-        newTransition = transitions.at(i);
-        cout << "q" << newTransition.from << " {" << join(entries.at(newTransition.from), ",")
-             << "} -> q" << newTransition.to << " {" << join(entries.at(newTransition.to), ",")
-             << "} : Symbol - " << newTransition.value << endl;
+    *log_file << "\n\n\n";
+    for (auto transition : transitions) {
+        newTransition = transition;
+        *log_file << "q" << newTransition.from << " {" << join(entries.at(newTransition.from), ",")
+                  << "} -> q" << newTransition.to << " {" << join(entries.at(newTransition.to), ",")
+                  << "} : Symbol - " << newTransition.value << endl;
     }
-    cout << "\nThe final state is q : " << join(finalStates, ",") << endl;
+    *log_file << "\nThe final state is q : " << join(finalStates, ",") << endl;
 }
 
 set<int> DFA::vector_to_set(vector<int> vec) {
@@ -99,7 +99,7 @@ set<int> DFA::vector_to_set(vector<int> vec) {
 /**
  * Implements the subset construction algorithm as described in the reference
  */
-DFA::DFA(NFA *n, set<char> language) {
+DFA::DFA(NFA *n, set<char> language, ofstream *log_file) {
     // initially e-closure(S0) is the only state in Dstates, and it is unmarked
     set<int> start;
     start.insert(n->get_start_state());
@@ -130,6 +130,8 @@ DFA::DFA(NFA *n, set<char> language) {
 
     }
 
+    *log_file << endl << endl << endl;
+
     // mark accepting states
     for (int i = 0; i < entries.size(); i++) {
 
@@ -143,12 +145,13 @@ DFA::DFA(NFA *n, set<char> language) {
                 if (accepting) {
                     // error (not really an error)
                     // found to NFA accepting states mapping to the same DFA state
-                    cout << "Found two NFA accepting states mapping to the same DFA state. One of "
-                            "the tokens will never be detected" << endl;
+                    *log_file << "Found two NFA accepting states mapping to the same DFA state."
+                            "One of the tokens will never be detected" << endl;
                 } else {
                     accepting = true;
                     token_name = n->get_accepting_token_name(j);
-                    cout << "NFA state with ID: " << j << " is accepting, it's token name is: " << token_name << endl;
+                    *log_file << "NFA state with ID: " << j <<
+                              " is accepting, it's token name is: " << token_name << endl;
                 }
             }
         }

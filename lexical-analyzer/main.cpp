@@ -35,8 +35,7 @@ int main(int argc, char *argv[]) {
     NFA *nfa = language_to_nfa(simple_language_regex);
 
     // Convert NFA to DFA
-    DFA dfa(nfa, language_chars);
-//    dfa.display();
+    DFA dfa(nfa, language_chars, log_file);
 
     // Minimize DFA
     DFA_Reducer minimized_dfa(dfa.as_graph(), language_chars);
