@@ -32,4 +32,6 @@ void Left_Recursion::log(ofstream *log_file) {
 
 void Left_Recursion::__eliminate() {
     // TODO
+    // just passing the grammar as it came here
+    this->ambiguity_free_grammar = this->grammar;
 }
