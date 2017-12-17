@@ -40,6 +40,7 @@ void CFG_Reader::log(ofstream *log_file) {
         }
         *log_file << endl;
     }
+    log_file->flush();
 }
 
 void CFG_Reader::__read(string file_path) {

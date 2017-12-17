@@ -26,6 +26,7 @@ void First::log(ofstream *log_file) {
         }
         *log_file << endl;
     }
+    log_file->flush();
 }
 
 void First::__generate() {

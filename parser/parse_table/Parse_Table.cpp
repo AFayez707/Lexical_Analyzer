@@ -47,6 +47,7 @@ void Parse_Table::log(ofstream *log_file) {
         *log_file << "\n";
     }
     *log_file << get_separator(terminals.size());
+    log_file->flush();
 }
 
 void Parse_Table::__sync_and_error() {

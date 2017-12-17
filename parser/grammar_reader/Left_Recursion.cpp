@@ -28,6 +28,7 @@ void Left_Recursion::log(ofstream *log_file) {
         }
         *log_file << endl;
     }
+    log_file->flush();
 }
 
 void Left_Recursion::__eliminate() {

@@ -25,6 +25,7 @@ void Follow::log(ofstream *log_file) {
         }
         *log_file << endl;
     }
+    log_file->flush();
 }
 
 void Follow::__generate() {
