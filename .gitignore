@@ -1,0 +1,13 @@
+*.o
+
+lexical-analyzer/.idea/
+lexical-analyzer/cmake-build-debug/
+lexical-analyzer/test/
+lexical-analyzer/lexical_analyzer
+lexical-analyzer/lex-log.txt
+
+.idea/
+cmake-build-debug/
+parser_generator
+parse
+parser-log.txt
