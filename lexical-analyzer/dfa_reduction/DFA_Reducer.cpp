@@ -218,11 +218,16 @@ void DFA_Reducer::tokenizer(string source_code) {
         // if reached end of string, return the longest token found
         if (start < end && end == source_code.size()) {
             lexeme = source_code.substr(start, lexeme_end - start);
-            tokens.push(make_pair(lexeme, token));
-            printf("%-20s =>    %s\n", token.c_str(), lexeme.c_str());
-            end = start = lexeme_end;
-            cur_state = this->dfa->get_start_state();
-            continue;
+            if (lexeme.empty()) {
+                printf("lexical_error: can match any token starting with => \'%c\'\n", source_code[start]);
+                exit(1);
+            } else {
+                tokens.push(make_pair(lexeme, token));
+                printf("%-20s =>    %s\n", token.c_str(), lexeme.c_str());
+                end = start = lexeme_end;
+                cur_state = this->dfa->get_start_state();
+                continue;
+            }
         }
 
         cur_state = cur_state->get_transition_on(c);
@@ -231,5 +236,4 @@ void DFA_Reducer::tokenizer(string source_code) {
             lexeme_end = end;
         }
     }
-
 }
