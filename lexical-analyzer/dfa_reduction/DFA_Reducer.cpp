@@ -50,6 +50,7 @@ void DFA_Reducer::log(ofstream *log_file) {
         *log_file << endl;
     }
     *log_file << line << endl;
+    log_file->flush();
 }
 
 int DFA_Reducer::merge_non_distinguishable() {

@@ -85,6 +85,7 @@ void DFA::log(ofstream *log_file) {
                   << "} : Symbol - " << newTransition.value << endl;
     }
     *log_file << "\nThe final state is q : " << join(finalStates, ",") << endl;
+    log_file->flush();
 }
 
 set<int> DFA::vector_to_set(vector<int> vec) {
@@ -159,6 +160,7 @@ DFA::DFA(NFA *n, set<char> language, ofstream *log_file) {
         if (accepting)
             SetDFAFinalState(i, token_name);
     }
+    log_file->flush();
 }
 
 vector<int> DFA::set_to_vector(set<int> set) {

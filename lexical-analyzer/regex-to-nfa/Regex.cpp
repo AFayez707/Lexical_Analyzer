@@ -152,7 +152,7 @@ void Regex::parse() {
                         }
                     } else {
                         if (line[i] == '.')
-                            expression = string(expression + '\\');
+                            expression = string(expression + "\\");
                         expression = string(expression + line[i]);
                         i++;
                     }
@@ -210,6 +210,7 @@ void Regex::parse() {
         *log_file << "  " << c.first << ": " << c.second << endl;
 
     *log_file << endl;
+    log_file->flush();
 }
 
 
