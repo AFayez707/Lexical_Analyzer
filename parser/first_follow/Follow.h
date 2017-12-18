@@ -18,21 +18,25 @@ using namespace std;
 
 class Follow {
 public:
-    explicit Follow(string start_symbol, GRAMMAR grammar);
+    explicit Follow(string start_symbol, GRAMMAR grammar, set<string> terminals, FIRST_FOLLOW first);
 
     FIRST_FOLLOW get();
 
     void log(ofstream *log_file);
+    set<string> calculateFollow(string key);
 
 private:
     string start_symbol;
     FIRST_FOLLOW follow;
+    FIRST_FOLLOW first;
     GRAMMAR grammar;
+    set<string> terminals;
 
     /**
     * @brief Responsible for generating each non-terminal's follow terminals
     */
     void __generate();
+
 };
 
 

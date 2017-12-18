@@ -125,7 +125,7 @@ void Parser::__init() {
     /**
      * Generating Follow
      */
-    Follow follow_gen(start_symbol, grammar);
+    Follow follow_gen(start_symbol, grammar, terminals, first);
     follow = follow_gen.get();
     follow_gen.log(this->logger);
 
