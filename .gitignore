@@ -4,7 +4,11 @@ lexical-analyzer/.idea/
 lexical-analyzer/cmake-build-debug/
 lexical-analyzer/test/
 lexical-analyzer/lexical_analyzer
+lexical-analyzer/lex
 lexical-analyzer/lex-log.txt
+lex
+lex-log.txt
+
 
 .idea/
 cmake-build-debug/

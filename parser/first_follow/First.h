@@ -22,8 +22,6 @@ public:
     FIRST_FOLLOW get();
 
     void log(ofstream *log_file);
-    set<string> calculateFirst(string key);
-
 
 private:
     string start_symbol;
@@ -34,7 +32,7 @@ private:
     /**
      * @brief Responsible for generating each non-terminal's first terminals
      */
-    void __generate();
+    set<string> __generate(const string &non_terminal);
 };
 
 
