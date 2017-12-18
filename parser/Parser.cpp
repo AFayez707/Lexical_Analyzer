@@ -97,16 +97,18 @@ void Parser::__init() {
     GRAMMAR grammar;
     string start_symbol;
     set<string> terminals;
+    map<string, int> order;
 
     // Reading grammar file
     CFG_Reader cfg_reader(this->file_path);
     start_symbol = cfg_reader.get_start_symbol();
     terminals = cfg_reader.get_terminals();
     grammar = cfg_reader.get_grammar();
+    order = cfg_reader.get_order();
     cfg_reader.log(this->logger);
 
     // Eliminating Ambiguity
-    Left_Recursion left_recursion(start_symbol, grammar);
+    Left_Recursion left_recursion(start_symbol, grammar, order);
     grammar = left_recursion.get();
     left_recursion.log(this->logger);
 

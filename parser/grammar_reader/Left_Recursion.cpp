@@ -57,7 +57,7 @@ void Left_Recursion::__eliminate() {
                     }
                 }
                 if (a >= rule.second.size() - 1) {
-                    new_rule.emplace_back({EPS});
+                    new_rule.push_back({EPS}); // NOLINT
                     this->ambiguity_free_grammar[rule.first] = rule.second;
                     this->ambiguity_free_grammar.insert({rule.first + "'", new_rule});
                     new_rule.clear();

@@ -23,6 +23,10 @@ string CFG_Reader::get_start_symbol() {
     return this->start_symbol;
 }
 
+map<string, int> CFG_Reader::get_order() {
+    return this->order;
+}
+
 void CFG_Reader::log(ofstream *log_file) {
     *log_file << left << "\n\nTerminals:\n    ";
     for (const string &t: this->terminals)
@@ -45,6 +49,7 @@ void CFG_Reader::log(ofstream *log_file) {
 
 void CFG_Reader::__read(string file_path) {
     ifstream file(file_path, ios_base::in);
+    int cnt = 1;
     string str, LHS;
     bool LHS_lock = false, comma_lock = false;
     vector<string> production;
@@ -79,7 +84,12 @@ void CFG_Reader::__read(string file_path) {
             production.clear();
         } else if (c == ' ' || c == '\t' || c == '\n') {
             if (!str.empty()) {
-                LHS_lock ? void(LHS = str) : production.emplace_back(str);
+                if (LHS_lock) {
+                    LHS = str;
+                    this->order[LHS] = cnt++;
+                } else {
+                    production.emplace_back(str);
+                }
                 start_symbol = start_symbol.empty() ? LHS : start_symbol;
                 LHS_lock = false;
                 str = "";

@@ -11,7 +11,7 @@
 #include <vector>
 #include <fstream>
 
-#define EPS         "\\EPSILON\\"
+#define EPS     "\\EPSILON\\"
 #define GRAMMAR map<string, vector<vector<string> > >
 
 using namespace std;
@@ -27,12 +27,15 @@ public:
 
     string get_start_symbol();
 
+    map<string, int> get_order();
+
     void log(ofstream *log_file);
 
 private:
     string file_path;
     string start_symbol;
     GRAMMAR grammar;
+    map<string, int> order;
     set<string> terminals;
 
     void __read(string file_path);
