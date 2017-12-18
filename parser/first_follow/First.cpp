@@ -6,8 +6,7 @@
 #include <iomanip>
 #include "First.h"
 
-First::First(string start_symbol, GRAMMAR grammar, set<string> terminals) {
-    this->start_symbol = move(start_symbol);
+First::First(GRAMMAR grammar, set<string> terminals) {
     this->grammar = move(grammar);
     this->terminals = move(terminals);
 

@@ -17,14 +17,13 @@ using namespace std;
 
 class First {
 public:
-    explicit First(string start_symbol, GRAMMAR grammar, set<string> terminals);
+    explicit First(GRAMMAR grammar, set<string> terminals);
 
     FIRST_FOLLOW get();
 
     void log(ofstream *log_file);
 
 private:
-    string start_symbol;
     FIRST_FOLLOW first;
     GRAMMAR grammar;
     set<string> terminals;
