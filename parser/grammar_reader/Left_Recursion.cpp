@@ -34,7 +34,6 @@ void Left_Recursion::log(ofstream *log_file) {
 
 void Left_Recursion::__eliminate() {
     vector<vector<string> > new_rule;
-    vector<string> epsilon ({EPS});
     int a;
     // just passing the grammar as it came here
     this->ambiguity_free_grammar = this->grammar;
@@ -44,23 +43,23 @@ void Left_Recursion::__eliminate() {
             for (const string &j : rule.second[i]) {
 //                *log_file << j << " ";
             }
-            if(rule.first == rule.second[i][0]){                               //// --> Immediate Recursion Removal Here
+            if (rule.first == rule.second[i][0]) { /// --> Immediate Recursion Removal Here
                 for (a = 0; a < rule.second.size(); a++) {
-                    if(rule.first != rule.second[a][0] && rule.second[a].back() != (rule.first+"'"))
-                        rule.second[a].push_back(rule.first+"'");
-                    else{
+                    if (rule.first != rule.second[a][0] && rule.second[a].back() != (rule.first + "'"))
+                        rule.second[a].push_back(rule.first + "'");
+                    else {
                         rule.second[i].erase(rule.second[i].begin());
                         vector<string> alpha = rule.second[i];
-                        rule.second.erase(rule.second.begin()+i);
+                        rule.second.erase(rule.second.begin() + i);
                         alpha.push_back(rule.first + "'");
                         new_rule.push_back(alpha);
                         a--;
                     }
                 }
-                if(a >= rule.second.size() - 1){
-                    new_rule.push_back(epsilon);
+                if (a >= rule.second.size() - 1) {
+                    new_rule.emplace_back({EPS});
                     this->ambiguity_free_grammar[rule.first] = rule.second;
-                    this->ambiguity_free_grammar.insert({rule.first+"'", new_rule});
+                    this->ambiguity_free_grammar.insert({rule.first + "'", new_rule});
                     new_rule.clear();
                 }
             }
