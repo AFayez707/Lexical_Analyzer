@@ -111,7 +111,7 @@ void Parser::__init() {
     left_recursion.log(this->logger);
 
     // Generating First
-    First first_gen(start_symbol, grammar);
+    First first_gen(start_symbol, grammar, terminals);
     first = first_gen.get();
     first_gen.log(this->logger);
 

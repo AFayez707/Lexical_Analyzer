@@ -17,7 +17,7 @@ using namespace std;
 
 class First {
 public:
-    explicit First(string start_symbol, GRAMMAR grammar);
+    explicit First(string start_symbol, GRAMMAR grammar, set<string> terminals);
 
     FIRST_FOLLOW get();
 
@@ -27,11 +27,12 @@ private:
     string start_symbol;
     FIRST_FOLLOW first;
     GRAMMAR grammar;
+    set<string> terminals;
 
     /**
      * @brief Responsible for generating each non-terminal's first terminals
      */
-    void __generate();
+    set<string> __generate(const string &non_terminal);
 };
 
 
