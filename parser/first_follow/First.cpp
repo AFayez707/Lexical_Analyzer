@@ -26,7 +26,7 @@ FIRST_FOLLOW First::get() {
 void First::log(ofstream *log_file) {
     *log_file << "\n\nFirst:\n";
     for (pair<string, set<string>> entry: this->first) {
-        *log_file << "  " << setw(20) << entry.first << " =>  ";
+        *log_file << "    " << setw(20) << entry.first << "  ➜  ";
         for (const string &str: entry.second) {
             if (entry.second.find(str) != entry.second.begin()) *log_file << "  ,  ";
             *log_file << str;

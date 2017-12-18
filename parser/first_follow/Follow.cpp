@@ -19,13 +19,13 @@ FIRST_FOLLOW Follow::get() {
 void Follow::log(ofstream *log_file) {
     *log_file << "\n\nFollow:\n";
     for (pair<string, set<string>> entry: this->follow) {
-        *log_file << "  " << setw(18) << entry.first << " => ";
+        *log_file << "    " << setw(20) << entry.first << "  ➜  ";
         for (const string &str: entry.second) {
-            *log_file << str << ", ";
+            if (entry.second.find(str) != entry.second.begin()) *log_file << "  ,  ";
+            *log_file << str;
         }
         *log_file << endl;
     }
-    log_file->flush();
 }
 
 void Follow::__generate() {

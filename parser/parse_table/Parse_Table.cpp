@@ -15,38 +15,23 @@ Parse_Table::Parse_Table(FIRST_FOLLOW first, FIRST_FOLLOW follow, GRAMMAR gramma
     this->__build_parse_table();
 }
 
-vector<string> Parse_Table::peek(const string &stack_top, const string &token) {
-    return this->parse_table[stack_top][token];
-}
-
-string get_separator(unsigned long terminals_cnt) {
-    string str;
-    for (unsigned int i = 0; i < (terminals_cnt + 1) * 18; i++)
-        str += "-";
-    return str + "\n";
+vector<string> Parse_Table::peek(const string &non_terminal, const string &token) {
+    return this->parse_table[non_terminal][token];
 }
 
 void Parse_Table::log(ofstream *log_file) {
-    *log_file << left << "\n\nParse Table:\n";
-    *log_file << get_separator(terminals.size()) << "                 |";
-
-    for (const string &T: this->terminals)
-        *log_file << " " << setw(15) << T << " |";
-
-    *log_file << "\n" << get_separator(terminals.size());
-
-    for (auto &non_T: this->parse_table) {
-        *log_file << " " << setw(15) << non_T.first << " |";
-        for (const string &T: this->terminals) {
-            string str;
-            for (const string &to: this->parse_table[non_T.first][T])
-                str += to;
-
-            *log_file << " " << setw(15) << str << " |";
+    *log_file << left << "\n\nParse Table:\n------------\n";
+    for (auto &non_terminal: this->parse_table) {
+        *log_file << "    " << non_terminal.first << ":\n";
+        for (const string &terminal: this->terminals) {
+            *log_file << "        " << non_terminal.first << "  +  " << setw(10) << terminal << "  ➜  ";
+            vector<string> production = this->peek(non_terminal.first, terminal);
+            for (const string &i : production)
+                *log_file << i << " ";
+            *log_file << endl;
         }
-        *log_file << "\n";
+        *log_file << endl;
     }
-    *log_file << get_separator(terminals.size());
     log_file->flush();
 }
 

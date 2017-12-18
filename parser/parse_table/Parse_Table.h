@@ -26,7 +26,7 @@ class Parse_Table {
 public:
     Parse_Table(FIRST_FOLLOW first, FIRST_FOLLOW follow, GRAMMAR grammar, set<string> terminals);
 
-    vector<string> peek(const string &stack_top, const string &token);
+    vector<string> peek(const string &non_terminal, const string &token);
 
     void log(ofstream *log_file);
 
