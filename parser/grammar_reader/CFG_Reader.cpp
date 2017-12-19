@@ -69,7 +69,6 @@ void CFG_Reader::__read(string file_path) {
         int c = file.get();
 
         str = str == "\\L" ? EPS : str;
-        if (str == EPS) this->terminals.insert(EPS);
 
         if (c == EOF) {
             str.length() ? production.emplace_back(str) : void();
@@ -103,5 +102,7 @@ void CFG_Reader::__read(string file_path) {
         } else
             str.push_back((char) c);
     }
+    this->terminals.insert(EPS);
+    this->terminals.insert(DOLLAR_SIGN);
     file.close();
 }

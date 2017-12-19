@@ -11,8 +11,9 @@
 #include <vector>
 #include <fstream>
 
-#define EPS     "\\EPSILON\\"
-#define GRAMMAR map<string, vector<vector<string> > >
+#define EPS         "\\EPSILON\\"
+#define DOLLAR_SIGN "\\$\\"
+#define GRAMMAR     map<string, vector<vector<string> > >
 
 using namespace std;
 

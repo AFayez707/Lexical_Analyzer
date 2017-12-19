@@ -68,7 +68,7 @@ set<string> Follow::calculateFollow(string key) {
                         }
                     } else { // if it's the last
 
-                        if (follow[LHS.first].size()) {
+                        if (!follow[LHS.first].empty()) {
                             follows.insert(follow[LHS.first].begin(), follow[LHS.first].end());
                             continue;
                         }
