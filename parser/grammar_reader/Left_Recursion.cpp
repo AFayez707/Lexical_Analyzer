@@ -5,10 +5,10 @@
 #include <iomanip>
 #include "Left_Recursion.h"
 
-Left_Recursion::Left_Recursion(string start_symbol, GRAMMAR grammar, map<string, int> order) {
-    this->start_symbol = move(start_symbol);
+Left_Recursion::Left_Recursion(GRAMMAR grammar, map<string, int> order, set<string> teminals) {
     this->grammar = move(grammar);
     this->order = move(order);
+    this->teminals = move(teminals);
 
     __eliminate();
 }

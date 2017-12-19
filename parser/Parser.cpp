@@ -108,7 +108,7 @@ void Parser::__init() {
     cfg_reader.log(this->logger);
 
     // Eliminating Ambiguity
-    Left_Recursion left_recursion(start_symbol, grammar, order);
+    Left_Recursion left_recursion(grammar, order, terminals);
     grammar = left_recursion.get();
     left_recursion.log(this->logger);
 
