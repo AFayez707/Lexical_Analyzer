@@ -21,12 +21,12 @@ num
 if
 (
 id
-+
+relop
 num
 )
 {
 id
-assign
+=
 id
 addop
 num
@@ -35,7 +35,7 @@ num
 else
 {
 id
-assign
+=
 id
 addop
 id
