@@ -79,4 +79,39 @@ void Left_Recursion::__eliminate() {
             }
         }
     }
+
+    vector<vector<string > > factor;
+    string temp = "HOSSAM";
+    vector<string> factored;
+    int flag = 0;
+    for (auto &y : ordered_grammar) {
+        pair<string, vector<vector<string> > > rule = make_pair(y, this->ambiguity_free_grammar[y]);
+        for (int i = 0; i < rule.second.size(); i++) {
+            for (int j = 1; j < rule.second.size(); j++) { /// --> Left Factoring
+                if(rule.second[i][0] == rule.second[j][0] && i != j){
+                    temp = rule.second[i][0];
+                    rule.second[i].erase(rule.second[i].begin());
+                    rule.second[j].erase(rule.second[j].begin());
+                    if(rule.second[i].size()!=0)
+                        factor.push_back(rule.second[i]);
+                    else factor.push_back({EPS});
+                    if(rule.second[j].size()!=0)
+                        factor.push_back(rule.second[j]);
+                    else factor.push_back({EPS});
+                    factored.push_back(temp);
+                    factored.push_back(rule.first + "'");
+                    rule.second.push_back(factored);
+                    rule.second.erase(rule.second.begin() + i);
+                    rule.second.erase(rule.second.begin() + i);
+                    flag ++;
+                }
+            }
+        }
+        if(flag){
+            this->ambiguity_free_grammar[y] = rule.second;
+            this->ambiguity_free_grammar.insert({rule.first + "'", factor});
+            flag = 0;
+        }
+    }
+
 }
