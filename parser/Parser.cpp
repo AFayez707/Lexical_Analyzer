@@ -100,31 +100,41 @@ void Parser::__init() {
     map<string, int> order;
     vector <string> ordered_grammar_vector;
 
-    // Reading grammar file
+    /**
+     * Reading grammar file
+     */
     CFG_Reader cfg_reader(this->file_path);
     start_symbol = cfg_reader.get_start_symbol();
+    this->start_symbol = start_symbol; // set start symbol
     terminals = cfg_reader.get_terminals();
     grammar = cfg_reader.get_grammar();
     order = cfg_reader.get_order();
     ordered_grammar_vector = cfg_reader.get_grammar_in_order();
     cfg_reader.log(this->logger);
 
+
     // Eliminating Ambiguity
     Left_Recursion left_recursion(grammar, order, terminals,ordered_grammar_vector);
     grammar = left_recursion.get();
     left_recursion.log(this->logger);
 
-    // Generating First
+    /**
+     * Generating First
+     */
     First first_gen(grammar, terminals);
     first = first_gen.get();
     first_gen.log(this->logger);
 
-    // Generating Follow
+    /**
+     * Generating Follow
+     */
     Follow follow_gen(start_symbol, grammar);
     follow = follow_gen.get();
     follow_gen.log(this->logger);
 
-    // Forming the parse table
+    /**
+     * Forming the parse table
+     */
     this->parse_table = new Parse_Table(first, follow, grammar, terminals);
     this->parse_table->log(this->logger);
 }

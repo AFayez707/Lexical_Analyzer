@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
 
     cout << "\n\n\nParsing:\n";
     Parser parser("java_cfg.txt", "parser-log.txt", tokens);
-    parser.parse();
+//    parser.parse();
 
     return EXIT_SUCCESS;
 }
