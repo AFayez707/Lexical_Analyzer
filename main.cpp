@@ -19,10 +19,10 @@ int main(int argc, char **argv) {
         while (getline(cin, line)) {
             string token = line.substr(0, line.find_first_of(' '));
             if (token == "lexical_error:") {
-                cout << "Warning, lex reported an error => " << line.c_str() << endl;
+                cout << "Warning => " << line.c_str() << endl;
             } else {
                 tokens.push(token);
-                cout << "" << token << endl;
+                cout << line << endl;
             }
         }
     } else {

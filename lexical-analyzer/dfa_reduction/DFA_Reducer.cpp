@@ -211,7 +211,7 @@ void DFA_Reducer::tokenizer(string source_code) {
         // if this char is not in the language chars && not end of string
         if (this->language_chars.find(c) == this->language_chars.end() && c != ' ') {
             source_code.erase(end, 1);
-            printf("lexical_error: unknown character \'%c\'\n", c);
+            printf("lexical_error: unknown character:  %c\n", c);
             continue;
         }
 
@@ -220,7 +220,7 @@ void DFA_Reducer::tokenizer(string source_code) {
         if (start < end && end == source_code.size()) {
             lexeme = source_code.substr(start, lexeme_end - start);
             if (lexeme.empty()) {
-                printf("lexical_error: can match any token starting with => \'%c\'\n", source_code[start]);
+                printf("lexical_error: can match any token starting with:  %c\n", source_code[start]);
                 exit(1);
             } else {
                 tokens.push(make_pair(lexeme, token));
