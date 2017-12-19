@@ -15,3 +15,5 @@ cmake-build-debug/
 parser_generator
 parse
 parser-log.txt
+.DS_Store
+parser/.DS_Store

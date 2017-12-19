@@ -10,7 +10,7 @@
 void run_test_parser(Parse_Table *parse_table);
 
 void run_test_parser(Parse_Table *parse_table) {
-    queue <string> q;
+    queue<string> q;
 
     q.push("(");
     q.push("id");
