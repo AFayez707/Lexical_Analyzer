@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
     ifstream in("tokens.txt");
     string token;
     while (getline(in, token)) tokens.push(token);
+    tokens.push(DOLLAR_SIGN);
 
 //    if (argc == 1) {
 //        string line;
@@ -33,9 +34,8 @@ int main(int argc, char **argv) {
 //        exit(1);
 //    }
 
-    cout << "\n\n\nParsing:\n";
     Parser parser("java_cfg.txt", "parser-log.txt", tokens);
-//    parser.parse();
+    parser.parse();
 
     return EXIT_SUCCESS;
 }
