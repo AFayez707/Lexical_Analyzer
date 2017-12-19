@@ -3,6 +3,7 @@
 //
 
 #define DOLLAR_SIGN "\\$\\"
+#define EPS         "\\EPSILON\\"
 
 #include <iomanip>
 #include <iostream>
@@ -38,6 +39,7 @@ void Follow::__generate() {
     follow[start_symbol].insert(DOLLAR_SIGN);
 
     for (auto &element : grammar) {
+//        cout << "Now calculating Follow for: " << element.first << endl;
         set<string> resultSet = calculateFollow(element.first);
         follow[element.first].insert(resultSet.begin(), resultSet.end());
     }
@@ -56,12 +58,28 @@ set<string> Follow::calculateFollow(string key) {
                             continue;
                         } else { // if the next is non-terminal and not itself
                             follows.insert(first[LHS.second[j][k + 1]].begin(), first[LHS.second[j][k + 1]].end());
+
+                            if (follows.count(EPS)) { // If the first contains EPS, Remove it then calculate it then add the follow of LHS
+                                follows.erase(EPS);
+                                set<string> result = calculateFollow(LHS.first);
+                                follows.insert(result.begin(), result.end());
+                            }
                         }
                     } else { // if it's the last
+
+                        if(follow[LHS.first].size()){
+                            follows.insert(follow[LHS.first].begin(), follow[LHS.first].end());
+                            continue;
+                        }
+
+                        if(LHS.first == key){
+                            continue;
+                        }
+
                         set<string> result = calculateFollow(LHS.first);
                         follows.insert(result.begin(), result.end());
 
-                        if(LHS.first == start_symbol){ // If the start symbol doesn't exist in any production rules as RHS
+                        if (LHS.first == start_symbol) { // If the start symbol doesn't exist in any production rules as RHS
                             follows.insert(DOLLAR_SIGN);
                         }
                     }
