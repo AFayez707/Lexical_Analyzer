@@ -23,6 +23,7 @@ public:
     FIRST_FOLLOW get();
 
     void log(ofstream *log_file);
+
     set<string> calculateFollow(string key);
 
 private:

@@ -59,7 +59,8 @@ set<string> Follow::calculateFollow(string key) {
                         } else { // if the next is non-terminal and not itself
                             follows.insert(first[LHS.second[j][k + 1]].begin(), first[LHS.second[j][k + 1]].end());
 
-                            if (follows.count(EPS)) { // If the first contains EPS, Remove it then calculate it then add the follow of LHS
+                            if (follows.count(
+                                    EPS)) { // If the first contains EPS, Remove it then calculate it then add the follow of LHS
                                 follows.erase(EPS);
                                 set<string> result = calculateFollow(LHS.first);
                                 follows.insert(result.begin(), result.end());
@@ -67,19 +68,20 @@ set<string> Follow::calculateFollow(string key) {
                         }
                     } else { // if it's the last
 
-                        if(follow[LHS.first].size()){
+                        if (follow[LHS.first].size()) {
                             follows.insert(follow[LHS.first].begin(), follow[LHS.first].end());
                             continue;
                         }
 
-                        if(LHS.first == key){
+                        if (LHS.first == key) {
                             continue;
                         }
 
                         set<string> result = calculateFollow(LHS.first);
                         follows.insert(result.begin(), result.end());
 
-                        if (LHS.first == start_symbol) { // If the start symbol doesn't exist in any production rules as RHS
+                        if (LHS.first ==
+                            start_symbol) { // If the start symbol doesn't exist in any production rules as RHS
                             follows.insert(DOLLAR_SIGN);
                         }
                     }

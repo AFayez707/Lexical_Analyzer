@@ -98,7 +98,7 @@ void Parser::__init() {
     string start_symbol;
     set<string> terminals;
     map<string, int> order;
-    vector <string> ordered_grammar_vector;
+    vector<string> ordered_grammar_vector;
 
     /**
      * Reading grammar file
@@ -114,7 +114,7 @@ void Parser::__init() {
 
 
     // Eliminating Ambiguity
-    Left_Recursion left_recursion(grammar, order, terminals,ordered_grammar_vector);
+    Left_Recursion left_recursion(grammar, order, terminals, ordered_grammar_vector);
     grammar = left_recursion.get();
     left_recursion.log(this->logger);
 
