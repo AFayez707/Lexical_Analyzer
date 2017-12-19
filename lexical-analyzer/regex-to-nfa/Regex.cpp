@@ -5,7 +5,6 @@
 #include "Regex.h"
 #include <fstream>
 #include <stack>
-#include <iostream>
 
 Regex::Regex(string file_path, ofstream *log_file) {
     this->path = move(file_path);
@@ -16,13 +15,24 @@ void Regex::parse() {
     vector<string> ids;
     map<string, string> exp_map;  //Expressions Map >> Returned
     map<string, string> def_map;  //Definitions Map >> Only Used Here to replace definitions
+    map<string, string> punc_map;
     ifstream infile(this->path);
+
     string line, exp_name, expression, temp, keyword, punctuation;
     char low_letter = 'a', up_Letter = 'A', num = '0';
 
     while (getline(infile, line)) {
         // Function on line
         int i = 0;
+
+        if (line.length() == 4 && line[1] == ':') {
+            exp_name.clear();
+            exp_name.push_back(line[0]);
+            punc_map[exp_name] = exp_name;
+            exp_name.clear();
+//            ids.push_back(exp_name);
+            continue;
+        }
 
         // skip white spaces in the beggining of the file
         while (i < line.length() && (line[i] == ' ' || line[i] == '\t'))
@@ -191,6 +201,11 @@ void Regex::parse() {
 
     for (string id : ids) {
         expressions.emplace_back(id, exp_map[id]);
+    }
+
+    for(auto &pss: punc_map){
+        expressions.emplace_back(pss.first, pss.first);
+        language_characters.insert(pss.first[0]);
     }
 
     *log_file << "Definitions:" << endl;
