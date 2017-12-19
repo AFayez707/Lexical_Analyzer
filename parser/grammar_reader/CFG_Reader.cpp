@@ -27,6 +27,10 @@ map<string, int> CFG_Reader::get_order() {
     return this->order;
 }
 
+vector <string> CFG_Reader::get_grammar_in_order(){
+    return this->ordered_grammar_vector;
+}
+
 void CFG_Reader::log(ofstream *log_file) {
     *log_file << left << "\n\nTerminals:\n    ";
     for (const string &t: this->terminals)
@@ -87,6 +91,7 @@ void CFG_Reader::__read(string file_path) {
                 if (LHS_lock) {
                     LHS = str;
                     this->order[LHS] = cnt++;
+                    this->ordered_grammar_vector.push_back(LHS);
                 } else {
                     production.emplace_back(str);
                 }

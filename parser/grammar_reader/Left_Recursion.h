@@ -19,7 +19,7 @@ using namespace std;
 
 class Left_Recursion {
 public:
-    Left_Recursion(GRAMMAR grammar, map<string, int> order, set<string> terminals);
+    Left_Recursion(GRAMMAR grammar, map<string, int> order, set<string> terminals, vector<string> ordered_grammar);
 
     GRAMMAR get();
 
@@ -30,6 +30,7 @@ private:
     GRAMMAR ambiguity_free_grammar;
     map<string, int> order;
     set<string> terminals;
+    vector<string> ordered_grammar;
 
     /**
      * @brief Responsible for eliminating grammar ambiguity

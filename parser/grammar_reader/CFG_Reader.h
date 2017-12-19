@@ -29,6 +29,8 @@ public:
 
     map<string, int> get_order();
 
+    vector <string> get_grammar_in_order();
+
     void log(ofstream *log_file);
 
 private:
@@ -36,6 +38,7 @@ private:
     string start_symbol;
     GRAMMAR grammar;
     map<string, int> order;
+    vector <string> ordered_grammar_vector;
     set<string> terminals;
 
     void __read(string file_path);
