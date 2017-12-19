@@ -29,7 +29,7 @@ private:
     GRAMMAR grammar;
     GRAMMAR ambiguity_free_grammar;
     map<string, int> order;
-    set<string> teminals;
+    set<string> terminals;
 
     /**
      * @brief Responsible for eliminating grammar ambiguity
