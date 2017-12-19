@@ -27,7 +27,7 @@ map<string, int> CFG_Reader::get_order() {
     return this->order;
 }
 
-vector <string> CFG_Reader::get_grammar_in_order(){
+vector<string> CFG_Reader::get_grammar_in_order() {
     return this->ordered_grammar_vector;
 }
 
@@ -69,6 +69,7 @@ void CFG_Reader::__read(string file_path) {
         int c = file.get();
 
         str = str == "\\L" ? EPS : str;
+        if (str == EPS) this->terminals.insert(EPS);
 
         if (c == EOF) {
             str.length() ? production.emplace_back(str) : void();
