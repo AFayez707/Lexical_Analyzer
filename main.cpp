@@ -17,6 +17,7 @@ int main(int argc, char **argv) {
     if (argc == 1) {
         string line;
         while (getline(cin, line)) {
+            if(line.empty()) break;
             string token = line.substr(0, line.find_first_of(' '));
             if (token == "lexical_error:") {
                 cout << "Warning => " << line.c_str() << endl;

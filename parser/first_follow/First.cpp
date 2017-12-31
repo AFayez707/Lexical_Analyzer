@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iomanip>
 #include "First.h"
+#include "../parse_table/Parse_Table.h"
 
 First::First(GRAMMAR grammar, set<string> terminals) {
     this->grammar = move(grammar);
@@ -36,15 +37,33 @@ void First::log(ofstream *log_file) {
 }
 
 set<string> First::__generate(const string &non_terminal) {
+    if (this->first.find(non_terminal) != this->first.end())
+        return this->first[non_terminal];
+
     set<string> non_term_first;
     for (vector<string> &prod_rule: this->grammar[non_terminal]) {
         if (this->terminals.count(prod_rule[0])) { // if is terminal
             non_term_first.insert(prod_rule[0]);
         } else if (prod_rule[0] != non_terminal) { // if it's non-terminal
-            set<string> prod_rule_first = __generate(prod_rule[0]);
-            non_term_first.insert(prod_rule_first.begin(), prod_rule_first.end());
+            int i = -1;
+            set<string> prod_rule_first;
+
+            while (++i < prod_rule.size()) {
+                prod_rule_first.clear();
+
+                if (this->terminals.count(prod_rule[i])) // if is terminal
+                    prod_rule_first.insert(prod_rule[i]);
+                else
+                    prod_rule_first = __generate(prod_rule[i]);
+
+                non_term_first.insert(prod_rule_first.begin(), prod_rule_first.end());
+
+                if (prod_rule_first.find(EPS) == prod_rule_first.end())
+                    break;
+            }
         }
     }
+
     this->first[non_terminal] = non_term_first;
     return non_term_first;
 }

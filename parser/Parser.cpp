@@ -52,11 +52,6 @@ void Parser::parse() {
         // non-terminal
         vector<string> production = this->parse_table->peek(top, input);
 
-//        if(top == "EXPRESSION" && input == "id"){
-//            production.pop_back();
-//            production.pop_back();
-//        }
-
         if (production.empty() || production[0] == ERROR) {
             // if all of the input is consumed
             if (input == DOLLAR_SIGN) {

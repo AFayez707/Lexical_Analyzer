@@ -1,4 +1,4 @@
-OFLAGS = -Ofast
+OFLAGS = -O3
 CPP = g++
 PROJECT = parse
 CFLAGS = -Wall -Wextra -std=c++11
