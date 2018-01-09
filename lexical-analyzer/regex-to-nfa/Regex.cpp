@@ -203,7 +203,7 @@ void Regex::parse() {
         expressions.emplace_back(id, exp_map[id]);
     }
 
-    for(auto &pss: punc_map){
+    for (auto &pss: punc_map) {
         expressions.emplace_back(pss.first, pss.first);
         language_characters.insert(pss.first[0]);
     }

@@ -50,6 +50,7 @@ void Left_Recursion::__eliminate() {
                     rule.second[j].erase(rule.second[j].begin());
                     vector<string> gamma = rule.second[j];
                     rule.second.erase(rule.second.begin() + j);
+
                     for (int x = 0; x < this->ambiguity_free_grammar[higher_term].size(); x++) {
                         vector<vector<string> > temp_rule = this->ambiguity_free_grammar[higher_term];
                         temp_rule[x].insert(temp_rule[x].end(), gamma.begin(), gamma.end());
@@ -57,15 +58,16 @@ void Left_Recursion::__eliminate() {
                     }
                 }
             }
+
             if (rule.first == rule.second[i][0]) { /// --> Immediate Recursion Removal Here
                 for (a = 0; a < rule.second.size(); a++) {
-                    if (rule.first != rule.second[a][0] && rule.second[a].back() != (rule.first + "'"))
-                        rule.second[a].push_back(rule.first + "'");
+                    if (rule.first != rule.second[a][0] && rule.second[a].back() != (rule.first + "`"))
+                        rule.second[a].push_back(rule.first + "`");
                     else {
                         rule.second[a].erase(rule.second[a].begin());
                         vector<string> alpha = rule.second[a];
                         rule.second.erase(rule.second.begin() + a);
-                        alpha.push_back(rule.first + "'");
+                        alpha.push_back(rule.first + "`");
                         new_rule.push_back(alpha);
                         a--;
                     }
@@ -73,45 +75,50 @@ void Left_Recursion::__eliminate() {
                 if (a >= rule.second.size() - 1) {
                     new_rule.push_back({EPS}); // NOLINT
                     this->ambiguity_free_grammar[rule.first] = rule.second;
-                    this->ambiguity_free_grammar.insert({rule.first + "'", new_rule});
+                    this->ambiguity_free_grammar.insert({rule.first + "`", new_rule});
                     new_rule.clear();
                 }
             }
         }
     }
 
-    vector<vector<string > > factor;
-    string temp = "HOSSAM";
+    vector<vector<string> > factor;
+    string temp;
     vector<string> factored;
-    int flag = 0;
+    bool flag = false;
     for (auto &y : ordered_grammar) {
         pair<string, vector<vector<string> > > rule = make_pair(y, this->ambiguity_free_grammar[y]);
         for (int i = 0; i < rule.second.size(); i++) {
             for (int j = 1; j < rule.second.size(); j++) { /// --> Left Factoring
-                if(rule.second[i][0] == rule.second[j][0] && i != j){
+                if (rule.second[i][0] == rule.second[j][0] && i != j) {
                     temp = rule.second[i][0];
                     rule.second[i].erase(rule.second[i].begin());
                     rule.second[j].erase(rule.second[j].begin());
-                    if(rule.second[i].size()!=0)
+
+                    if (!rule.second[i].empty())
                         factor.push_back(rule.second[i]);
-                    else factor.push_back({EPS});
-                    if(rule.second[j].size()!=0)
+                    else
+                        factor.emplace_back({EPS});
+
+                    if (!rule.second[j].empty())
                         factor.push_back(rule.second[j]);
-                    else factor.push_back({EPS});
+                    else
+                        factor.emplace_back({EPS});
+
                     factored.push_back(temp);
-                    factored.push_back(rule.first + "'");
+                    factored.push_back(rule.first + "`");
                     rule.second.push_back(factored);
                     rule.second.erase(rule.second.begin() + i);
                     rule.second.erase(rule.second.begin() + i);
-                    flag ++;
+                    flag = true;
                 }
             }
         }
-        if(flag){
+
+        if (flag) {
             this->ambiguity_free_grammar[y] = rule.second;
-            this->ambiguity_free_grammar.insert({rule.first + "'", factor});
-            flag = 0;
+            this->ambiguity_free_grammar.insert({rule.first + "`", factor});
+            flag = false;
         }
     }
-
 }
