@@ -35,4 +35,4 @@
 
 - Check `parse-log.txt` for NFA, DFA & Expression caculations in detail
 
-### Further details and `java_cfg.txt` file format (here)[Parser_Generator.pdf]
+### Further details and `java_cfg.txt` file format [here](Parser_Generator.pdf)

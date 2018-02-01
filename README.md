@@ -1,6 +1,6 @@
 # Compiler front end generators.
 
-## (Lexical analyzer generator)[lexical-analyzer]
+## [Lexical analyzer generator](lexical-analyzer)
 
 - Read Grammar file `grammar.txt` line by line, then substitute ranges.
 
@@ -15,7 +15,7 @@
 - Minimize the generated DFA using `Hopcroft's algorithm`.
 - Read & tokenize `source.txt` file.
 
-## (Parser generator)[parser]
+## [Parser generator](parser)
 
 - Read `java_cfg.txt`
 - Remove Left recursion if found.

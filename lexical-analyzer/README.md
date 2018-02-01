@@ -30,4 +30,4 @@
 
 - Check `lex-log.txt` for NFA, DFA & Expression caculations in detail
 
-### Further details & `grammar.txt` file format (here)[Lexical_Analyzer_Generator.pdf]
+### Further details & `grammar.txt` file format [here](Lexical_Analyzer_Generator.pdf)
