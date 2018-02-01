@@ -1,27 +1,33 @@
 # Lexical Analyzer Generator
 
-- This is CC473 first course project, phase 1 of a compiler.
+- This is CC473 first course project, phase 1 of a compiler front end.
 
 ### Phase 1 (Lexical Analyzer Generator):
-  - This phase of the project aims to build automatic lexical analyzer generator tools.
-  - This tool has two input files, one for grammar rules and the other for source code input.
-  - The output of this tool is a list of tokens which matches the user's input file.
+- This phase of the project aims to build automatic lexical analyzer generator tools.
+- This tool has two input files, one for grammar rules and the other for source code input.
+- The output of this tool is a list of tokens which matches the user's input file.
 
 ### Build and Run
 - clone this repo
 
-    `git clone https://github.com/siamx/Lexical_Analyzer`
+    `git clone https://github.com/siamx/compiler-front-end`
 
-- build
+- Enter project directory
+
+    `cd compiler-front-end/lexical-analyzer`
+
+- Build
 
     `make`
 
-- run using relative path files (files found in this repo `grammar.txt` & `source.txt`)
+- Run using relative path files (files found in this repo `grammar.txt` & `source.txt`)
 
-    `./lexical_analyzer`
+    `./lex`
 
-- run using custom files, you will be prompted to enter each file path
+- Run using custom files, enter each file path
 
-    `./lexical_analyzer -c`
+    `./lex  [grammar file path]  [source file path]`
 
-- tokens are written at the end of `log.txt` file
+- Check `lex-log.txt` for NFA, DFA & Expression caculations in detail
+
+### Further details & `grammar.txt` file format (here)[Lexical_Analyzer_Generator.pdf]
