@@ -31,8 +31,8 @@
 
     - Run by entering tokens manually, terminated by an empty line
 
-        `./parse
+        `./parse`
 
-- Check `parse-log.txt` for NFA, DFA & Expression caculations in detail
+- Check `parser-log.txt` for NFA, DFA & Expression caculations in detail
 
 ### Further details and `java_cfg.txt` file format [here](Parser_Generator.pdf)
