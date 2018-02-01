@@ -98,12 +98,12 @@ void Left_Recursion::__eliminate() {
                     if (!rule.second[i].empty())
                         factor.push_back(rule.second[i]);
                     else
-                        factor.emplace_back({EPS});
+                        factor.push_back({EPS});
 
                     if (!rule.second[j].empty())
                         factor.push_back(rule.second[j]);
                     else
-                        factor.emplace_back({EPS});
+                        factor.push_back({EPS});
 
                     factored.push_back(temp);
                     factored.push_back(rule.first + "`");
